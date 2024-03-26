@@ -89,7 +89,22 @@ async function run() {
     const saltRound = 10;
     const db = client.db("ecoSyncDB");
     const userCollection = db.collection("users");
-
+    /* Common API */
+    app.get("/rbac/roles", verifyJWT, async (req, res) => {
+      try {
+        const email = req.session?.user?.email;
+        const query = { email: email };
+        const existingUser = await userCollection.findOne(query);
+        if (existingUser) {
+          res.send({ role: existingUser?.role });
+        }
+      } catch (error) {
+        console.error("Permission Denied:", error);
+        res.status(500).json({
+          message: "Permission Denied",
+        });
+      }
+    });
     /* Users related api */
     // Create a user
     app.post("/auth/create", verifyJWT, verifyAdmin, async (req, res) => {
@@ -121,12 +136,10 @@ async function run() {
         }
       } catch (error) {
         console.error("Error creating user:", error);
-        res
-          .status(500)
-          .json({
-            success: true,
-            message: "An error occurred while creating the user",
-          });
+        res.status(500).json({
+          success: true,
+          message: "An error occurred while creating the user",
+        });
       }
     });
     app.post("/auth/login", async (req, res) => {
