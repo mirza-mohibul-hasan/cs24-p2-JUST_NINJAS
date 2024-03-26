@@ -15,3 +15,5 @@ colors: {
  'accent': '#433bff',
 },
 https://www.realtimecolors.com/?colors=050315-fbfbfe-2145e6-2fd226-b58d94&fonts=Poppins-Poppins
+
+ecosync mail password: fsvc bqpe jwni aspz
