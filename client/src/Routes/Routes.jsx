@@ -4,11 +4,16 @@ import Login from "../pages/Authentication/Login";
 import MainLayout from "../layout/MainLayout";
 import RestPassword from "../pages/Authentication/RestPassword";
 import OTPVerification from "../pages/Authentication/OTPVerification";
+import Home from "../pages/Home/Home";
 const router = createBrowserRouter([
   {
     path: "/",
     element: <MainLayout></MainLayout>,
     children: [
+      {
+        path: "/",
+        element: <Home></Home>,
+      },
       {
         path: "/dummyauth",
         element: <DummyAuth></DummyAuth>,
