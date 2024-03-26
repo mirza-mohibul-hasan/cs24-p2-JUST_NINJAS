@@ -71,7 +71,7 @@ async function run() {
             const result = userCollection.insertOne({
               email: email,
               password: hash,
-              role: "sysadmin",
+              role: "unassigned",
             });
             res.status(201).json({
               message: "User created successfully",
@@ -90,6 +90,12 @@ async function run() {
       try {
         const { email, password } = req.body;
         const existingUser = await userCollection.findOne({ email });
+        if (existingUser?.role === "unassigned") {
+          return res.json({
+            success: false,
+            message: "You don't have permission to Login",
+          });
+        }
         if (existingUser) {
           bcrypt.compare(password, existingUser.password, (error, response) => {
             if (error) {
@@ -128,10 +134,10 @@ async function run() {
     app.get("/auth/logout", (req, res) => {
       req.session.destroy((err) => {
         if (err) {
-          res.status(500).send({ message: "Logout Failed" });
+          res.send({ success: false, message: "Logout Failed" });
         } else {
           res.clearCookie("userId");
-          res.json({ message: "Logout successful" });
+          res.json({ success: true, message: "Logout successful" });
         }
       });
     });
