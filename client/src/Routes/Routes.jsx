@@ -3,6 +3,7 @@ import DummyAuth from "../pages/DummyAuth/DummyAuth";
 import Login from "../pages/Authentication/Login";
 import MainLayout from "../layout/MainLayout";
 import RestPassword from "../pages/Authentication/RestPassword";
+import OTPVerification from "../pages/Authentication/OTPVerification";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -19,6 +20,10 @@ const router = createBrowserRouter([
       {
         path: "/resetpassword",
         element: <RestPassword></RestPassword>,
+      },
+      {
+        path: "/otpverification",
+        element: <OTPVerification></OTPVerification>,
       },
     ],
   },
