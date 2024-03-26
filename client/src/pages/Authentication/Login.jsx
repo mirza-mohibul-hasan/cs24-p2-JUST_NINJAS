@@ -1,14 +1,18 @@
 import { useContext, useState } from "react";
 import { AuthContext } from "../../provider/AuthProvider";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
 const Login = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const from = location.state?.from?.pathname || "/";
   const { providerLogin } = useContext(AuthContext);
   const handleLogin = async (event) => {
     event.preventDefault();
     const email = event.target.email.value;
     const password = event.target.password.value;
     providerLogin(email, password);
+    navigate(from, { replace: true });
   };
   const [passwordShown, setPasswordShown] = useState(false);
   const togglePasswordVisiblity = () => {

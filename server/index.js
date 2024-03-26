@@ -30,6 +30,43 @@ app.use(
     },
   })
 );
+// JWT Verification
+const verifyJWT = (req, res, next) => {
+  const authorization = req.headers.authorization;
+  if (!authorization) {
+    return res.send({
+      success: false,
+      message: "We need a token, please give it to us next time",
+    });
+  } else {
+    const token = authorization.split(" ")[1];
+    jwt.verify(token, "jwtSecret", (err, decoded) => {
+      if (err) {
+        console.log(err);
+        res.json({ auth: false, message: "Auth Failed" });
+      } else {
+        req.userId = decoded.id;
+        next();
+      }
+    });
+  }
+};
+const verifyAdmin = (req, res, next) => {
+  const user = req.session?.user;
+  if (!user) {
+    return res.json({
+      success: false,
+      message: "User not authenticated",
+    });
+  }
+  if (user?.role !== "sysadmin") {
+    return res.json({
+      success: false,
+      message: "Access forbidden. Admin role required",
+    });
+  }
+  next();
+};
 
 // Mongo start here
 const uri =
@@ -55,25 +92,28 @@ async function run() {
 
     /* Users related api */
     // Create a user
-    app.post("/auth/create", async (req, res) => {
+    app.post("/auth/create", verifyJWT, verifyAdmin, async (req, res) => {
       try {
         const email = req.body?.email;
+        const name = req.body?.name;
         const password = req.body?.password;
         const query = { email: email };
         const existingUser = await userCollection.findOne(query);
         if (existingUser) {
-          return res.json({ message: "Email already exists" });
+          return res.json({ success: false, message: "Email already exists" });
         } else {
           bcrypt.hash(password, saltRound, (err, hash) => {
             if (err) {
               console.log("Register Error in bcrypt", err);
             }
             const result = userCollection.insertOne({
+              name: name,
               email: email,
               password: hash,
               role: "unassigned",
             });
             res.status(201).json({
+              success: true,
               message: "User created successfully",
               userId: result.insertedId,
             });
@@ -83,7 +123,10 @@ async function run() {
         console.error("Error creating user:", error);
         res
           .status(500)
-          .json({ message: "An error occurred while creating the user" });
+          .json({
+            success: true,
+            message: "An error occurred while creating the user",
+          });
       }
     });
     app.post("/auth/login", async (req, res) => {
@@ -143,7 +186,7 @@ async function run() {
     });
     app.get("/auth/loginstatus", async (req, res) => {
       // debug
-      console.log("Session", req.session);
+      // console.log("Session", req.session);
       try {
         if (req.session?.user) {
           res.send({ loggedIn: true, user: req.session.user });
@@ -195,7 +238,7 @@ async function run() {
             .json({ success: false, message: "Failed to send OTP email" });
         } else {
           console.log("Email sent: " + info.response);
-          console.log(req.session);
+          // console.log(req.session);
           res.json({ success: true, message: "OTP sent successfully" });
         }
       });
@@ -235,6 +278,17 @@ async function run() {
         return res.json({ success: false, message: "Invalid email or OTP" });
       }
     });
+
+    /* User Management Views */
+    app.get("/users", verifyJWT, verifyAdmin, async (req, res) => {
+      const users = await userCollection.find().toArray();
+      res.send(users);
+    });
+    app.post("/create", verifyJWT, verifyAdmin, async (req, res) => {
+      const users = await userCollection.find().toArray();
+      res.send(users);
+    });
+
     /* Working Zone End */
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
