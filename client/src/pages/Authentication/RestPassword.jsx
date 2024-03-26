@@ -1,8 +1,22 @@
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 const RestPassword = () => {
+  const navigate = useNavigate();
   const handleReset = async (event) => {
     event.preventDefault();
     const email = event.target.email.value;
-    console.log(email);
+    axios
+      .post("http://localhost:3000/auth/reset-password/initiate", { email })
+      .then((response) => {
+        console.log(response);
+        if (response.data?.success) {
+          alert(response.data?.message);
+          sessionStorage.setItem("resetEmail", email);
+          navigate("/otpverification");
+        } else {
+          alert(response.data?.message);
+        }
+      });
   };
   return (
     <div className="container">
@@ -15,7 +29,7 @@ const RestPassword = () => {
             placeholder="Email"
             className="input-field"
           />
-          <input type="submit" value="Login" className="submit-btn" />
+          <input type="submit" value="Send OTP" className="submit-btn" />
         </form>
       </div>
     </div>

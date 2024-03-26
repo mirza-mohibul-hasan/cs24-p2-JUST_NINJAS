@@ -6,6 +6,7 @@ const bcrypt = require("bcrypt");
 const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
 const session = require("express-session");
+const nodemailer = require("nodemailer");
 const port = process.env.PORT || 3000;
 const { MongoClient, ServerApiVersion } = require("mongodb");
 // Middleware
@@ -101,21 +102,20 @@ async function run() {
                 expiresIn: "24h",
               });
               req.session.user = existingUser;
-              console.log(existingUser);
               res.status(200).json({
                 success: true,
                 token: token,
                 message: "User Login successfully",
               });
             } else {
-              res.status(401).json({
+              res.json({
                 success: false,
-                message: "Wrong username or password",
+                message: "Wrong password",
               });
             }
           });
         } else {
-          res.status(404).json({ success: false, message: "User not found" });
+          res.json({ success: false, message: "User not found" });
         }
       } catch (error) {
         console.error("Error logging in user:", error);
@@ -126,7 +126,6 @@ async function run() {
     });
 
     app.get("/auth/logout", (req, res) => {
-      console.log("Log out pressed");
       req.session.destroy((err) => {
         if (err) {
           res.status(500).send({ message: "Logout Failed" });
@@ -137,8 +136,8 @@ async function run() {
       });
     });
     app.get("/auth/loginstatus", async (req, res) => {
+      // debug
       console.log("Session", req.session);
-      console.log("USer", req.session.user);
       try {
         if (req.session?.user) {
           res.send({ loggedIn: true, user: req.session.user });
@@ -152,7 +151,84 @@ async function run() {
           .json({ message: "An error occurred while creating the user" });
       }
     });
+    // Reset Password
+    const transporter = nodemailer.createTransport({
+      service: "gmail",
+      host: "smtp.gmail.com",
+      port: 465,
+      secure: true,
+      auth: {
+        user: "ecosyncninjas@gmail.com",
+        pass: "fsvc bqpe jwni aspz",
+      },
+    });
+    const generateOTP = () => {
+      return Math.floor(1000 + Math.random() * 9000);
+    };
+    const otpCache = {};
+    app.post("/auth/reset-password/initiate", async (req, res) => {
+      const email = req.body?.email;
+      const existingUser = await userCollection.findOne({ email });
+      if (!existingUser) {
+        return res.json({ success: false, message: "User not found" });
+      }
+      const otp = generateOTP();
+      req.session.resetEmail = email;
+      req.session.otp = otp;
+      const mailOptions = {
+        from: "ecosyncninjas@gmail.com",
+        to: email,
+        subject: "EcoSync password reset OTP",
+        text: `Your OTP for password reset is: ${otp}`,
+      };
+      transporter.sendMail(mailOptions, (error, info) => {
+        if (error) {
+          console.log(error);
+          res
+            .status(500)
+            .json({ success: false, message: "Failed to send OTP email" });
+        } else {
+          console.log("Email sent: " + info.response);
+          console.log(req.session);
+          res.json({ success: true, message: "OTP sent successfully" });
+        }
+      });
+    });
+    app.post("/auth/reset-password/confirm", async (req, res) => {
+      const { resetEmail, otp: storedOTP } = req.session;
+      const newPassword = req.body?.newpasssword;
 
+      if (resetEmail === req.body?.email && storedOTP === req.body?.otp) {
+        try {
+          const hash = await bcrypt.hash(newPassword, saltRound);
+          const result = await userCollection.updateOne(
+            { email: resetEmail },
+            { $set: { password: hash } }
+          );
+
+          if (result.modifiedCount === 0) {
+            return res.json({
+              success: false,
+              message: "Password reset failed",
+            });
+          }
+
+          delete req.session.resetEmail;
+          delete req.session.otp;
+
+          return res
+            .status(200)
+            .json({ success: true, message: "Password reset successful" });
+        } catch (error) {
+          console.error("Error updating password:", error);
+          return res
+            .status(500)
+            .json({ success: false, message: "Error updating password" });
+        }
+      } else {
+        return res.json({ success: false, message: "Invalid email or OTP" });
+      }
+    });
     /* Working Zone End */
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
