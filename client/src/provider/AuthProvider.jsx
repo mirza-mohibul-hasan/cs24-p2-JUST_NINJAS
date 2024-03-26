@@ -5,16 +5,19 @@ export const AuthContext = createContext(null);
 export const AuthProvider = ({ children }) => {
   axios.defaults.withCredentials = true;
   const [user, setUser] = useState(null);
-
+  const [loading, setLoading] = useState(false);
   const [refetch, setRefetch] = useState(false);
 
   useEffect(() => {
+    setLoading(true);
     axios.get("http://localhost:3000/auth/loginstatus").then((response) => {
       console.log(response);
       if (response.data.loggedIn == true) {
         setUser(response.data?.user);
+        setLoading(false);
       } else {
         localStorage.removeItem("token");
+        setLoading(false);
       }
     });
   }, [refetch]);
@@ -89,6 +92,8 @@ export const AuthProvider = ({ children }) => {
     providerLogout,
     refetch,
     setRefetch,
+    loading,
+    setLoading,
   };
   return (
     <AuthContext.Provider value={authInfo}>{children}</AuthContext.Provider>
