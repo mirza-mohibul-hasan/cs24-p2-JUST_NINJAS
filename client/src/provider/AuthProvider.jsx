@@ -13,6 +13,8 @@ export const AuthProvider = ({ children }) => {
       console.log(response);
       if (response.data.loggedIn == true) {
         setUser(response.data?.user);
+      } else {
+        localStorage.removeItem("token");
       }
     });
   }, [refetch]);
@@ -40,6 +42,7 @@ export const AuthProvider = ({ children }) => {
       } else {
         console.log(response);
         localStorage.setItem("token", response.data?.token);
+
         // alert(response.data?.message);
         Swal.fire({
           icon: "success",

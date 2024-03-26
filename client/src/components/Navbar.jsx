@@ -38,14 +38,7 @@ const Navbar = () => {
               <NavLink to="/">Home</NavLink>
               <NavLink to="/">temp1</NavLink>
               <NavLink to="/">temp2</NavLink>
-              <NavLink to="/">temp3</NavLink>
-              {/* {isAdmin && <NavLink to="/dashboard/admin">My Dashboard</NavLink>}
-              {isRestaurant && (
-                <NavLink to="/dashboard/restaurant">My Dashboard</NavLink>
-              )}
-              {isCustomer && (
-                <NavLink to="/dashboard/customer">My Dashboard</NavLink>
-              )} */}
+              {user && <NavLink to="/dashboard/home">Dashbord</NavLink>}
             </div>
           </div>
           {/* secondary */}
