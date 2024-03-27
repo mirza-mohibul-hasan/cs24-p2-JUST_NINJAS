@@ -8,7 +8,7 @@ const cookieParser = require("cookie-parser");
 const session = require("express-session");
 const nodemailer = require("nodemailer");
 const port = process.env.PORT || 3000;
-const { MongoClient, ServerApiVersion } = require("mongodb");
+const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 // Middleware
 app.use(
   cors({
@@ -89,6 +89,7 @@ async function run() {
     const saltRound = 10;
     const db = client.db("ecoSyncDB");
     const userCollection = db.collection("users");
+    const roleCollection = db.collection("roles");
     /* Common API */
     app.get("/rbac/roles", verifyJWT, async (req, res) => {
       try {
@@ -102,6 +103,36 @@ async function run() {
         console.error("Permission Denied:", error);
         res.status(500).json({
           message: "Permission Denied",
+        });
+      }
+    });
+    app.post("/rbac/roles", verifyJWT, verifyAdmin, async (req, res) => {
+      try {
+        const role = req.body?.role;
+        if (!role) {
+          return res.json({ success: false, message: "Role is required" });
+        }
+        const query = { role: role };
+        const existRole = await roleCollection.findOne(query);
+        if (existRole) {
+          return res.json({ success: false, message: "Role already exists" });
+        }
+        const result = await roleCollection.insertOne(req.body);
+        if (result.insertedId) {
+          return res.status(201).json({
+            success: true,
+            message: "Role created successfully",
+            roleId: result.insertedId,
+          });
+        } else {
+          return res
+            .status(500)
+            .json({ success: false, message: "Failed to get inserted ID" });
+        }
+      } catch (error) {
+        console.error("Failed creating role:", error);
+        res.status(500).json({
+          message: "Failed creating role",
         });
       }
     });
@@ -142,6 +173,7 @@ async function run() {
         });
       }
     });
+    /* Login Logout Related API */
     app.post("/auth/login", async (req, res) => {
       try {
         const { email, password } = req.body;
@@ -202,7 +234,9 @@ async function run() {
       // console.log("Session", req.session);
       try {
         if (req.session?.user) {
-          res.send({ loggedIn: true, user: req.session.user });
+          const user = req.session.user;
+          delete user?.password;
+          res.send({ loggedIn: true, user: user });
         } else {
           res.send({ loggedIn: false });
         }
@@ -297,9 +331,20 @@ async function run() {
       const users = await userCollection.find().toArray();
       res.send(users);
     });
-    app.post("/create", verifyJWT, verifyAdmin, async (req, res) => {
-      const users = await userCollection.find().toArray();
-      res.send(users);
+    app.get("/users/:id", async (req, res) => {
+      try {
+        const id = req.params?.id;
+        const query = { _id: new ObjectId(id) };
+        const user = await userCollection.findOne(query);
+        if (!user) {
+          return res.status(401).json({ message: "user Not found" });
+        }
+        delete user?.password;
+        res.json(user);
+      } catch (error) {
+        console.log(error);
+        res.status(500).json({ error: "Internal server error" });
+      }
     });
 
     /* Working Zone End */

@@ -2,7 +2,7 @@ import axios from "axios";
 import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../provider/AuthProvider";
 const useUserType = () => {
-  const { loading } = useContext(AuthContext);
+  const { loading, user } = useContext(AuthContext);
   const [role, setRole] = useState("general");
   useEffect(() => {
     const fetchRoles = async () => {
@@ -24,7 +24,7 @@ const useUserType = () => {
     };
 
     fetchRoles();
-  }, [loading]);
+  }, [loading, user]);
   return role;
 };
 
