@@ -1,7 +1,9 @@
 import { NavLink, Outlet } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
+import useUserType from "../hooks/useUserType";
 const DashboardLayout = () => {
+  const role = useUserType();
   return (
     <>
       <Navbar></Navbar>
@@ -18,35 +20,49 @@ const DashboardLayout = () => {
             HOME
           </NavLink>
           <NavLink
-            to="users"
+            to="profile"
             className={({ isActive }) =>
               isActive
                 ? "bg-[#2145e6]  rounded p-1 text-center text-xl text-white"
                 : "border border-[#2145e6] rounded p-1 text-center text-xl"
             }
           >
-            USERS
+            PROFILE
           </NavLink>
-          <NavLink
-            to="createuser"
-            className={({ isActive }) =>
-              isActive
-                ? "bg-[#2145e6]  rounded p-1 text-center text-xl text-white"
-                : "border border-[#2145e6] rounded p-1 text-center text-xl"
-            }
-          >
-            CREATE USER
-          </NavLink>
-          <NavLink
-            to="/vehicleregister"
-            className={({ isActive }) =>
-              isActive
-                ? "bg-[#2145e6]  rounded p-1 text-center text-xl text-white"
-                : "border border-[#2145e6] rounded p-1 text-center text-xl"
-            }
-          >
-            MANAGE USERS
-          </NavLink>
+          {role == "sysadmin" && (
+            <>
+              <NavLink
+                to="users"
+                className={({ isActive }) =>
+                  isActive
+                    ? "bg-[#2145e6]  rounded p-1 text-center text-xl text-white"
+                    : "border border-[#2145e6] rounded p-1 text-center text-xl"
+                }
+              >
+                USERS
+              </NavLink>
+              <NavLink
+                to="createuser"
+                className={({ isActive }) =>
+                  isActive
+                    ? "bg-[#2145e6]  rounded p-1 text-center text-xl text-white"
+                    : "border border-[#2145e6] rounded p-1 text-center text-xl"
+                }
+              >
+                CREATE USER
+              </NavLink>
+              <NavLink
+                to="/vehicleregister"
+                className={({ isActive }) =>
+                  isActive
+                    ? "bg-[#2145e6]  rounded p-1 text-center text-xl text-white"
+                    : "border border-[#2145e6] rounded p-1 text-center text-xl"
+                }
+              >
+                MANAGE USERS
+              </NavLink>
+            </>
+          )}
         </div>
         <div className="w-full">
           <Outlet></Outlet>
