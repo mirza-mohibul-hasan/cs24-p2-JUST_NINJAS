@@ -6,8 +6,9 @@ const bcrypt = require("bcrypt");
 const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
 const session = require("express-session");
+const nodemailer = require("nodemailer");
 const port = process.env.PORT || 3000;
-const { MongoClient, ServerApiVersion } = require("mongodb");
+const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 // Middleware
 app.use(
   cors({
@@ -29,6 +30,43 @@ app.use(
     },
   })
 );
+// JWT Verification
+const verifyJWT = (req, res, next) => {
+  const authorization = req.headers.authorization;
+  if (!authorization) {
+    return res.send({
+      success: false,
+      message: "We need a token, please give it to us next time",
+    });
+  } else {
+    const token = authorization.split(" ")[1];
+    jwt.verify(token, "jwtSecret", (err, decoded) => {
+      if (err) {
+        console.log(err);
+        res.json({ auth: false, message: "Auth Failed" });
+      } else {
+        req.userId = decoded.id;
+        next();
+      }
+    });
+  }
+};
+const verifyAdmin = (req, res, next) => {
+  const user = req.session?.user;
+  if (!user) {
+    return res.json({
+      success: false,
+      message: "User not authenticated",
+    });
+  }
+  if (user?.role !== "sysadmin") {
+    return res.json({
+      success: false,
+      message: "Access forbidden. Admin role required",
+    });
+  }
+  next();
+};
 
 // Mongo start here
 const uri =
@@ -51,28 +89,77 @@ async function run() {
     const saltRound = 10;
     const db = client.db("ecoSyncDB");
     const userCollection = db.collection("users");
-
+    const roleCollection = db.collection("roles");
+    /* Common API */
+    app.get("/rbac/roles", verifyJWT, async (req, res) => {
+      try {
+        const email = req.session?.user?.email;
+        const query = { email: email };
+        const existingUser = await userCollection.findOne(query);
+        if (existingUser) {
+          res.send({ role: existingUser?.role });
+        }
+      } catch (error) {
+        console.error("Permission Denied:", error);
+        res.status(500).json({
+          message: "Permission Denied",
+        });
+      }
+    });
+    app.post("/rbac/roles", verifyJWT, verifyAdmin, async (req, res) => {
+      try {
+        const role = req.body?.role;
+        if (!role) {
+          return res.json({ success: false, message: "Role is required" });
+        }
+        const query = { role: role };
+        const existRole = await roleCollection.findOne(query);
+        if (existRole) {
+          return res.json({ success: false, message: "Role already exists" });
+        }
+        const result = await roleCollection.insertOne(req.body);
+        if (result.insertedId) {
+          return res.status(201).json({
+            success: true,
+            message: "Role created successfully",
+            roleId: result.insertedId,
+          });
+        } else {
+          return res
+            .status(500)
+            .json({ success: false, message: "Failed to get inserted ID" });
+        }
+      } catch (error) {
+        console.error("Failed creating role:", error);
+        res.status(500).json({
+          message: "Failed creating role",
+        });
+      }
+    });
     /* Users related api */
     // Create a user
-    app.post("/auth/create", async (req, res) => {
+    app.post("/auth/create", verifyJWT, verifyAdmin, async (req, res) => {
       try {
         const email = req.body?.email;
+        const name = req.body?.name;
         const password = req.body?.password;
         const query = { email: email };
         const existingUser = await userCollection.findOne(query);
         if (existingUser) {
-          return res.json({ message: "Email already exists" });
+          return res.json({ success: false, message: "Email already exists" });
         } else {
           bcrypt.hash(password, saltRound, (err, hash) => {
             if (err) {
               console.log("Register Error in bcrypt", err);
             }
             const result = userCollection.insertOne({
+              name: name,
               email: email,
               password: hash,
-              role: "sysadmin",
+              role: "unassigned",
             });
             res.status(201).json({
+              success: true,
               message: "User created successfully",
               userId: result.insertedId,
             });
@@ -80,15 +167,23 @@ async function run() {
         }
       } catch (error) {
         console.error("Error creating user:", error);
-        res
-          .status(500)
-          .json({ message: "An error occurred while creating the user" });
+        res.status(500).json({
+          success: true,
+          message: "An error occurred while creating the user",
+        });
       }
     });
+    /* Login Logout Related API */
     app.post("/auth/login", async (req, res) => {
       try {
         const { email, password } = req.body;
         const existingUser = await userCollection.findOne({ email });
+        if (existingUser?.role === "unassigned") {
+          return res.json({
+            success: false,
+            message: "You don't have permission to Login",
+          });
+        }
         if (existingUser) {
           bcrypt.compare(password, existingUser.password, (error, response) => {
             if (error) {
@@ -101,21 +196,20 @@ async function run() {
                 expiresIn: "24h",
               });
               req.session.user = existingUser;
-              console.log(existingUser);
               res.status(200).json({
                 success: true,
                 token: token,
                 message: "User Login successfully",
               });
             } else {
-              res.status(401).json({
+              res.json({
                 success: false,
-                message: "Wrong username or password",
+                message: "Wrong password",
               });
             }
           });
         } else {
-          res.status(404).json({ success: false, message: "User not found" });
+          res.json({ success: false, message: "User not found" });
         }
       } catch (error) {
         console.error("Error logging in user:", error);
@@ -126,22 +220,23 @@ async function run() {
     });
 
     app.get("/auth/logout", (req, res) => {
-      console.log("Log out pressed");
       req.session.destroy((err) => {
         if (err) {
-          res.status(500).send({ message: "Logout Failed" });
+          res.send({ success: false, message: "Logout Failed" });
         } else {
           res.clearCookie("userId");
-          res.json({ message: "Logout successful" });
+          res.json({ success: true, message: "Logout successful" });
         }
       });
     });
     app.get("/auth/loginstatus", async (req, res) => {
-      console.log("Session", req.session);
-      console.log("USer", req.session.user);
+      // debug
+      // console.log("Session", req.session);
       try {
         if (req.session?.user) {
-          res.send({ loggedIn: true, user: req.session.user });
+          const user = req.session.user;
+          delete user?.password;
+          res.send({ loggedIn: true, user: user });
         } else {
           res.send({ loggedIn: false });
         }
@@ -150,6 +245,105 @@ async function run() {
         res
           .status(500)
           .json({ message: "An error occurred while creating the user" });
+      }
+    });
+    // Reset Password
+    const transporter = nodemailer.createTransport({
+      service: "gmail",
+      host: "smtp.gmail.com",
+      port: 465,
+      secure: true,
+      auth: {
+        user: "ecosyncninjas@gmail.com",
+        pass: "fsvc bqpe jwni aspz",
+      },
+    });
+    const generateOTP = () => {
+      return Math.floor(1000 + Math.random() * 9000);
+    };
+    const otpCache = {};
+    app.post("/auth/reset-password/initiate", async (req, res) => {
+      const email = req.body?.email;
+      const existingUser = await userCollection.findOne({ email });
+      if (!existingUser) {
+        return res.json({ success: false, message: "User not found" });
+      }
+      const otp = generateOTP();
+      req.session.resetEmail = email;
+      req.session.otp = otp;
+      const mailOptions = {
+        from: "ecosyncninjas@gmail.com",
+        to: email,
+        subject: "EcoSync password reset OTP",
+        text: `Your OTP for password reset is: ${otp}`,
+      };
+      transporter.sendMail(mailOptions, (error, info) => {
+        if (error) {
+          console.log(error);
+          res
+            .status(500)
+            .json({ success: false, message: "Failed to send OTP email" });
+        } else {
+          console.log("Email sent: " + info.response);
+          // console.log(req.session);
+          res.json({ success: true, message: "OTP sent successfully" });
+        }
+      });
+    });
+    app.post("/auth/reset-password/confirm", async (req, res) => {
+      const { resetEmail, otp: storedOTP } = req.session;
+      const newPassword = req.body?.newpasssword;
+
+      if (resetEmail === req.body?.email && storedOTP === req.body?.otp) {
+        try {
+          const hash = await bcrypt.hash(newPassword, saltRound);
+          const result = await userCollection.updateOne(
+            { email: resetEmail },
+            { $set: { password: hash } }
+          );
+
+          if (result.modifiedCount === 0) {
+            return res.json({
+              success: false,
+              message: "Password reset failed",
+            });
+          }
+
+          delete req.session.resetEmail;
+          delete req.session.otp;
+
+          return res
+            .status(200)
+            .json({ success: true, message: "Password reset successful" });
+        } catch (error) {
+          console.error("Error updating password:", error);
+          return res
+            .status(500)
+            .json({ success: false, message: "Error updating password" });
+        }
+      } else {
+        return res.json({ success: false, message: "Invalid email or OTP" });
+      }
+    });
+
+    /* User Management Views */
+    app.get("/users", verifyJWT, verifyAdmin, async (req, res) => {
+      const users = await userCollection.find().toArray();
+      res.send(users);
+    });
+    app.get("/users/:id", async (req, res) => {
+      try {
+        const id = req.params?.id;
+        const query = { _id: new ObjectId(id) };
+        const user = await userCollection.findOne(query);
+        if (!user) {
+          return res.status(401).json({ message: "user Not found" });
+        }
+        delete user?.password;
+        res.json(user);
+      } catch (error) {
+        console.log(error);
+        res.status(500).json({ error: "Internal server error" });
       }
     });
 
