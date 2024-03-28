@@ -2,7 +2,6 @@ import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../provider/AuthProvider";
 import { Link, NavLink } from "react-router-dom";
 import logo from "../assets/logo.png";
-import useUserType from "../hooks/useUserType";
 import './Navbar.css'
 const Navbar = () => {
   const { user, providerLogout } = useContext(AuthContext);
@@ -17,8 +16,6 @@ const Navbar = () => {
   }, [theme]);
 
   const [toggleMenu, setToggleMenu] = useState(false);
-  const role = useUserType();
-  console.log(role);
   return (
     // <div>
     //   <h1>Role: {user?.role}</h1>
