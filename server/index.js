@@ -384,8 +384,18 @@ async function run() {
 
     /* User Management Views */
     app.get("/users", verifyJWT, verifyAdmin, async (req, res) => {
-      const users = await userCollection.find().toArray();
-      res.send(users);
+      try {
+        const users = await userCollection.find().toArray();
+
+        users.forEach((user) => {
+          delete user.password;
+        });
+
+        res.send(users);
+      } catch (error) {
+        console.error("Error fetching users:", error);
+        res.status(500).json({ message: "Internal server error" });
+      }
     });
     app.get("/users/:id", async (req, res) => {
       try {

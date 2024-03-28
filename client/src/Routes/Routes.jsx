@@ -6,11 +6,11 @@ import RestPassword from "../pages/Authentication/RestPassword";
 import OTPVerification from "../pages/Authentication/OTPVerification";
 import Home from "../pages/Home/Home";
 import DashboardLayout from "../layout/DashboardLayout";
-import AllUsers from "../pages/Dashboard/SytemAdmin/AllUsers/AllUsers";
 import DashHome from "../pages/Dashboard/DashHome/DashHome";
 import CreateUser from "../pages/Dashboard/SytemAdmin/CreateUser.jsx/CreateUser";
 import Profile from "../pages/Dashboard/Profile/Profile";
 import ChangePassword from "../pages/Authentication/ChangePassword";
+import ManagaeUsers from "../pages/Dashboard/SytemAdmin/ManageUsers/ManagaeUsers";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -49,8 +49,8 @@ const router = createBrowserRouter([
         element: <ChangePassword></ChangePassword>,
       },
       {
-        path: "users",
-        element: <AllUsers></AllUsers>,
+        path: "manageusers",
+        element: <ManagaeUsers></ManagaeUsers>,
       },
       {
         path: "createuser",
