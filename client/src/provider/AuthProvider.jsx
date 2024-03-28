@@ -11,7 +11,7 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     setLoading(true);
     axios
-      .get("http://localhost:3000/auth/loginstatus")
+      .get("http://localhost:3000/profile")
       .then((response) => {
         if (response.data.loggedIn) {
           setUser(response.data?.user);
@@ -77,6 +77,7 @@ export const AuthProvider = ({ children }) => {
         }).then(() => {
           localStorage.removeItem("token");
           setUser(null);
+          window.location.href = "/";
         });
       }
     } catch (error) {

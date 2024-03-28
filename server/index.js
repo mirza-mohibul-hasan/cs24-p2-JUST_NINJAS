@@ -267,24 +267,6 @@ async function run() {
         }
       });
     });
-    app.get("/auth/loginstatus", async (req, res) => {
-      // debug
-      // console.log("Session", req.session);
-      try {
-        if (req.session?.user) {
-          const user = req.session.user;
-          delete user?.password;
-          res.send({ loggedIn: true, user: user });
-        } else {
-          res.send({ loggedIn: false });
-        }
-      } catch (error) {
-        console.error("Error logged in user:", error);
-        res
-          .status(500)
-          .json({ message: "An error occurred while creating the user" });
-      }
-    });
     // Reset Password
     const transporter = nodemailer.createTransport({
       service: "gmail",
@@ -525,6 +507,168 @@ async function run() {
       } catch (error) {
         console.error("Error deleting user:", error);
         res.status(500).json({ error: "Internal server error" });
+      }
+    });
+    app.put("/users/:userId", verifyJWT, verifyAdmin, async (req, res) => {
+      try {
+        const newemail = req.body?.newemail;
+        const newname = req.body?.newname;
+        const newnid = req.body?.newnid;
+        const newaddress = req.body?.newaddress;
+
+        const userId = req.params.userId;
+        const query = { _id: new ObjectId(userId) };
+
+        const user = await userCollection.findOne(query);
+
+        if (!user) {
+          return res.json({ message: "User not found" });
+        }
+        const email = user?.email;
+        const name = user?.name;
+        const nid = user?.nid;
+        const address = user?.address;
+
+        const updatedEmail = newemail ? newemail : email;
+        const updatedName = newname ? newname : name;
+        const updatedNid = newnid ? newnid : nid;
+        const updatedAddress = newaddress ? newaddress : address;
+
+        const update = {
+          $set: {
+            email: updatedEmail,
+            name: updatedName,
+            nid: updatedNid,
+            address: updatedAddress,
+          },
+        };
+
+        const result = await userCollection.updateOne(query, update);
+
+        if (result.modifiedCount === 1) {
+          return res.status(200).json({
+            success: true,
+            message: "Updated successfully",
+          });
+        } else {
+          throw new Error("Failed to update user profile");
+        }
+      } catch (error) {
+        console.error("Error updating profile:", error);
+        res
+          .status(500)
+          .json({ message: "An error occurred while updating the profile" });
+      }
+    });
+
+    app.put("/users/:id/roles", verifyJWT, verifyAdmin, async (req, res) => {
+      try {
+        const id = req.params?.id;
+        const newRole = req.body.role;
+        if (!newRole) {
+          return res.json({
+            success: false,
+            message: "Role is missing",
+          });
+        }
+        if (!id) {
+          return res
+            .status(400)
+            .json({ success: false, message: "ID parameter is missing" });
+        }
+
+        const query = { _id: new ObjectId(id) };
+        const update = { $set: { role: newRole } };
+
+        const result = await userCollection.updateOne(query, update);
+
+        if (result.matchedCount === 0) {
+          return res
+            .status(404)
+            .json({ success: false, message: "Role update failed" });
+        }
+        res.json({ success: true, message: "Role updated successfully" });
+      } catch (error) {
+        console.error("Error updating role user:", error);
+        res.status(500).json({ error: "Internal server error" });
+      }
+    });
+
+    /* Profile Management Endpoints */
+    app.get("/profile", async (req, res) => {
+      try {
+        if (req.session?.user) {
+          const user = req.session.user;
+          delete user?.password;
+          res.send({ loggedIn: true, user: user });
+        } else {
+          res.send({ loggedIn: false });
+        }
+      } catch (error) {
+        console.error("Error logged in user:", error);
+        res
+          .status(500)
+          .json({ message: "An error occurred while creating the user" });
+      }
+    });
+    app.put("/profile", async (req, res) => {
+      try {
+        const newemail = req.body?.newemail;
+        const newname = req.body?.newname;
+        const newnid = req.body?.newnid;
+        const newaddress = req.body?.newaddress;
+
+        const userId = req.session?.user?._id;
+        const email = req.session?.user?.email;
+        const name = req.session?.user?.name;
+        const nid = req.session?.user?.nid;
+        const address = req.session?.user?.address;
+        const updatedEmail = newemail ? newemail : email;
+        const updatedName = newname ? newname : name;
+        const updatedNid = newnid ? newnid : nid;
+        const updatedAddress = newaddress ? newaddress : address;
+        const query = { _id: new ObjectId(userId) };
+
+        const user = await userCollection.findOne(query);
+
+        if (!user) {
+          return res.json({ message: "User not found" });
+        }
+
+        const update = {
+          $set: {
+            email: updatedEmail,
+            name: updatedName,
+            nid: updatedNid,
+            address: updatedAddress,
+          },
+        };
+
+        const result = await userCollection.updateOne(query, update);
+
+        if (result.modifiedCount === 1) {
+          req.session.user.email = updatedEmail;
+          req.session.user.name = updatedName;
+          req.session.user.nid = updatedNid;
+          req.session.user.address = updatedAddress;
+          return res.status(200).json({
+            success: true,
+            message: "Profile updated successfully",
+            updatedProfile: {
+              email: updatedEmail,
+              name: updatedName,
+              nid: updatedNid,
+              address: updatedAddress,
+            },
+          });
+        } else {
+          throw new Error("Failed to update user profile");
+        }
+      } catch (error) {
+        console.error("Error updating profile:", error);
+        res
+          .status(500)
+          .json({ message: "An error occurred while updating the profile" });
       }
     });
 

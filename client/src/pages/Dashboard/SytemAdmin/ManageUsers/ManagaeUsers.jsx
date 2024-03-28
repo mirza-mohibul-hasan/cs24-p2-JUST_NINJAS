@@ -1,16 +1,20 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { BallTriangle } from "react-loader-spinner";
 import { Link } from "react-router-dom";
 import Swal from "sweetalert2";
+import { AuthContext } from "../../../../provider/AuthProvider";
 const ManagaeUsers = () => {
+  const { user } = useContext(AuthContext);
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [refetch, setRefetch] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [sortBy, setSortBy] = useState("");
   const [sortOrder, setSortOrder] = useState("");
-
+  // Roles update
+  const [newrole, setNewRole] = useState("");
+  const [userId, setUserId] = useState("");
   useEffect(() => {
     const fetchUsers = async () => {
       try {
@@ -115,8 +119,76 @@ const ManagaeUsers = () => {
       setLoading(false);
     }
   };
+  // Roles update
+  const handleId = (id) => {
+    setUserId(id);
+  };
+  const handleRoleUpdate = async (userId, newRole) => {
+    console.log(newRole);
+    if (newRole === "") {
+      return Swal.fire("Cancelled", "Please select a role.", "error");
+    }
+
+    try {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        throw new Error("Token not found");
+      }
+
+      const response = await axios.put(
+        `http://localhost:3000/users/${userId}/roles`,
+        { role: newRole },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (response.data.success) {
+        Swal.fire("Success!", "User role updated successfully.", "success");
+        setRefetch(!refetch);
+      } else {
+        Swal.fire("Error!", "Failed to update user role.", "error");
+        console.error("Failed to update user role.");
+      }
+    } catch (error) {
+      console.error("Error updating user role:", error.message);
+    }
+  };
+  // console.log(user.email == "mirzamohibul618@gmail.com");
   return (
     <div className="overflow-x-auto">
+      <dialog id="my_modal_3" className="modal">
+        <form method="dialog" className="modal-box">
+          <button
+            htmlFor="my-modal-3"
+            className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"
+          >
+            ✕
+          </button>
+          <h1>Update Role</h1>
+          <div className="flex flex-col p-5 gap-5">
+            <select
+              value={newrole}
+              onChange={(e) => setNewRole(e.target.value)}
+              className="select select-bordered w-full  select-primary select-sm"
+            >
+              <option value="">Update Role</option>
+              <option value="sysadmin">System Admin</option>
+              <option value="stsmanager">STS Manager</option>
+              <option value="landmanager">Landfill Manager</option>
+              <option value="unassigned">Unassigned</option>
+            </select>
+            <button
+              className="bg-[#2145e6] text-white font-semibold rounded py-1"
+              onClick={() => handleRoleUpdate(userId, newrole)}
+            >
+              Update
+            </button>
+          </div>
+        </form>
+      </dialog>
       <div className="flex justify-center gap-2 p-3">
         <label className="input input-bordered input-primary flex items-center gap-2 input-sm w-full max-w-xs">
           <input
@@ -176,43 +248,49 @@ const ManagaeUsers = () => {
           </tr>
         </thead>
         <tbody>
-          {users?.map((user, index) => (
-            <tr key={user._id} className="hover">
+          {users?.map((rowuser, index) => (
+            <tr key={rowuser._id} className="hover">
               <th>{index + 1}</th>
-              <td>{user.name ? user.name : "Not Available"}</td>
-              <td>{user.email}</td>
-              <td>{user.createdAt}</td>
+              <td>{rowuser.name ? rowuser.name : "Not Available"}</td>
+              <td>{rowuser.email}</td>
+              <td>{rowuser.createdAt}</td>
               <td>
-                {user.role == "sysadmin"
+                {rowuser.role == "sysadmin"
                   ? "System Admin"
-                  : user.role == "stsmanager"
+                  : rowuser.role == "stsmanager"
                   ? "STS Manager"
-                  : user.role == "landmanager"
-                  ? "Land Manager"
+                  : rowuser.role == "landmanager"
+                  ? "Landfill Manager"
                   : "Unassigned"}
               </td>
-              <td className="flex gap-2">
-                <Link to={`/dashboard/userdetails/${user._id}`}>
-                  <button className="btn btn-xs btn-primary btn-outline">
-                    Details
-                  </button>
-                </Link>
+              {rowuser?.email !== user?.email && (
+                <td className="flex gap-2">
+                  <Link to={`/dashboard/userdetails/${rowuser._id}`}>
+                    <button className="btn btn-xs btn-primary btn-outline">
+                      Details
+                    </button>
+                  </Link>
 
-                <Link to={`/dashboard/updateuser/${user._id}`}>
-                  <button className="btn btn-xs  btn-outline">Update</button>
-                </Link>
-                <Link to={`/dashboard/updateuserrole/${user._id}`}>
-                  <button className="btn btn-xs btn-success  btn-outline">
+                  <Link to={`/dashboard/updateuser/${rowuser._id}`}>
+                    <button className="btn btn-xs  btn-outline">Update</button>
+                  </Link>
+                  <button
+                    onClick={() => {
+                      window.my_modal_3.showModal();
+                      handleId(rowuser._id);
+                    }}
+                    className="btn btn-xs btn-success  btn-outline"
+                  >
                     Update Role
                   </button>
-                </Link>
-                <button
-                  onClick={() => handleDeleteUser(user._id)}
-                  className="btn btn-xs btn-error btn-outline"
-                >
-                  Delete
-                </button>
-              </td>
+                  <button
+                    onClick={() => handleDeleteUser(rowuser._id)}
+                    className="btn btn-xs btn-error btn-outline"
+                  >
+                    Delete
+                  </button>
+                </td>
+              )}
             </tr>
           ))}
         </tbody>
