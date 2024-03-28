@@ -18,6 +18,7 @@ const Navbar = () => {
   const [toggleMenu, setToggleMenu] = useState(false);
   const role = useUserType();
   console.log(role);
+
   return (
     // <div>
     //   <h1>Role: {user?.role}</h1>
