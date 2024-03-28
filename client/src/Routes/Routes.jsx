@@ -15,6 +15,7 @@ import UpdateUser from "../pages/Dashboard/SytemAdmin/ManageUsers/UpdateUser";
 import UserDetails from "../pages/Dashboard/SytemAdmin/ManageUsers/UserDetails";
 import UpdateProfile from "../pages/Dashboard/Profile/UpdateProfile";
 import Roles from "../pages/Dashboard/SytemAdmin/Roles/Roles";
+import UpdateUserRole from "../pages/Dashboard/SytemAdmin/ManageUsers/UpdateUserRole";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -72,6 +73,10 @@ const router = createBrowserRouter([
       {
         path: "roles",
         element: <Roles></Roles>,
+      },
+      {
+        path: "updateuserrole/:id",
+        element: <UpdateUserRole></UpdateUserRole>,
       },
     ],
   },

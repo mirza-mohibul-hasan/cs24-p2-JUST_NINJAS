@@ -60,6 +60,18 @@ const UserDetails = () => {
       </div>
       <h1>Name: {userDetails?.name}</h1>
       <h1>Email: {userDetails?.email}</h1>
+      <h1>Address: {userDetails?.address}</h1>
+      <h1>NID: {userDetails?.nid}</h1>
+      <h1>
+        Role:
+        {userDetails.role == "sysadmin"
+          ? "System Admin"
+          : userDetails.role == "stsmanager"
+          ? "STS Manager"
+          : userDetails.role == "landmanager"
+          ? "Landfill Manager"
+          : "Unassigned"}
+      </h1>
     </div>
   );
 };
