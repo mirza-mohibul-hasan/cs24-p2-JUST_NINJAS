@@ -43,6 +43,7 @@ const CreateUser = () => {
             },
           }
         );
+        console.log(response);
         if (response.data?.success) {
           Swal.fire({
             icon: "success",

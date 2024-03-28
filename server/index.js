@@ -423,10 +423,18 @@ async function run() {
     /* User Management Endpoints */
     app.get("/profilepic/:imageName", (req, res) => {
       const imageName = req.params.imageName;
-      const readStream = fs.createReadStream(`profilepic/${imageName}`);
-      readStream.pipe(res);
+      const imagePath = `profilepic/${imageName}`;
+
+      fs.access(imagePath, fs.constants.F_OK, (err) => {
+        if (err) {
+          res.status(404).send("File not found");
+        } else {
+          const readStream = fs.createReadStream(imagePath);
+          readStream.pipe(res);
+        }
+      });
     });
-    app.get("/users", verifyJWT, verifyAdmin, async (req, res) => {
+    app.get("/users", async (req, res) => {
       try {
         let filter = {};
 
@@ -460,23 +468,62 @@ async function run() {
         res.status(500).json({ message: "Internal server error" });
       }
     });
+    // User roles
+    app.get("/users/roles", async (req, res) => {
+      console.log("ROLES");
+      try {
+        const roles = await roleCollection.find().toArray();
+        res.status(200).json(roles);
+      } catch (error) {
+        console.error("Error fetching roles:", error);
+        res.status(500).json({ error: "Internal server error" });
+      }
+    });
 
     app.get("/users/:id", async (req, res) => {
+      console.log("Single User details");
       try {
-        const id = req.params?.id;
-        console.log(id);
+        const id = req.params.id;
         if (!id) {
-          return res.json({ error: "ID parameter is missing" });
+          return res.status(400).json({ error: "ID parameter is missing" });
+        }
+        if (!ObjectId.isValid(id)) {
+          return res.status(400).json({ error: "Invalid ID parameter" });
         }
         const query = { _id: new ObjectId(id) };
         const user = await userCollection.findOne(query);
         if (!user) {
-          return res.status(401).json({ message: "user Not found" });
+          return res.status(404).json({ message: "User not found" });
         }
-        delete user?.password;
+        delete user.password;
         res.json(user);
       } catch (error) {
-        console.log(error);
+        console.error("Error fetching user:", error);
+        res.status(500).json({ error: "Internal server error" });
+      }
+    });
+
+    app.delete("/users/:id", verifyJWT, verifyAdmin, async (req, res) => {
+      try {
+        const id = req.params?.id;
+        if (!id) {
+          return res.status(400).json({ error: "ID parameter is missing" });
+        }
+
+        const query = { _id: new ObjectId(id) };
+        const user = await userCollection.findOne(query);
+        if (!user) {
+          return res.status(404).json({ error: "User not found" });
+        }
+        const profilePicFilename = user.avatar;
+        await userCollection.deleteOne(query);
+        const filename = user.avatar;
+        if (filename) {
+          fs.unlinkSync(path.join(__dirname, "profilepic", filename));
+        }
+        res.json({ success: true, message: "User deleted successfully" });
+      } catch (error) {
+        console.error("Error deleting user:", error);
         res.status(500).json({ error: "Internal server error" });
       }
     });

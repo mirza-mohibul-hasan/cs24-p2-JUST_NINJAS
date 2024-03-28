@@ -12,6 +12,9 @@ import Profile from "../pages/Dashboard/Profile/Profile";
 import ChangePassword from "../pages/Authentication/ChangePassword";
 import ManagaeUsers from "../pages/Dashboard/SytemAdmin/ManageUsers/ManagaeUsers";
 import UpdateUser from "../pages/Dashboard/SytemAdmin/ManageUsers/UpdateUser";
+import UserDetails from "../pages/Dashboard/SytemAdmin/ManageUsers/UserDetails";
+import UpdateProfile from "../pages/Dashboard/Profile/UpdateProfile";
+import Roles from "../pages/Dashboard/SytemAdmin/Roles/Roles";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -45,6 +48,7 @@ const router = createBrowserRouter([
     children: [
       { path: "home", element: <DashHome></DashHome> },
       { path: "profile", element: <Profile></Profile> },
+      { path: "updateprofile", element: <UpdateProfile></UpdateProfile> },
       {
         path: "changepassword",
         element: <ChangePassword></ChangePassword>,
@@ -60,6 +64,14 @@ const router = createBrowserRouter([
       {
         path: "updateuser/:id",
         element: <UpdateUser></UpdateUser>,
+      },
+      {
+        path: "userdetails/:id",
+        element: <UserDetails></UserDetails>,
+      },
+      {
+        path: "roles",
+        element: <Roles></Roles>,
       },
     ],
   },
