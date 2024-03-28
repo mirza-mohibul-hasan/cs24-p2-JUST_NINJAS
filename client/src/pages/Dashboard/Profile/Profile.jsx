@@ -2,18 +2,18 @@ import axios from "axios";
 import { useContext, useEffect, useState } from "react";
 import { BallTriangle } from "react-loader-spinner";
 import { AuthContext } from "../../../provider/AuthProvider";
+import { Link } from "react-router-dom";
 
 const Profile = () => {
   const [userDetails, setUserDetails] = useState([]);
   const [loading, setLoading] = useState(true);
   const { user } = useContext(AuthContext);
-  console.log(user);
   useEffect(() => {
     const fetchUsers = async () => {
       try {
         const token = localStorage.getItem("token");
-        if (!token) {
-          throw new Error("Token not found");
+        if (!token || !user) {
+          return;
         }
 
         const response = await axios.get(
@@ -25,7 +25,6 @@ const Profile = () => {
           }
         );
         setUserDetails(response.data);
-        console.log(response.data);
         setLoading(false);
       } catch (error) {
         console.error("Error fetching users:", error.message);
@@ -53,9 +52,33 @@ const Profile = () => {
   }
   return (
     <div>
+      <div className="avatar">
+        <div className="w-24 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
+          <img
+            src={`http://localhost:3000/profilepic/${userDetails?.avatar}`}
+          />
+        </div>
+      </div>
       <h1>Name: {userDetails?.name}</h1>
       <h1>Email: {userDetails?.email}</h1>
-      <button className="btn">EDIT</button>
+      <h1>Address: {userDetails?.address}</h1>
+      <h1>NID: {userDetails?.nid}</h1>
+      <h1>
+        Role:
+        {userDetails.role == "sysadmin"
+          ? "System Admin"
+          : userDetails.role == "stsmanager"
+          ? "STS Manager"
+          : userDetails.role == "landmanager"
+          ? "Landfill Manager"
+          : "Unassigned"}
+      </h1>
+      <Link to="/dashboard/updateprofile">
+        <button className="btn btn-outline">Update Profile</button>
+      </Link>
+      <Link to="/dashboard/changepassword">
+        <button className="btn btn-outline">Change Password</button>
+      </Link>
     </div>
   );
 };

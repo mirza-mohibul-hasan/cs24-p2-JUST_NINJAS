@@ -6,10 +6,16 @@ import RestPassword from "../pages/Authentication/RestPassword";
 import OTPVerification from "../pages/Authentication/OTPVerification";
 import Home from "../pages/Home/Home";
 import DashboardLayout from "../layout/DashboardLayout";
-import AllUsers from "../pages/Dashboard/SytemAdmin/AllUsers/AllUsers";
 import DashHome from "../pages/Dashboard/DashHome/DashHome";
 import CreateUser from "../pages/Dashboard/SytemAdmin/CreateUser.jsx/CreateUser";
 import Profile from "../pages/Dashboard/Profile/Profile";
+import ChangePassword from "../pages/Authentication/ChangePassword";
+import ManagaeUsers from "../pages/Dashboard/SytemAdmin/ManageUsers/ManagaeUsers";
+import UpdateUser from "../pages/Dashboard/SytemAdmin/ManageUsers/UpdateUser";
+import UserDetails from "../pages/Dashboard/SytemAdmin/ManageUsers/UserDetails";
+import UpdateProfile from "../pages/Dashboard/Profile/UpdateProfile";
+import Roles from "../pages/Dashboard/SytemAdmin/Roles/Roles";
+import UpdateUserRole from "../pages/Dashboard/SytemAdmin/ManageUsers/UpdateUserRole";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -43,13 +49,34 @@ const router = createBrowserRouter([
     children: [
       { path: "home", element: <DashHome></DashHome> },
       { path: "profile", element: <Profile></Profile> },
+      { path: "updateprofile", element: <UpdateProfile></UpdateProfile> },
       {
-        path: "users",
-        element: <AllUsers></AllUsers>,
+        path: "changepassword",
+        element: <ChangePassword></ChangePassword>,
+      },
+      {
+        path: "manageusers",
+        element: <ManagaeUsers></ManagaeUsers>,
       },
       {
         path: "createuser",
         element: <CreateUser></CreateUser>,
+      },
+      {
+        path: "updateuser/:id",
+        element: <UpdateUser></UpdateUser>,
+      },
+      {
+        path: "userdetails/:id",
+        element: <UserDetails></UserDetails>,
+      },
+      {
+        path: "roles",
+        element: <Roles></Roles>,
+      },
+      {
+        path: "updateuserrole/:id",
+        element: <UpdateUserRole></UpdateUserRole>,
       },
     ],
   },

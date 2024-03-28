@@ -10,16 +10,17 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     setLoading(true);
-    axios.get("http://localhost:3000/auth/loginstatus").then((response) => {
-      console.log(response);
-      if (response.data.loggedIn == true) {
-        setUser(response.data?.user);
-        setLoading(false);
-      } else {
-        localStorage.removeItem("token");
-        setLoading(false);
-      }
-    });
+    axios
+      .get("http://localhost:3000/profile")
+      .then((response) => {
+        if (response.data.loggedIn) {
+          setUser(response.data?.user);
+        } else {
+          localStorage.removeItem("token");
+        }
+      })
+      .catch((error) => console.error("Error fetching login status:", error))
+      .finally(() => setLoading(false));
   }, [refetch]);
   const providerRegister = async (event) => {
     event.preventDefault();
@@ -34,19 +35,19 @@ export const AuthProvider = ({ children }) => {
   };
   const providerLogin = async (email, password) => {
     const user = { email, password };
-    axios.post("http://localhost:3000/auth/login", user).then((response) => {
-      if (!response.data?.success) {
-        // alert(response.data?.message);
+    try {
+      const response = await axios.post(
+        "http://localhost:3000/auth/login",
+        user
+      );
+      if (!response.data.success) {
         Swal.fire({
           icon: "error",
           title: response.data?.message,
           text: "Please try again.",
         });
       } else {
-        console.log(response);
-        localStorage.setItem("token", response.data?.token);
-
-        // alert(response.data?.message);
+        localStorage.setItem("token", response.data.token);
         Swal.fire({
           icon: "success",
           title: response.data?.message,
@@ -54,46 +55,44 @@ export const AuthProvider = ({ children }) => {
         });
         setRefetch(!refetch);
       }
-    });
+    } catch (error) {
+      console.error("Error logging in:", error);
+    }
   };
 
-  const providerLogout = () => {
-    axios
-      .get("http://localhost:3000/auth/logout")
-      .then((response) => {
-        if (!response.data?.success) {
-          Swal.fire({
-            icon: "error",
-            title: response.data?.message,
-            text: "Please try again.",
-          });
-        } else {
-          Swal.fire({
-            icon: "success",
-            title: response.data?.message,
-            text: "Thank you!",
-          }).then((result) => {
-            if (result.isConfirmed) {
-              localStorage.removeItem("token");
-              window.location.href = "/";
-            }
-          });
-        }
-      })
-      .catch((error) => {
-        console.error("Logout failed:", error);
-      });
+  const providerLogout = async () => {
+    try {
+      const response = await axios.get("http://localhost:3000/auth/logout");
+      if (!response.data.success) {
+        Swal.fire({
+          icon: "error",
+          title: response.data?.message,
+          text: "Please try again.",
+        });
+      } else {
+        Swal.fire({
+          icon: "success",
+          title: response.data?.message,
+          text: "Thank you!",
+        }).then(() => {
+          localStorage.removeItem("token");
+          setUser(null);
+          window.location.href = "/";
+        });
+      }
+    } catch (error) {
+      console.error("Logout failed:", error);
+    }
   };
 
   const authInfo = {
     user,
-    providerLogin,
+    loading,
     providerRegister,
+    providerLogin,
     providerLogout,
     refetch,
     setRefetch,
-    loading,
-    setLoading,
   };
   return (
     <AuthContext.Provider value={authInfo}>{children}</AuthContext.Provider>

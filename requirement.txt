@@ -17,3 +17,7 @@ colors: {
 https://www.realtimecolors.com/?colors=050315-fbfbfe-2145e6-2fd226-b58d94&fonts=Poppins-Poppins
 
 ecosync mail password: fsvc bqpe jwni aspz
+mail:
+
+npm --prefix "./WebProjects/cs24-p2-JUST_NINJAS/client" run dev
+npm --prefix "./WebProjects/cs24-p2-JUST_NINJAS/server" run dev

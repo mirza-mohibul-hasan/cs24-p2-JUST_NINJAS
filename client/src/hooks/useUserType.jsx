@@ -2,14 +2,15 @@ import axios from "axios";
 import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../provider/AuthProvider";
 const useUserType = () => {
-  const { loading, user } = useContext(AuthContext);
+  const { loading, user, refetch } = useContext(AuthContext);
   const [role, setRole] = useState("general");
+
   useEffect(() => {
     const fetchRoles = async () => {
       try {
         const token = localStorage.getItem("token");
-        if (!token) {
-          throw new Error("Token not found for roles");
+        if (!token || loading || !user) {
+          return;
         }
 
         const response = await axios.get("http://localhost:3000/rbac/roles", {
@@ -24,7 +25,7 @@ const useUserType = () => {
     };
 
     fetchRoles();
-  }, [loading, user]);
+  }, [loading, user, refetch]);
   return role;
 };
 

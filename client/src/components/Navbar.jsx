@@ -2,7 +2,6 @@ import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../provider/AuthProvider";
 import { Link, NavLink } from "react-router-dom";
 import logo from "../assets/logo.png";
-import useUserType from "../hooks/useUserType";
 const Navbar = () => {
   const { user, providerLogout } = useContext(AuthContext);
   const [theme, setTheme] = useState(localStorage.getItem("theme") || "light");
@@ -14,16 +13,8 @@ const Navbar = () => {
   useEffect(() => {
     document.documentElement.className = theme;
   }, [theme]);
-
   const [toggleMenu, setToggleMenu] = useState(false);
-  const role = useUserType();
-  console.log(role);
   return (
-    // <div>
-    //   <h1>Role: {user?.role}</h1>
-    //   <button onClick={providerLogout}>Log Out</button>
-    // </div>
-
     <div className="bg-[#4765ebc3] py-4 dark:text-gray-100 dark:bg-slate-900">
       <div className="w-full md:w-11/12 mx-auto">
         <div className="flex mx-auto justify-between w-full">

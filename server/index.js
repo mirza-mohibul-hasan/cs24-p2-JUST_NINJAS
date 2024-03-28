@@ -7,6 +7,9 @@ const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
 const session = require("express-session");
 const nodemailer = require("nodemailer");
+const multer = require("multer");
+const path = require("path");
+const fs = require("fs");
 const port = process.env.PORT || 3000;
 const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 // Middleware
@@ -138,41 +141,76 @@ async function run() {
     });
     /* Users related api */
     // Create a user
-    app.post("/auth/create", verifyJWT, verifyAdmin, async (req, res) => {
-      try {
-        const email = req.body?.email;
-        const name = req.body?.name;
-        const password = req.body?.password;
-        const query = { email: email };
-        const existingUser = await userCollection.findOne(query);
-        if (existingUser) {
-          return res.json({ success: false, message: "Email already exists" });
-        } else {
-          bcrypt.hash(password, saltRound, (err, hash) => {
-            if (err) {
-              console.log("Register Error in bcrypt", err);
-            }
-            const result = userCollection.insertOne({
+    const storage = multer.diskStorage({
+      destination: function (req, file, cb) {
+        cb(null, path.join(__dirname, "profilepic"));
+      },
+      filename: function (req, file, cb) {
+        const timestamp = Date.now();
+        const userEmail = req.body.email;
+        const sanitizedEmail = userEmail.replace(/[^a-zA-Z0-9]/g, "");
+        const extension = path.extname(file.originalname);
+        const filename = `${sanitizedEmail}_${timestamp}${extension}`;
+        cb(null, filename);
+      },
+    });
+    const fileFilter = function (req, file, cb) {
+      if (file.mimetype.startsWith("image/")) {
+        cb(null, true);
+      } else {
+        cb(new Error("Only image files are allowed!"), false);
+      }
+    };
+    const upload = multer({ storage: storage, fileFilter: fileFilter });
+    app.post(
+      "/auth/create",
+      verifyJWT,
+      verifyAdmin,
+      upload.single("avatar"),
+      async (req, res) => {
+        try {
+          const email = req.body?.email;
+          const name = req.body?.name;
+          const nid = req.body?.nid;
+          const address = req.body?.address;
+          const password = req.body?.password;
+          const avatar = req.file;
+          const query = { email: email };
+          const existingUser = await userCollection.findOne(query);
+          if (existingUser) {
+            return res.json({
+              success: false,
+              message: "Email already exists",
+            });
+          } else {
+            const hash = await bcrypt.hash(password, saltRound);
+            const filename = req.file ? req.file.filename : null;
+            const user = {
               name: name,
               email: email,
+              nid: nid,
+              address: address,
               password: hash,
               role: "unassigned",
-            });
+              createdAt: new Date(),
+              avatar: filename,
+            };
+            const result = await userCollection.insertOne(user);
             res.status(201).json({
               success: true,
               message: "User created successfully",
               userId: result.insertedId,
             });
+          }
+        } catch (error) {
+          console.error("Error creating user:", error);
+          res.status(500).json({
+            success: true,
+            message: "An error occurred while creating the user",
           });
         }
-      } catch (error) {
-        console.error("Error creating user:", error);
-        res.status(500).json({
-          success: true,
-          message: "An error occurred while creating the user",
-        });
       }
-    });
+    );
     /* Login Logout Related API */
     app.post("/auth/login", async (req, res) => {
       try {
@@ -229,24 +267,6 @@ async function run() {
         }
       });
     });
-    app.get("/auth/loginstatus", async (req, res) => {
-      // debug
-      // console.log("Session", req.session);
-      try {
-        if (req.session?.user) {
-          const user = req.session.user;
-          delete user?.password;
-          res.send({ loggedIn: true, user: user });
-        } else {
-          res.send({ loggedIn: false });
-        }
-      } catch (error) {
-        console.error("Error logged in user:", error);
-        res
-          .status(500)
-          .json({ message: "An error occurred while creating the user" });
-      }
-    });
     // Reset Password
     const transporter = nodemailer.createTransport({
       service: "gmail",
@@ -259,18 +279,22 @@ async function run() {
       },
     });
     const generateOTP = () => {
-      return Math.floor(1000 + Math.random() * 9000);
+      const otp = Math.floor(1000 + Math.random() * 9000);
+      const otpTimestamp = Date.now();
+      return { otp, otpTimestamp };
     };
-    const otpCache = {};
     app.post("/auth/reset-password/initiate", async (req, res) => {
       const email = req.body?.email;
       const existingUser = await userCollection.findOne({ email });
       if (!existingUser) {
         return res.json({ success: false, message: "User not found" });
       }
-      const otp = generateOTP();
+      const { otp, otpTimestamp } = generateOTP();
+      // console.log(otp, otpTimestamp);
       req.session.resetEmail = email;
       req.session.otp = otp;
+      req.session.otpTimestamp = otpTimestamp;
+      console.log(req.session);
       const mailOptions = {
         from: "ecosyncninjas@gmail.com",
         to: email,
@@ -291,9 +315,17 @@ async function run() {
       });
     });
     app.post("/auth/reset-password/confirm", async (req, res) => {
-      const { resetEmail, otp: storedOTP } = req.session;
+      const { resetEmail, otp: storedOTP, otpTimestamp } = req.session;
       const newPassword = req.body?.newpasssword;
-
+      const currentTime = Date.now(); // Current time in milliseconds
+      const timeDifference = currentTime - otpTimestamp;
+      const timeThreshold = 60 * 1000;
+      if (timeDifference > timeThreshold) {
+        delete req.session.resetEmail;
+        delete req.session.otp;
+        delete req.session.otpTimestamp;
+        return res.json({ success: false, message: "OTP has expired" });
+      }
       if (resetEmail === req.body?.email && storedOTP === req.body?.otp) {
         try {
           const hash = await bcrypt.hash(newPassword, saltRound);
@@ -325,25 +357,318 @@ async function run() {
         return res.json({ success: false, message: "Invalid email or OTP" });
       }
     });
-
-    /* User Management Views */
-    app.get("/users", verifyJWT, verifyAdmin, async (req, res) => {
-      const users = await userCollection.find().toArray();
-      res.send(users);
-    });
-    app.get("/users/:id", async (req, res) => {
+    app.put("/auth/change-password", async (req, res) => {
       try {
-        const id = req.params?.id;
+        const oldpassword = req.body?.oldpassword;
+        const newpassword = req.body?.newpassword;
+        const email = req.session?.user?.email;
+        const existingUser = await userCollection.findOne({ email });
+        if (existingUser) {
+          const match = await bcrypt.compare(
+            oldpassword,
+            existingUser.password
+          );
+          if (match) {
+            const hash = await bcrypt.hash(newpassword, saltRound);
+            const result = await userCollection.updateOne(
+              { email: email },
+              { $set: { password: hash } }
+            );
+
+            if (result.modifiedCount === 0) {
+              return res.json({
+                success: false,
+                message: "Password change failed",
+              });
+            }
+            req.session.user.password = hash;
+            return res
+              .status(200)
+              .json({ success: true, message: "Password change successful" });
+          } else {
+            return res.json({
+              success: false,
+              message: "Old password is incorrect",
+            });
+          }
+        } else {
+          res.json({ success: false, message: "User not found" });
+        }
+      } catch (error) {
+        console.error("Error changing password:", error);
+        res
+          .status(500)
+          .json({ success: false, message: "Internal server error" });
+      }
+    });
+
+    /* User Management Endpoints */
+    app.get("/profilepic/:imageName", (req, res) => {
+      const imageName = req.params.imageName;
+      const imagePath = `profilepic/${imageName}`;
+
+      fs.access(imagePath, fs.constants.F_OK, (err) => {
+        if (err) {
+          res.status(404).send("File not found");
+        } else {
+          const readStream = fs.createReadStream(imagePath);
+          readStream.pipe(res);
+        }
+      });
+    });
+    app.get("/users", async (req, res) => {
+      try {
+        let filter = {};
+
+        // Search functionality
+        const searchTerm = req.query.search;
+        if (searchTerm) {
+          filter = {
+            $or: [
+              { name: { $regex: searchTerm, $options: "i" } },
+              { email: { $regex: searchTerm, $options: "i" } },
+            ],
+          };
+        }
+
+        let sort = {};
+        const sortBy = req.query.sortBy;
+        const sortOrder = req.query.sortOrder;
+        if (sortBy && sortOrder) {
+          sort[sortBy] = sortOrder === "desc" ? -1 : 1;
+        }
+
+        const users = await userCollection.find(filter).sort(sort).toArray();
+
+        users.forEach((user) => {
+          delete user.password;
+        });
+
+        res.send(users);
+      } catch (error) {
+        console.error("Error fetching users:", error);
+        res.status(500).json({ message: "Internal server error" });
+      }
+    });
+    // User roles
+    app.get("/users/roles", async (req, res) => {
+      console.log("ROLES");
+      try {
+        const roles = await roleCollection.find().toArray();
+        res.status(200).json(roles);
+      } catch (error) {
+        console.error("Error fetching roles:", error);
+        res.status(500).json({ error: "Internal server error" });
+      }
+    });
+
+    app.get("/users/:id", async (req, res) => {
+      console.log("Single User details");
+      try {
+        const id = req.params.id;
+        if (!id) {
+          return res.status(400).json({ error: "ID parameter is missing" });
+        }
+        if (!ObjectId.isValid(id)) {
+          return res.status(400).json({ error: "Invalid ID parameter" });
+        }
         const query = { _id: new ObjectId(id) };
         const user = await userCollection.findOne(query);
         if (!user) {
-          return res.status(401).json({ message: "user Not found" });
+          return res.status(404).json({ message: "User not found" });
         }
-        delete user?.password;
+        delete user.password;
         res.json(user);
       } catch (error) {
-        console.log(error);
+        console.error("Error fetching user:", error);
         res.status(500).json({ error: "Internal server error" });
+      }
+    });
+
+    app.delete("/users/:id", verifyJWT, verifyAdmin, async (req, res) => {
+      try {
+        const id = req.params?.id;
+        if (!id) {
+          return res.status(400).json({ error: "ID parameter is missing" });
+        }
+
+        const query = { _id: new ObjectId(id) };
+        const user = await userCollection.findOne(query);
+        if (!user) {
+          return res.status(404).json({ error: "User not found" });
+        }
+        const profilePicFilename = user.avatar;
+        await userCollection.deleteOne(query);
+        const filename = user.avatar;
+        if (filename) {
+          fs.unlinkSync(path.join(__dirname, "profilepic", filename));
+        }
+        res.json({ success: true, message: "User deleted successfully" });
+      } catch (error) {
+        console.error("Error deleting user:", error);
+        res.status(500).json({ error: "Internal server error" });
+      }
+    });
+    app.put("/users/:userId", verifyJWT, verifyAdmin, async (req, res) => {
+      try {
+        const newemail = req.body?.newemail;
+        const newname = req.body?.newname;
+        const newnid = req.body?.newnid;
+        const newaddress = req.body?.newaddress;
+
+        const userId = req.params.userId;
+        const query = { _id: new ObjectId(userId) };
+
+        const user = await userCollection.findOne(query);
+
+        if (!user) {
+          return res.json({ message: "User not found" });
+        }
+        const email = user?.email;
+        const name = user?.name;
+        const nid = user?.nid;
+        const address = user?.address;
+
+        const updatedEmail = newemail ? newemail : email;
+        const updatedName = newname ? newname : name;
+        const updatedNid = newnid ? newnid : nid;
+        const updatedAddress = newaddress ? newaddress : address;
+
+        const update = {
+          $set: {
+            email: updatedEmail,
+            name: updatedName,
+            nid: updatedNid,
+            address: updatedAddress,
+          },
+        };
+
+        const result = await userCollection.updateOne(query, update);
+
+        if (result.modifiedCount === 1) {
+          return res.status(200).json({
+            success: true,
+            message: "Updated successfully",
+          });
+        } else {
+          throw new Error("Failed to update user profile");
+        }
+      } catch (error) {
+        console.error("Error updating profile:", error);
+        res
+          .status(500)
+          .json({ message: "An error occurred while updating the profile" });
+      }
+    });
+
+    app.put("/users/:id/roles", verifyJWT, verifyAdmin, async (req, res) => {
+      try {
+        const id = req.params?.id;
+        const newRole = req.body.role;
+        if (!newRole) {
+          return res.json({
+            success: false,
+            message: "Role is missing",
+          });
+        }
+        if (!id) {
+          return res
+            .status(400)
+            .json({ success: false, message: "ID parameter is missing" });
+        }
+
+        const query = { _id: new ObjectId(id) };
+        const update = { $set: { role: newRole } };
+
+        const result = await userCollection.updateOne(query, update);
+
+        if (result.matchedCount === 0) {
+          return res
+            .status(404)
+            .json({ success: false, message: "Role update failed" });
+        }
+        res.json({ success: true, message: "Role updated successfully" });
+      } catch (error) {
+        console.error("Error updating role user:", error);
+        res.status(500).json({ error: "Internal server error" });
+      }
+    });
+
+    /* Profile Management Endpoints */
+    app.get("/profile", async (req, res) => {
+      try {
+        if (req.session?.user) {
+          const user = req.session.user;
+          delete user?.password;
+          res.send({ loggedIn: true, user: user });
+        } else {
+          res.send({ loggedIn: false });
+        }
+      } catch (error) {
+        console.error("Error logged in user:", error);
+        res
+          .status(500)
+          .json({ message: "An error occurred while creating the user" });
+      }
+    });
+    app.put("/profile", async (req, res) => {
+      try {
+        const newemail = req.body?.newemail;
+        const newname = req.body?.newname;
+        const newnid = req.body?.newnid;
+        const newaddress = req.body?.newaddress;
+
+        const userId = req.session?.user?._id;
+        const email = req.session?.user?.email;
+        const name = req.session?.user?.name;
+        const nid = req.session?.user?.nid;
+        const address = req.session?.user?.address;
+        const updatedEmail = newemail ? newemail : email;
+        const updatedName = newname ? newname : name;
+        const updatedNid = newnid ? newnid : nid;
+        const updatedAddress = newaddress ? newaddress : address;
+        const query = { _id: new ObjectId(userId) };
+
+        const user = await userCollection.findOne(query);
+
+        if (!user) {
+          return res.json({ message: "User not found" });
+        }
+
+        const update = {
+          $set: {
+            email: updatedEmail,
+            name: updatedName,
+            nid: updatedNid,
+            address: updatedAddress,
+          },
+        };
+
+        const result = await userCollection.updateOne(query, update);
+
+        if (result.modifiedCount === 1) {
+          req.session.user.email = updatedEmail;
+          req.session.user.name = updatedName;
+          req.session.user.nid = updatedNid;
+          req.session.user.address = updatedAddress;
+          return res.status(200).json({
+            success: true,
+            message: "Profile updated successfully",
+            updatedProfile: {
+              email: updatedEmail,
+              name: updatedName,
+              nid: updatedNid,
+              address: updatedAddress,
+            },
+          });
+        } else {
+          throw new Error("Failed to update user profile");
+        }
+      } catch (error) {
+        console.error("Error updating profile:", error);
+        res
+          .status(500)
+          .json({ message: "An error occurred while updating the profile" });
       }
     });
 
