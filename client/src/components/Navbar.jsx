@@ -2,6 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../provider/AuthProvider";
 import { Link, NavLink } from "react-router-dom";
 import logo from "../assets/logo.png";
+import './Navbar.css'
 const Navbar = () => {
   const { user, providerLogout } = useContext(AuthContext);
   const [theme, setTheme] = useState(localStorage.getItem("theme") || "light");
@@ -35,10 +36,10 @@ const Navbar = () => {
             </Link>
             {/* primary */}
             <div className="hidden lg:flex gap-8 text-lg">
-              <NavLink to="/">Home</NavLink>
-              <NavLink to="/">temp1</NavLink>
-              <NavLink to="/">temp2</NavLink>
-              {user && <NavLink to="/dashboard/home">Dashbord</NavLink>}
+              <NavLink to="/" className={({ isActive }) => (isActive ? 'is-active' : 'not-active')}>Home</NavLink>
+              {/* <NavLink to="/" className={({ isActive }) => (isActive ? 'is-active' : 'not-active')}>temp1</NavLink>
+              <NavLink to="/" className={({ isActive }) => (isActive ? 'is-active' : 'not-active')}>temp2</NavLink> */}
+              {user && <NavLink to="/dashboard/home" className={({ isActive }) => (isActive ? 'is-active' : 'not-active')}>Dashbord</NavLink>}
             </div>
           </div>
           {/* secondary */}
@@ -49,11 +50,17 @@ const Navbar = () => {
                   className="p-1 rounded bg-gray-200 dark:bg-gray-800 text-gray-800 dark:text-gray-300"
                   onClick={toggleTheme}
                 >
-                  {theme === "light" ? (
+                  {/* {theme === "light" ? (
                     <p className="h-6 w-6 ">Dark</p>
                   ) : (
                     <p className="h-6 w-6">Light</p>
-                  )}
+                  )} */}
+
+                  <label className="flex cursor-pointer gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="5" /><path d="M12 1v2M12 21v2M4.2 4.2l1.4 1.4M18.4 18.4l1.4 1.4M1 12h2M21 12h2M4.2 19.8l1.4-1.4M18.4 5.6l1.4-1.4" /></svg>
+                    <input type="checkbox" value="synthwave" className="toggle theme-controller" />
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+                  </label>
                 </button>
                 {user && <p>{user?.name}</p>}
               </div>
@@ -87,9 +94,8 @@ const Navbar = () => {
       </div>
       {/* mobile navigation */}
       <div
-        className={`w-52 z-50 absolute overflow-hidden bg-red-100 flex flex-col lg:hidden origin-top duration-700 rounded-br-xl ${
-          !toggleMenu ? "h-0" : "h-fit mt-3 py-5"
-        }`}
+        className={`w-52 z-50 absolute overflow-hidden bg-red-100 flex flex-col lg:hidden origin-top duration-700 rounded-br-xl ${!toggleMenu ? "h-0" : "h-fit mt-3 py-5"
+          }`}
       >
         <div className="px-8">
           <div className="flex flex-col gap-6 text-sm tracking-wider">
