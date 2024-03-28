@@ -1,0 +1,23 @@
+.is-active{
+    border: 2px solid white;
+    color: white;
+    font-weight: 500;
+    border-radius: 10px;
+    padding: 10px 20px;
+}
+
+.is-active:hover{
+    background-color:  #23BE0A;
+    color : white;
+}
+
+.not-active{
+    font-weight: 500;
+    padding: 10px 20px;
+}
+
+.not-active:hover{
+    background-color: rgb(15, 32, 220);
+    border: 2px solid gray;
+    border-radius: 10px;
+}

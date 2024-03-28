@@ -1,12 +1,20 @@
 import { useContext, useState } from "react";
+import React from "react";
 import { AuthContext } from "../../provider/AuthProvider";
 import { Link, useLocation, useNavigate } from "react-router-dom";
+import ReCAPTCHA from "react-google-recaptcha";
+
 
 const Login = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const from = location.state?.from?.pathname || "/";
   const { providerLogin } = useContext(AuthContext);
+  const [isCaptchaSuccessful, setIsCaptchaSuccess] = React.useState(false)
+  function handleCaptcha(value) {
+    setIsCaptchaSuccess(true)
+    console.log("captcha value: ", value);
+  }
   const handleLogin = async (event) => {
     event.preventDefault();
     const email = event.target.email.value;
@@ -45,14 +53,20 @@ const Login = () => {
             placeholder="Password"
             className="bg-gray-100 px-5 py-2 rounded pr-10"
           />
-          <span
-            className="absolute inset-y-0 right-0 flex items-center pr-3 cursor-pointer mt-3"
-            onClick={togglePasswordVisiblity}
-          >
-            {passwordShown ? "Hide" : "Show"}
-          </span>
+          <div className="flex gap-2">
+            <input type="checkbox" id="checkbox" name="checkbox" onClick={togglePasswordVisiblity}></input>
+            <p>{passwordShown ? "Hide" : "Show"} Password</p>
+          </div>
+
+          <div className="flex justify-center">
+            <ReCAPTCHA
+              sitekey={"6LdT1KYpAAAAAPxwh2xoSLCR7VK1QDiODBgeux-w"}
+              onChange={handleCaptcha}
+            />
+          </div>
 
           <input
+            disabled={!isCaptchaSuccessful}
             type="submit"
             value="Login"
             className="bg-[#2145e6db] text-white font-semibold rounded"
