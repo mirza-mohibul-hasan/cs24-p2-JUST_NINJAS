@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { BallTriangle } from "react-loader-spinner";
+import { Link } from "react-router-dom";
 const ManagaeUsers = () => {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -145,10 +146,16 @@ const ManagaeUsers = () => {
                   ? "Land Manager"
                   : "Unassigned"}
               </td>
-              <td>
-                <button className="btn btn-xs btn-outline">Details</button>
-                <button className="btn btn-xs  btn-outline">Update</button>
-                <button className="btn btn-xs  btn-outline">Delete</button>
+              <td className="flex gap-2">
+                <button className="btn btn-xs btn-primary btn-outline">
+                  Details
+                </button>
+                <Link to={`/dashboard/updateuser/${user._id}`}>
+                  <button className="btn btn-xs  btn-outline">Update</button>
+                </Link>
+                <button className="btn btn-xs btn-error btn-outline">
+                  Delete
+                </button>
               </td>
             </tr>
           ))}

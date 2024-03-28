@@ -3,17 +3,6 @@ import Swal from "sweetalert2";
 import { useForm } from "react-hook-form";
 import axios from "axios";
 const CreateUser = () => {
-  // const handleRegister = async (event) => {
-  //   event.preventDefault();
-  //   const email = event.target.regemail.value;
-  //   const password = event.target.regpassword.value;
-  //   const user = { email, password };
-  //   // await axios
-  //   //   .post("http://localhost:3000/auth/create", user)
-  //   //   .then((response) => {
-  //   //     alert(response.data?.message);
-  //   //   });
-  // };
   const {
     register,
     handleSubmit,
@@ -33,15 +22,23 @@ const CreateUser = () => {
         });
       } else {
         console.log(data);
+        const formData = new FormData();
+        formData.append("name", data.name);
+        formData.append("email", data.email);
+        formData.append("nid", data.nid);
+        formData.append("address", data.address);
+        formData.append("password", data.password);
+        formData.append("avatar", data.avatar[0]);
         const token = localStorage.getItem("token");
         if (!token) {
           throw new Error("Token not found");
         }
         const response = await axios.post(
           "http://localhost:3000/auth/create",
-          data,
+          formData,
           {
             headers: {
+              "Content-Type": "multipart/form-data",
               Authorization: `Bearer ${token}`,
             },
           }
@@ -115,6 +112,34 @@ const CreateUser = () => {
               </div>
               <div className="form-control">
                 <label className="label">
+                  <span className="label-text">NID</span>
+                </label>
+                <input
+                  type="text"
+                  required
+                  id="nid"
+                  name="nid"
+                  {...register("nid")}
+                  placeholder="12763456"
+                  className="input input-bordered bg-gray-100"
+                />
+              </div>
+              <div className="form-control">
+                <label className="label">
+                  <span className="label-text">Address</span>
+                </label>
+                <input
+                  type="text"
+                  required
+                  id="address"
+                  name="address"
+                  {...register("address")}
+                  placeholder="House-34, Bijay Sarani, Dhaka"
+                  className="input input-bordered bg-gray-100"
+                />
+              </div>
+              <div className="form-control">
+                <label className="label">
                   <span className="label-text">Password</span>
                 </label>
                 <input
@@ -149,6 +174,18 @@ const CreateUser = () => {
                   required
                   placeholder="Confirm Password"
                   className="input input-bordered bg-gray-100"
+                />
+              </div>
+              <div className="form-control">
+                <label className="label">
+                  <span className="label-text">Confirm Password</span>
+                </label>
+                <input
+                  type="file"
+                  id="avatar"
+                  name="avatar"
+                  {...register("avatar")}
+                  className="file-input file-input-primary w-full max-w-xs"
                 />
               </div>
               <div className="form-control mt-6 ">

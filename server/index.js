@@ -7,6 +7,9 @@ const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
 const session = require("express-session");
 const nodemailer = require("nodemailer");
+const multer = require("multer");
+const path = require("path");
+const fs = require("fs");
 const port = process.env.PORT || 3000;
 const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 // Middleware
@@ -138,43 +141,76 @@ async function run() {
     });
     /* Users related api */
     // Create a user
-    app.post("/auth/create", verifyJWT, verifyAdmin, async (req, res) => {
-      try {
-        const email = req.body?.email;
-        const name = req.body?.name;
-        const password = req.body?.password;
-        const query = { email: email };
-        const existingUser = await userCollection.findOne(query);
-        if (existingUser) {
-          return res.json({ success: false, message: "Email already exists" });
-        } else {
-          bcrypt.hash(password, saltRound, (err, hash) => {
-            if (err) {
-              console.log("Register Error in bcrypt", err);
-            }
-            const createdAt = new Date();
-            const result = userCollection.insertOne({
+    const storage = multer.diskStorage({
+      destination: function (req, file, cb) {
+        cb(null, path.join(__dirname, "profilepic"));
+      },
+      filename: function (req, file, cb) {
+        const timestamp = Date.now();
+        const userEmail = req.body.email;
+        const sanitizedEmail = userEmail.replace(/[^a-zA-Z0-9]/g, "");
+        const extension = path.extname(file.originalname);
+        const filename = `${sanitizedEmail}_${timestamp}${extension}`;
+        cb(null, filename);
+      },
+    });
+    const fileFilter = function (req, file, cb) {
+      if (file.mimetype.startsWith("image/")) {
+        cb(null, true);
+      } else {
+        cb(new Error("Only image files are allowed!"), false);
+      }
+    };
+    const upload = multer({ storage: storage, fileFilter: fileFilter });
+    app.post(
+      "/auth/create",
+      verifyJWT,
+      verifyAdmin,
+      upload.single("avatar"),
+      async (req, res) => {
+        try {
+          const email = req.body?.email;
+          const name = req.body?.name;
+          const nid = req.body?.nid;
+          const address = req.body?.address;
+          const password = req.body?.password;
+          const avatar = req.file;
+          const query = { email: email };
+          const existingUser = await userCollection.findOne(query);
+          if (existingUser) {
+            return res.json({
+              success: false,
+              message: "Email already exists",
+            });
+          } else {
+            const hash = await bcrypt.hash(password, saltRound);
+            const filename = req.file ? req.file.filename : null;
+            const user = {
               name: name,
               email: email,
+              nid: nid,
+              address: address,
               password: hash,
               role: "unassigned",
-              createdAt: createdAt,
-            });
+              createdAt: new Date(),
+              avatar: filename,
+            };
+            const result = await userCollection.insertOne(user);
             res.status(201).json({
               success: true,
               message: "User created successfully",
               userId: result.insertedId,
             });
+          }
+        } catch (error) {
+          console.error("Error creating user:", error);
+          res.status(500).json({
+            success: true,
+            message: "An error occurred while creating the user",
           });
         }
-      } catch (error) {
-        console.error("Error creating user:", error);
-        res.status(500).json({
-          success: true,
-          message: "An error occurred while creating the user",
-        });
       }
-    });
+    );
     /* Login Logout Related API */
     app.post("/auth/login", async (req, res) => {
       try {
@@ -382,6 +418,13 @@ async function run() {
           .status(500)
           .json({ success: false, message: "Internal server error" });
       }
+    });
+
+    /* User Management Endpoints */
+    app.get("/profilepic/:imageName", (req, res) => {
+      const imageName = req.params.imageName;
+      const readStream = fs.createReadStream(`profilepic/${imageName}`);
+      readStream.pipe(res);
     });
     app.get("/users", verifyJWT, verifyAdmin, async (req, res) => {
       try {

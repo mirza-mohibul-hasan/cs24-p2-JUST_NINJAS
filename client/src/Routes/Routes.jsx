@@ -11,6 +11,7 @@ import CreateUser from "../pages/Dashboard/SytemAdmin/CreateUser.jsx/CreateUser"
 import Profile from "../pages/Dashboard/Profile/Profile";
 import ChangePassword from "../pages/Authentication/ChangePassword";
 import ManagaeUsers from "../pages/Dashboard/SytemAdmin/ManageUsers/ManagaeUsers";
+import UpdateUser from "../pages/Dashboard/SytemAdmin/ManageUsers/UpdateUser";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -55,6 +56,10 @@ const router = createBrowserRouter([
       {
         path: "createuser",
         element: <CreateUser></CreateUser>,
+      },
+      {
+        path: "updateuser/:id",
+        element: <UpdateUser></UpdateUser>,
       },
     ],
   },
