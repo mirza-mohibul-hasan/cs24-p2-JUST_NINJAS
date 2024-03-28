@@ -10,6 +10,7 @@ import AllUsers from "../pages/Dashboard/SytemAdmin/AllUsers/AllUsers";
 import DashHome from "../pages/Dashboard/DashHome/DashHome";
 import CreateUser from "../pages/Dashboard/SytemAdmin/CreateUser.jsx/CreateUser";
 import Profile from "../pages/Dashboard/Profile/Profile";
+import ChangePassword from "../pages/Authentication/ChangePassword";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -43,6 +44,10 @@ const router = createBrowserRouter([
     children: [
       { path: "home", element: <DashHome></DashHome> },
       { path: "profile", element: <Profile></Profile> },
+      {
+        path: "changepassword",
+        element: <ChangePassword></ChangePassword>,
+      },
       {
         path: "users",
         element: <AllUsers></AllUsers>,

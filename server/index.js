@@ -259,18 +259,22 @@ async function run() {
       },
     });
     const generateOTP = () => {
-      return Math.floor(1000 + Math.random() * 9000);
+      const otp = Math.floor(1000 + Math.random() * 9000);
+      const otpTimestamp = Date.now();
+      return { otp, otpTimestamp };
     };
-    const otpCache = {};
     app.post("/auth/reset-password/initiate", async (req, res) => {
       const email = req.body?.email;
       const existingUser = await userCollection.findOne({ email });
       if (!existingUser) {
         return res.json({ success: false, message: "User not found" });
       }
-      const otp = generateOTP();
+      const { otp, otpTimestamp } = generateOTP();
+      // console.log(otp, otpTimestamp);
       req.session.resetEmail = email;
       req.session.otp = otp;
+      req.session.otpTimestamp = otpTimestamp;
+      console.log(req.session);
       const mailOptions = {
         from: "ecosyncninjas@gmail.com",
         to: email,
@@ -291,9 +295,17 @@ async function run() {
       });
     });
     app.post("/auth/reset-password/confirm", async (req, res) => {
-      const { resetEmail, otp: storedOTP } = req.session;
+      const { resetEmail, otp: storedOTP, otpTimestamp } = req.session;
       const newPassword = req.body?.newpasssword;
-
+      const currentTime = Date.now(); // Current time in milliseconds
+      const timeDifference = currentTime - otpTimestamp;
+      const timeThreshold = 60 * 1000;
+      if (timeDifference > timeThreshold) {
+        delete req.session.resetEmail;
+        delete req.session.otp;
+        delete req.session.otpTimestamp;
+        return res.json({ success: false, message: "OTP has expired" });
+      }
       if (resetEmail === req.body?.email && storedOTP === req.body?.otp) {
         try {
           const hash = await bcrypt.hash(newPassword, saltRound);
@@ -325,6 +337,50 @@ async function run() {
         return res.json({ success: false, message: "Invalid email or OTP" });
       }
     });
+    app.put("/auth/change-password", async (req, res) => {
+      try {
+        const oldpassword = req.body?.oldpassword;
+        const newpassword = req.body?.newpassword;
+        const email = req.session?.user?.email;
+        const existingUser = await userCollection.findOne({ email });
+        if (existingUser) {
+          const match = await bcrypt.compare(
+            oldpassword,
+            existingUser.password
+          );
+          if (match) {
+            const hash = await bcrypt.hash(newpassword, saltRound);
+            const result = await userCollection.updateOne(
+              { email: email },
+              { $set: { password: hash } }
+            );
+
+            if (result.modifiedCount === 0) {
+              return res.json({
+                success: false,
+                message: "Password change failed",
+              });
+            }
+            req.session.user.password = hash;
+            return res
+              .status(200)
+              .json({ success: true, message: "Password change successful" });
+          } else {
+            return res.json({
+              success: false,
+              message: "Old password is incorrect",
+            });
+          }
+        } else {
+          res.json({ success: false, message: "User not found" });
+        }
+      } catch (error) {
+        console.error("Error changing password:", error);
+        res
+          .status(500)
+          .json({ success: false, message: "Internal server error" });
+      }
+    });
 
     /* User Management Views */
     app.get("/users", verifyJWT, verifyAdmin, async (req, res) => {
@@ -334,6 +390,10 @@ async function run() {
     app.get("/users/:id", async (req, res) => {
       try {
         const id = req.params?.id;
+        console.log(id);
+        if (!id) {
+          return res.json({ error: "ID parameter is missing" });
+        }
         const query = { _id: new ObjectId(id) };
         const user = await userCollection.findOne(query);
         if (!user) {

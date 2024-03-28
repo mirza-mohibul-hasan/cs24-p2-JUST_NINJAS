@@ -1,29 +1,36 @@
-import { useState } from "react";
-import Swal from "sweetalert2";
-import { useForm } from "react-hook-form";
 import axios from "axios";
-const CreateUser = () => {
-  // const handleRegister = async (event) => {
-  //   event.preventDefault();
-  //   const email = event.target.regemail.value;
-  //   const password = event.target.regpassword.value;
-  //   const user = { email, password };
-  //   // await axios
-  //   //   .post("http://localhost:3000/auth/create", user)
-  //   //   .then((response) => {
-  //   //     alert(response.data?.message);
-  //   //   });
-  // };
+import { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
+import { useLocation, useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
+
+const ChangePassword = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const from = location.state?.from?.pathname || "/";
+
+  const [expiryTime, setExpiryTime] = useState(300);
+  const [confirmPassword, setConfirmPassword] = useState("");
   const {
     register,
     handleSubmit,
     reset,
     formState: { errors },
   } = useForm();
-  const [confirmPassword, setConfirmPassword] = useState("");
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setExpiryTime((prevTime) => prevTime - 1);
+    }, 1000);
+    return () => clearInterval(timer);
+  }, []);
+  useEffect(() => {
+    if (expiryTime <= 0) {
+      navigate(from, { replace: true });
+    }
+  });
   const onSubmit = async (data) => {
     try {
-      if (data.password !== confirmPassword) {
+      if (data.newpassword !== confirmPassword) {
         Swal.fire({
           position: "center",
           icon: "error",
@@ -37,8 +44,8 @@ const CreateUser = () => {
         if (!token) {
           throw new Error("Token not found");
         }
-        const response = await axios.post(
-          "http://localhost:3000/auth/create",
+        const response = await axios.put(
+          "http://localhost:3000/auth/change-password",
           data,
           {
             headers: {
@@ -60,6 +67,7 @@ const CreateUser = () => {
             text: "Try Agin Later",
           });
         }
+        navigate("/dashboard/profile");
       }
     } catch (error) {
       console.error("Error creating user:", error.message);
@@ -82,49 +90,34 @@ const CreateUser = () => {
         <div className="card flex-shrink-0 w-full max-w-sm shadow-2xl bg-[#dadff3]">
           <div className="card-body">
             <h1 className="text-3xl text-center font-bold text-[#2145e6]">
-              Create User Here
+              Chnage Password
             </h1>
             <p className="text-[#2145e6] text-center border border-[#2145e6] rounded-lg font-semibold"></p>
             <form onSubmit={handleSubmit(onSubmit)}>
               <div className="form-control">
                 <label className="label">
-                  <span className="label-text">Name</span>
+                  <span className="label-text">Old Password</span>
                 </label>
                 <input
-                  type="text"
-                  id="name"
-                  name="name"
-                  {...register("name")}
-                  placeholder="Mohibul Refat"
-                  className="input input-bordered bg-gray-100"
-                />
-              </div>
-              <div className="form-control">
-                <label className="label">
-                  <span className="label-text">Email</span>
-                </label>
-                <input
-                  type="email"
+                  {...register("oldpassword")}
+                  type="password"
                   required
-                  id="email"
-                  name="email"
-                  {...register("email")}
-                  placeholder="mirza@mohibul.com"
+                  placeholder="Old Password"
                   className="input input-bordered bg-gray-100"
                 />
               </div>
               <div className="form-control">
                 <label className="label">
-                  <span className="label-text">Password</span>
+                  <span className="label-text">New Password</span>
                 </label>
                 <input
                   type="password"
                   required
-                  {...register("password")}
-                  // {...register("password", {
+                  // {...register("newpassword", {
                   //   minLength: 6,
                   //   pattern: /(?=.*[A-Z])(?=.*[!@#$&*])/,
                   // })}
+                  {...register("newpassword")}
                   placeholder="Your password"
                   className="input input-bordered bg-gray-100"
                 />
@@ -155,7 +148,7 @@ const CreateUser = () => {
                 <input
                   className="text-white btn bg-[#2145e6] border-[#2145e6]"
                   type="submit"
-                  value="Create"
+                  value="Change"
                 />
               </div>
             </form>
@@ -166,4 +159,4 @@ const CreateUser = () => {
   );
 };
 
-export default CreateUser;
+export default ChangePassword;
