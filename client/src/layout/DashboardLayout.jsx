@@ -7,8 +7,8 @@ const DashboardLayout = () => {
   return (
     <>
       <Navbar></Navbar>
-      <div className="flex w-11/12 mx-auto gap-5 my-5 min-h-[75vh]">
-        <div className="w-2/12 flex flex-col gap-2">
+      <div className="lg:flex w-11/12 mx-auto gap-5 my-5 min-h-[75vh]">
+        <div className="lg:w-2/12 flex flex-col gap-2 lg:border-r-2 border-[#2145e6] pr-3">
           <NavLink
             to="home"
             className={({ isActive }) =>
@@ -52,17 +52,27 @@ const DashboardLayout = () => {
                 CREATE USER
               </NavLink>
               <NavLink
-                to="/vehicleregister"
+                to="/"
                 className={({ isActive }) =>
                   isActive
                     ? "bg-[#2145e6]  rounded p-1 text-center text-xl text-white"
                     : "border border-[#2145e6] rounded p-1 text-center text-xl"
                 }
               >
-                MANAGE USERS
+                CREATE ROLES
               </NavLink>
             </>
           )}
+          <NavLink
+            to="roles"
+            className={({ isActive }) =>
+              isActive
+                ? "bg-[#2145e6]  rounded p-1 text-center text-xl text-white"
+                : "border border-[#2145e6] rounded p-1 text-center text-xl"
+            }
+          >
+            ROLES
+          </NavLink>
         </div>
         <div className="w-full">
           <Outlet></Outlet>

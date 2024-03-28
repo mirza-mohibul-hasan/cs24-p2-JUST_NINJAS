@@ -1,13 +1,14 @@
-import axios from "axios";
 import { useContext, useEffect, useState } from "react";
+import { AuthContext } from "../../../../provider/AuthProvider";
+import axios from "axios";
 import { BallTriangle } from "react-loader-spinner";
-import { AuthContext } from "../../../provider/AuthProvider";
-import { Link } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
-const Profile = () => {
+const UserDetails = () => {
   const [userDetails, setUserDetails] = useState([]);
   const [loading, setLoading] = useState(true);
   const { user } = useContext(AuthContext);
+  const { id } = useParams();
   useEffect(() => {
     const fetchUsers = async () => {
       try {
@@ -16,14 +17,11 @@ const Profile = () => {
           return;
         }
 
-        const response = await axios.get(
-          `http://localhost:3000/users/${user?._id}`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
+        const response = await axios.get(`http://localhost:3000/users/${id}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
         setUserDetails(response.data);
         console.log(response.data);
         setLoading(false);
@@ -34,7 +32,7 @@ const Profile = () => {
     };
 
     fetchUsers();
-  }, [user]);
+  }, [id, user]);
   if (loading) {
     return (
       <div className="flex justify-center items-center h-full">
@@ -51,9 +49,6 @@ const Profile = () => {
       </div>
     );
   }
-  const changePassword = async () => {
-    console.log("Change Password Called");
-  };
   return (
     <div>
       <div className="avatar">
@@ -65,18 +60,8 @@ const Profile = () => {
       </div>
       <h1>Name: {userDetails?.name}</h1>
       <h1>Email: {userDetails?.email}</h1>
-      <Link to="/dashboard/updateprofile">
-        <button onClick={changePassword} className="btn btn-outline">
-          Update Profile
-        </button>
-      </Link>
-      <Link to="/dashboard/changepassword">
-        <button onClick={changePassword} className="btn btn-outline">
-          Change Password
-        </button>
-      </Link>
     </div>
   );
 };
 
-export default Profile;
+export default UserDetails;

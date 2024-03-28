@@ -1,9 +1,12 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { BallTriangle } from "react-loader-spinner";
+import { Link } from "react-router-dom";
+import Swal from "sweetalert2";
 const ManagaeUsers = () => {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [refetch, setRefetch] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [sortBy, setSortBy] = useState("");
   const [sortOrder, setSortOrder] = useState("");
@@ -35,7 +38,7 @@ const ManagaeUsers = () => {
     };
 
     fetchUsers();
-  }, [searchTerm, sortBy, sortOrder]);
+  }, [searchTerm, sortBy, sortOrder, refetch]);
   if (loading) {
     return (
       <div className="flex justify-center items-center h-full">
@@ -68,6 +71,49 @@ const ManagaeUsers = () => {
 
   const handleSortOrderChange = (e) => {
     setSortOrder(e.target.value);
+  };
+  const handleDeleteUser = async (id) => {
+    try {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        throw new Error("Token not found");
+      }
+
+      const result = await Swal.fire({
+        title: "Are you sure?",
+        text: "You will not be able to recover this user!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Yes, delete it!",
+        cancelButtonText: "No, cancel",
+        reverseButtons: true,
+      });
+
+      if (result.isConfirmed) {
+        const response = await axios.delete(
+          `http://localhost:3000/users/${id}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
+        if (response.data.success) {
+          Swal.fire("Deleted!", "User has been deleted.", "success");
+          setRefetch(!refetch);
+          console.log("User has been deleted successfully.");
+        } else {
+          Swal.fire("Error!", "Failed to delete user.", "error");
+          console.error("Failed to delete user.");
+        }
+      } else if (result.dismiss === Swal.DismissReason.cancel) {
+        Swal.fire("Cancelled", "User deletion has been cancelled.", "error");
+      }
+    } catch (error) {
+      console.error("Error deleting users:", error.message);
+      setLoading(false);
+    }
   };
   return (
     <div className="overflow-x-auto">
@@ -118,7 +164,7 @@ const ManagaeUsers = () => {
           <option value="desc">Descending</option>
         </select>
       </div>
-      <table className="table">
+      <table className="table text-center">
         <thead>
           <tr className="bg-blue-200">
             <th>SN</th>
@@ -145,10 +191,27 @@ const ManagaeUsers = () => {
                   ? "Land Manager"
                   : "Unassigned"}
               </td>
-              <td>
-                <button className="btn btn-xs btn-outline">Details</button>
-                <button className="btn btn-xs  btn-outline">Update</button>
-                <button className="btn btn-xs  btn-outline">Delete</button>
+              <td className="flex gap-2">
+                <Link to={`/dashboard/userdetails/${user._id}`}>
+                  <button className="btn btn-xs btn-primary btn-outline">
+                    Details
+                  </button>
+                </Link>
+
+                <Link to={`/dashboard/updateuser/${user._id}`}>
+                  <button className="btn btn-xs  btn-outline">Update</button>
+                </Link>
+                <Link to={`/dashboard/updateuserrole/${user._id}`}>
+                  <button className="btn btn-xs btn-success  btn-outline">
+                    Update Role
+                  </button>
+                </Link>
+                <button
+                  onClick={() => handleDeleteUser(user._id)}
+                  className="btn btn-xs btn-error btn-outline"
+                >
+                  Delete
+                </button>
               </td>
             </tr>
           ))}
