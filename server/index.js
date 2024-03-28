@@ -152,11 +152,13 @@ async function run() {
             if (err) {
               console.log("Register Error in bcrypt", err);
             }
+            const createdAt = new Date();
             const result = userCollection.insertOne({
               name: name,
               email: email,
               password: hash,
               role: "unassigned",
+              createdAt: createdAt,
             });
             res.status(201).json({
               success: true,
@@ -381,11 +383,29 @@ async function run() {
           .json({ success: false, message: "Internal server error" });
       }
     });
-
-    /* User Management Views */
     app.get("/users", verifyJWT, verifyAdmin, async (req, res) => {
       try {
-        const users = await userCollection.find().toArray();
+        let filter = {};
+
+        // Search functionality
+        const searchTerm = req.query.search;
+        if (searchTerm) {
+          filter = {
+            $or: [
+              { name: { $regex: searchTerm, $options: "i" } },
+              { email: { $regex: searchTerm, $options: "i" } },
+            ],
+          };
+        }
+
+        let sort = {};
+        const sortBy = req.query.sortBy;
+        const sortOrder = req.query.sortOrder;
+        if (sortBy && sortOrder) {
+          sort[sortBy] = sortOrder === "desc" ? -1 : 1;
+        }
+
+        const users = await userCollection.find(filter).sort(sort).toArray();
 
         users.forEach((user) => {
           delete user.password;
@@ -397,6 +417,7 @@ async function run() {
         res.status(500).json({ message: "Internal server error" });
       }
     });
+
     app.get("/users/:id", async (req, res) => {
       try {
         const id = req.params?.id;
