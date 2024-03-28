@@ -32,14 +32,14 @@ const DashboardLayout = () => {
           {role == "sysadmin" && (
             <>
               <NavLink
-                to="users"
+                to="manageusers"
                 className={({ isActive }) =>
                   isActive
                     ? "bg-[#2145e6]  rounded p-1 text-center text-xl text-white"
                     : "border border-[#2145e6] rounded p-1 text-center text-xl"
                 }
               >
-                USERS
+                MANAGE USERS
               </NavLink>
               <NavLink
                 to="createuser"
