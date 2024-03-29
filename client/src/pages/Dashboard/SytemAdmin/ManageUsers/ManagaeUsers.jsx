@@ -14,6 +14,7 @@ const ManagaeUsers = () => {
   const [sortOrder, setSortOrder] = useState("");
   // Roles update
   const [newrole, setNewRole] = useState("");
+  const [oldrole, setOldRole] = useState("");
   const [userId, setUserId] = useState("");
   useEffect(() => {
     const fetchUsers = async () => {
@@ -120,12 +121,12 @@ const ManagaeUsers = () => {
     }
   };
   // Roles update
-  const handleId = (id) => {
+  const handleId = (id, oldRole) => {
     setUserId(id);
+    setOldRole(oldRole);
   };
-  const handleRoleUpdate = async (userId, newRole) => {
-    console.log(newRole);
-    if (newRole === "") {
+  const handleRoleUpdate = async (userId, newRole, oldRole) => {
+    if (newRole === "" || oldRole == "") {
       return Swal.fire("Cancelled", "Please select a role.", "error");
     }
 
@@ -137,7 +138,7 @@ const ManagaeUsers = () => {
 
       const response = await axios.put(
         `http://localhost:3000/users/${userId}/roles`,
-        { role: newRole },
+        { newRole, oldRole },
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -182,7 +183,7 @@ const ManagaeUsers = () => {
             </select>
             <button
               className="bg-[#2145e6] text-white font-semibold rounded py-1"
-              onClick={() => handleRoleUpdate(userId, newrole)}
+              onClick={() => handleRoleUpdate(userId, newrole, oldrole)}
             >
               Update
             </button>
@@ -277,7 +278,7 @@ const ManagaeUsers = () => {
                   <button
                     onClick={() => {
                       window.my_modal_3.showModal();
-                      handleId(rowuser._id);
+                      handleId(rowuser._id, rowuser?.role);
                     }}
                     className="btn btn-xs btn-success  btn-outline"
                   >

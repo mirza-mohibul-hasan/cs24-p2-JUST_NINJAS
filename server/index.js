@@ -93,6 +93,10 @@ async function run() {
     const db = client.db("ecoSyncDB");
     const userCollection = db.collection("users");
     const roleCollection = db.collection("roles");
+    const vehicleCollection = db.collection("vehicles");
+    const stsCollection = db.collection("sts");
+    const stsmanagerCollection = db.collection("stsmanager");
+    const landfillCollection = db.collection("landfill");
     /* Common API */
     app.get("/rbac/roles", verifyJWT, async (req, res) => {
       try {
@@ -419,8 +423,6 @@ async function run() {
     app.get("/users", async (req, res) => {
       try {
         let filter = {};
-
-        // Search functionality
         const searchTerm = req.query.search;
         if (searchTerm) {
           filter = {
@@ -452,7 +454,6 @@ async function run() {
     });
     // User roles
     app.get("/users/roles", async (req, res) => {
-      console.log("ROLES");
       try {
         const roles = await roleCollection.find().toArray();
         res.status(200).json(roles);
@@ -463,7 +464,7 @@ async function run() {
     });
 
     app.get("/users/:id", async (req, res) => {
-      console.log("Single User details");
+      // console.log("Single User details");
       try {
         const id = req.params.id;
         if (!id) {
@@ -560,12 +561,14 @@ async function run() {
           .json({ message: "An error occurred while updating the profile" });
       }
     });
-
-    app.put("/users/:id/roles", verifyJWT, verifyAdmin, async (req, res) => {
+    // verifyJWT, verifyAdmin,
+    app.put("/users/:id/roles", async (req, res) => {
       try {
         const id = req.params?.id;
-        const newRole = req.body.role;
-        if (!newRole) {
+        const newRole = req.body.newRole;
+        const oldRole = req.body.oldRole;
+        console.log(id, oldRole, newRole);
+        if (!newRole || !oldRole) {
           return res.json({
             success: false,
             message: "Role is missing",
@@ -576,7 +579,18 @@ async function run() {
             .status(400)
             .json({ success: false, message: "ID parameter is missing" });
         }
+        if (oldRole === "stsmanager") {
+          const result = await stsmanagerCollection.updateOne(
+            { managers: id },
+            { $pull: { managers: id } }
+          );
 
+          if (result.modifiedCount === 0) {
+            console.log("User was not found in stsmanagers collection.");
+          } else {
+            console.log("User removed from stsmanagers collection.");
+          }
+        }
         const query = { _id: new ObjectId(id) };
         const update = { $set: { role: newRole } };
 
@@ -669,6 +683,265 @@ async function run() {
         res
           .status(500)
           .json({ message: "An error occurred while updating the profile" });
+      }
+    });
+
+    /* Data Entry Endpoints */
+    // create vehicle
+    app.post("/vehicle/add", verifyJWT, verifyAdmin, async (req, res) => {
+      try {
+        const vehicleId = req.body?.vehicleId;
+        const addedBy = req.body?.addedBy;
+        const capacity = req.body?.capacity;
+        const fuel_cost_loaded = req.body?.fuel_cost_loaded;
+        const fuel_cost_unloaded = req.body?.fuel_cost_unloaded;
+        const registration_number = req.body?.registration_number;
+        const type = req.body?.type;
+        const query = { vehicleId: vehicleId };
+        const existingVehicle = await vehicleCollection.findOne(query);
+        if (existingVehicle) {
+          return res.json({
+            success: false,
+            message: "VEHICLE ALREADY EXISTS",
+          });
+        } else {
+          const vehicle = {
+            vehicleId: vehicleId,
+            capacity: capacity,
+            fuel_cost_loaded: fuel_cost_loaded,
+            fuel_cost_unloaded: fuel_cost_unloaded,
+            registration_number: registration_number,
+            type: type,
+            addedBy: addedBy,
+            regAt: new Date(),
+          };
+          const result = await vehicleCollection.insertOne(vehicle);
+          res.status(201).json({
+            success: true,
+            message: "Added Successfully",
+            userId: result.insertedId,
+          });
+        }
+      } catch (error) {
+        console.error("Error Adding vehicle:", error);
+        res.status(500).json({
+          success: true,
+          message: "An error occurred while creating the user",
+        });
+      }
+    });
+    app.post("/sts/add", verifyJWT, verifyAdmin, async (req, res) => {
+      try {
+        const stsId = req.body?.stsId;
+        const addedBy = req.body?.addedBy;
+        const capacity = req.body?.capacity;
+        const latitude = req.body?.latitude;
+        const longitude = req.body?.longitude;
+        const ward_num = req.body?.ward_num;
+        const query = { stsId: stsId };
+        // const existingSts = await stsCollection.findOne(query);
+        // if (existingVehicle) {
+        //   return res.json({
+        //     success: false,
+        //     message: "VEHICLE ALREADY EXISTS",
+        //   });
+        // } else {
+        const sts = {
+          stsId: stsId,
+          capacity: capacity,
+          latitude: latitude,
+          longitude: longitude,
+          ward_num: ward_num,
+          addedBy: addedBy,
+          regAt: new Date(),
+        };
+        const result = await stsCollection.insertOne(sts);
+        res.status(201).json({
+          success: true,
+          message: "Added Successfully",
+          userId: result.insertedId,
+        });
+        // }
+      } catch (error) {
+        console.error("Error Adding vehicle:", error);
+        res.status(500).json({
+          success: true,
+          message: "An error occurred while creating the user",
+        });
+      }
+    });
+    app.post("/landfill/add", verifyJWT, verifyAdmin, async (req, res) => {
+      try {
+        const landFillId = req.body?.landFillId;
+        const addedBy = req.body?.addedBy;
+        const capacity = req.body?.capacity;
+        const latitude = req.body?.latitude;
+        const longitude = req.body?.longitude;
+        const starttime = req.body?.starttime;
+        const endtime = req.body?.endtime;
+        const landfill = {
+          landFillId: landFillId,
+          capacity: capacity,
+          latitude: latitude,
+          longitude: longitude,
+          starttime: starttime,
+          endtime: endtime,
+          addedBy: addedBy,
+          regAt: new Date(),
+        };
+        const result = await landfillCollection.insertOne(landfill);
+        res.status(201).json({
+          success: true,
+          message: "Added Successfully",
+          userId: result.insertedId,
+        });
+        // }
+      } catch (error) {
+        console.error("Error Adding vehicle:", error);
+        res.status(500).json({
+          success: false,
+          message: "An error occurred while creating the user",
+        });
+      }
+    });
+    // All STS
+    app.get("/sts", async (req, res) => {
+      try {
+        const sts = await stsCollection.find().toArray();
+        res.send(sts);
+      } catch (error) {
+        console.error("Error fetching users:", error);
+        res.status(500).json({ message: "Internal server error" });
+      }
+    });
+
+    app.get("/stsmanager", async (req, res) => {
+      const result = await stsmanagerCollection.find().toArray();
+      res.send(result);
+    });
+    const { ObjectId } = require("mongodb"); // Import ObjectId from MongoDB package
+
+    app.get("/assignedstsmanager/:stsId", async (req, res) => {
+      try {
+        const result = await stsmanagerCollection.findOne({
+          stsId: req.params.stsId,
+        });
+        if (!result) {
+          return res.status(404).send({ message: "STS not found." });
+        }
+        const managerIds = result.managers;
+        const managerObjectIds = managerIds.map(
+          (managerId) => new ObjectId(managerId)
+        );
+        const managersInfo = await userCollection
+          .find({ _id: { $in: managerObjectIds } })
+          .toArray();
+
+        res.send(managersInfo);
+      } catch (error) {
+        console.error("Error fetching manager information:", error);
+        res.status(500).send("Internal server error");
+      }
+    });
+    app.get("/availablestsmanager", async (req, res) => {
+      try {
+        const users = await userCollection
+          .find({ role: "stsmanager" })
+          .toArray();
+        const userIds = users.map((user) => user._id);
+        let managerIds = [];
+        await stsmanagerCollection.find().forEach((doc) => {
+          managerIds = [...managerIds, ...doc.managers];
+        });
+        const managerObjectIds = managerIds.map(
+          (managerId) => new ObjectId(managerId)
+        );
+        const managersNotInStsManager = await userCollection
+          .find({ _id: { $nin: managerObjectIds }, role: "stsmanager" })
+          .toArray();
+
+        res.send(managersNotInStsManager);
+      } catch (error) {
+        console.error(
+          "Error fetching stsmanagers not in stsmanagerCollection:",
+          error
+        );
+        res.status(500).send("Internal server error");
+      }
+    });
+
+    // check manager or not
+    app.get("/check-manager/:managerId", async (req, res) => {
+      const managerId = req.params.managerId;
+      try {
+        const managerExists = await stsmanagerCollection.findOne({
+          managers: managerId,
+        });
+
+        if (managerExists) {
+          res.send({
+            exists: true,
+            message: "Manager ID exists.",
+            managerExists,
+          });
+        } else {
+          res.send({ exists: false, message: "Manager ID does not exist." });
+        }
+      } catch (error) {
+        console.error("Error checking manager ID:", error);
+        res.status(500).send("Internal server error");
+      }
+    });
+    // assign manager to sts
+    app.post("/sts/assign-manager", async (req, res) => {
+      const stsId = req.body.stsId;
+      const managerId = req.body.managerId;
+      const query = { stsId: stsId };
+      const existing = await stsmanagerCollection.findOne(query);
+      if (existing) {
+        const result = await stsmanagerCollection.updateOne(
+          { stsId: stsId },
+          { $addToSet: { managers: managerId } }
+        );
+        res.send({
+          success: true,
+          message: "Manager added successfully.",
+          result,
+        });
+      } else {
+        const result = await stsmanagerCollection.insertOne({
+          stsId: stsId,
+          managers: [managerId],
+        });
+        res.send({
+          success: true,
+          message: "Manager added successfully.",
+          result,
+        });
+      }
+    });
+    // Remove a manager from sts
+    app.delete("/sts/remove-manager", async (req, res) => {
+      const { stsId, managerId } = req.body;
+      // console.log(stsId, managerId);
+      try {
+        const stsExists = await stsmanagerCollection.findOne({ stsId: stsId });
+        if (!stsExists) {
+          return res.send({ message: "STS not found." });
+        }
+        const updatedSTS = await stsmanagerCollection.updateOne(
+          { stsId: stsId },
+          { $pull: { managers: managerId } }
+        );
+
+        res.status(200).send({
+          success: true,
+          message: "Manager removed successfully.",
+          updatedSTS,
+        });
+      } catch (error) {
+        console.error("Error removing manager ID:", error);
+        res.status(500).send("Internal server error");
       }
     });
 
