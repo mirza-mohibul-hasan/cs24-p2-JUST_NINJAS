@@ -1,5 +1,6 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
+import ReCAPTCHA from "react-google-recaptcha";
 import { useForm } from "react-hook-form";
 import { useLocation, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
@@ -8,7 +9,11 @@ const ChangePassword = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const from = location.state?.from?.pathname || "/";
-
+  const [isCaptchaSuccessful, setIsCaptchaSuccess] = useState(false);
+  function handleCaptcha(value) {
+    setIsCaptchaSuccess(!!value);
+    // console.log("captcha value: ", value);
+  }
   const [expiryTime, setExpiryTime] = useState(300);
   const [confirmPassword, setConfirmPassword] = useState("");
   const {
@@ -85,12 +90,12 @@ const ChangePassword = () => {
     setConfirmPassword(confirmPassword);
   };
   return (
-    <div className="hero min-h-screen">
+    <div className=" min-h-screen">
       <div className="hero-content w-full">
         <div className="card flex-shrink-0 w-full max-w-sm shadow-2xl bg-[#dadff3]">
           <div className="card-body">
             <h1 className="text-3xl text-center font-bold text-[#2145e6]">
-              Chnage Password
+              Change Password
             </h1>
             <p className="text-[#2145e6] text-center border border-[#2145e6] rounded-lg font-semibold"></p>
             <form onSubmit={handleSubmit(onSubmit)}>
@@ -144,8 +149,19 @@ const ChangePassword = () => {
                   className="input input-bordered bg-gray-100"
                 />
               </div>
+              <div
+                className="flex justify-center mt-1"
+                style={{ transform: "scale(0.85)", transformOrigin: "0 0" }}
+              >
+                <ReCAPTCHA
+                  sitekey={"6LdT1KYpAAAAAPxwh2xoSLCR7VK1QDiODBgeux-w"}
+                  onChange={handleCaptcha}
+                  style={{ width: "100%" }}
+                />
+              </div>
               <div className="form-control mt-6 ">
                 <input
+                  disabled={!isCaptchaSuccessful}
                   className="text-white btn bg-[#2145e6] border-[#2145e6]"
                   type="submit"
                   value="Change"
