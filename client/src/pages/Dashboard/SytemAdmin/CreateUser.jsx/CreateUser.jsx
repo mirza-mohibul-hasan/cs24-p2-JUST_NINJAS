@@ -50,7 +50,7 @@ const CreateUser = () => {
             title: response.data?.message,
             text: "Congratulations",
           });
-          reset;
+          reset();
         } else {
           Swal.fire({
             icon: "error",
@@ -179,7 +179,7 @@ const CreateUser = () => {
               </div>
               <div className="form-control">
                 <label className="label">
-                  <span className="label-text">Confirm Password</span>
+                  <span className="label-text">Profile Picture</span>
                 </label>
                 <input
                   type="file"

@@ -61,6 +61,46 @@ const DashboardLayout = () => {
               >
                 CREATE ROLES
               </NavLink>
+              <NavLink
+                to="addvehicle"
+                className={({ isActive }) =>
+                  isActive
+                    ? "bg-[#2145e6]  rounded p-1 text-center text-xl text-white"
+                    : "border border-[#2145e6] rounded p-1 text-center text-xl"
+                }
+              >
+                ADD VEHICLE
+              </NavLink>
+              <NavLink
+                to="creatests"
+                className={({ isActive }) =>
+                  isActive
+                    ? "bg-[#2145e6]  rounded p-1 text-center text-xl text-white"
+                    : "border border-[#2145e6] rounded p-1 text-center text-xl"
+                }
+              >
+                CREATE STS
+              </NavLink>
+              <NavLink
+                to="managests"
+                className={({ isActive }) =>
+                  isActive
+                    ? "bg-[#2145e6]  rounded p-1 text-center text-xl text-white"
+                    : "border border-[#2145e6] rounded p-1 text-center text-xl"
+                }
+              >
+                MANAGE STS
+              </NavLink>
+              <NavLink
+                to="createlandfill"
+                className={({ isActive }) =>
+                  isActive
+                    ? "bg-[#2145e6]  rounded p-1 text-center text-xl text-white"
+                    : "border border-[#2145e6] rounded p-1 text-center text-xl"
+                }
+              >
+                CREATE LANDFILL
+              </NavLink>
             </>
           )}
           <NavLink

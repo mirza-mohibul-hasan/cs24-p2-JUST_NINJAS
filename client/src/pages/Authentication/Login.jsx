@@ -10,8 +10,8 @@ const Login = () => {
   const { providerLogin } = useContext(AuthContext);
   const [isCaptchaSuccessful, setIsCaptchaSuccess] = useState(false);
   function handleCaptcha(value) {
-    setIsCaptchaSuccess(true);
-    console.log("captcha value: ", value);
+    setIsCaptchaSuccess(!!value);
+    // console.log("captcha value: ", value);
   }
   const handleLogin = async (event) => {
     event.preventDefault();

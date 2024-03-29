@@ -16,6 +16,11 @@ import UserDetails from "../pages/Dashboard/SytemAdmin/ManageUsers/UserDetails";
 import UpdateProfile from "../pages/Dashboard/Profile/UpdateProfile";
 import Roles from "../pages/Dashboard/SytemAdmin/Roles/Roles";
 import UpdateUserRole from "../pages/Dashboard/SytemAdmin/ManageUsers/UpdateUserRole";
+import AddVehicle from "../pages/Dashboard/SytemAdmin/ManageVehicles/AddVehicle";
+import CreateSTS from "../pages/Dashboard/SytemAdmin/ManageSTS/CreateSTS";
+import CreateLandfill from "../pages/Dashboard/SytemAdmin/ManageLandfill/CreateLandfill";
+import ManageSTS from "../pages/Dashboard/SytemAdmin/ManageSTS/ManageSTS";
+import SingleSTSManagement from "../pages/Dashboard/SytemAdmin/ManageSTS/SingleSTSManagement";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -77,6 +82,29 @@ const router = createBrowserRouter([
       {
         path: "updateuserrole/:id",
         element: <UpdateUserRole></UpdateUserRole>,
+      },
+      // Vehicle Related
+      {
+        path: "addvehicle",
+        element: <AddVehicle></AddVehicle>,
+      },
+      // STS Related
+      {
+        path: "creatests",
+        element: <CreateSTS></CreateSTS>,
+      },
+      {
+        path: "managests",
+        element: <ManageSTS></ManageSTS>,
+      },
+      {
+        path: "managests/:stsId",
+        element: <SingleSTSManagement></SingleSTSManagement>,
+      },
+      // landfill
+      {
+        path: "createlandfill",
+        element: <CreateLandfill></CreateLandfill>,
       },
     ],
   },
