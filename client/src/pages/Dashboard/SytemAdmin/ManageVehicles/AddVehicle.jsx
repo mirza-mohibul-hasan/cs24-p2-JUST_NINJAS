@@ -26,13 +26,14 @@ const AddVehicle = () => {
   const onSubmit = async (data) => {
     data.fuel_cost_loaded = parseFloat(data.fuel_cost_loaded);
     data.fuel_cost_unloaded = parseFloat(data.fuel_cost_unloaded);
+    data.capacity = parseFloat(data.capacity);
     data.vehicleId = data.registration_number
       .toLowerCase()
       .replace(/[^a-z0-9]/g, "");
     data.addedBy = user?.email;
 
     try {
-      console.log(data);
+      // console.log(data);
       const token = localStorage.getItem("token");
       if (!token) {
         throw new Error("Token not found");
@@ -126,10 +127,10 @@ const AddVehicle = () => {
                   required
                 >
                   <option value="">Select Capacity</option>
-                  <option value="3">3 ton</option>
-                  <option value="5">5 ton</option>
-                  <option value="7">7 ton</option>
-                  <option value="15">15 ton</option>
+                  <option value={3}>3 ton</option>
+                  <option value={5}>5 ton</option>
+                  <option value={7}>7 ton</option>
+                  <option value={15}>15 ton</option>
                 </select>
               </div>
               <div className="form-control">

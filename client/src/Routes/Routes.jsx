@@ -27,6 +27,7 @@ import STSVehicleEntry from "../pages/Dashboard/STSManager/STSVehicleEntry";
 import MySTS from "../pages/Dashboard/STSManager/MySTS";
 import MyLandfill from "../pages/Dashboard/LandfillManager/MyLandfill";
 import LandfillVehicleEntry from "../pages/Dashboard/LandfillManager/LandfillVehicleEntry";
+import RouteView from "../pages/Dashboard/SytemAdmin/ManageSTS/RouteView";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -106,6 +107,10 @@ const router = createBrowserRouter([
       {
         path: "managests/:stsId",
         element: <SingleSTSManagement></SingleSTSManagement>,
+      },
+      {
+        path: "route-view",
+        element: <RouteView></RouteView>,
       },
       // landfill
       {
