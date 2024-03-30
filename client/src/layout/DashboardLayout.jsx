@@ -135,6 +135,16 @@ const DashboardLayout = () => {
               >
                 VEHICLE ENTRY
               </NavLink>
+              <NavLink
+                to="route-view"
+                className={({ isActive }) =>
+                  isActive
+                    ? "bg-[#2145e6]  rounded p-1 text-center text-xl text-white"
+                    : "border border-[#2145e6] rounded p-1 text-center text-xl"
+                }
+              >
+                ROUTE VIEW
+              </NavLink>
             </>
           )}
           {role == "landmanager" && (
