@@ -72,6 +72,7 @@ const ManageLandfill = () => {
         <thead>
           <tr className="bg-blue-200">
             <th>SN</th>
+            <th>Area Name</th>
             <th>Capacity</th>
             <th>Latitude & Longitude</th>
             <th>Operation Period</th>
@@ -85,6 +86,7 @@ const ManageLandfill = () => {
             <tr key={landfill._id} className="hover">
               <th>{index + 1}</th>
               {/* <td>{landfill.ward_num}</td> */}
+              <td>{landfill.areaName}</td>
               <td>{landfill.capacity}</td>
               <td>
                 {landfill.latitude} & {landfill.longitude}

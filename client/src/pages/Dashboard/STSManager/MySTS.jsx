@@ -78,7 +78,7 @@ const MySTS = () => {
   }
   return (
     <div>
-      <h1>You have sts</h1>
+      <h1>You have sts: {mySTS.stsId}</h1>
       <h1 className="text-5xl my-3">Assigned Vehicles</h1>
       <div className="overflow-x-auto">
         <table className="table text-center">

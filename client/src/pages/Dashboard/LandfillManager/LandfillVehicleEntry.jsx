@@ -9,6 +9,7 @@ const LandfillVehicleEntry = () => {
   const { register, handleSubmit, reset } = useForm();
   const [myLandfill, setMyLandfill] = useState(null);
   const [landfillManagers, setLandfillManagers] = useState([]);
+  const [trucks, setTrucks] = useState([]);
   // const [myVehicles, setMyVehicles] = useState([]);
   const [loading, setLoading] = useState(true);
   const { user } = useContext(AuthContext);
@@ -29,6 +30,7 @@ const LandfillVehicleEntry = () => {
         );
         setMyLandfill(response.data?.landfillInfo);
         setLandfillManagers(response.data?.managerInfo);
+        setTrucks(response.data?.trucks);
         // console.log(response.data);
         setLoading(false);
       } catch (error) {
@@ -77,7 +79,7 @@ const LandfillVehicleEntry = () => {
     data.addedBy = user?.email;
     // console.log(data);
     try {
-      console.log(data);
+      // console.log(data);
       const token = localStorage.getItem("token");
       if (!token) {
         throw new Error("Token not found");
@@ -127,6 +129,29 @@ const LandfillVehicleEntry = () => {
             </h1>
             <p className="text-[#2145e6] text-center border border-[#2145e6] rounded-lg font-semibold"></p>
             <form onSubmit={handleSubmit(onSubmit)}>
+              <div className="form-control">
+                <label className="label">
+                  <span className="label-text">Select Incomming Truck</span>
+                </label>
+                <select
+                  id="vehicleId"
+                  name="vehicleId"
+                  {...register("vehicleId")}
+                  className="select select-bordered bg-gray-100"
+                  required
+                >
+                  <option value="">Select Truck</option>
+                  {trucks.map((vehicle) => (
+                    <option
+                      key={vehicle._id}
+                      value={vehicle.vehicleId}
+                      className="uppercase"
+                    >
+                      {vehicle.type} {vehicle.registration_number}
+                    </option>
+                  ))}
+                </select>
+              </div>
               <div className="form-control">
                 <label className="label">
                   <span className="label-text">Weight of Waste (Ton)</span>
