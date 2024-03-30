@@ -12,7 +12,7 @@ const Navbar = () => {
   };
   useEffect(() => {
     document.documentElement.className = theme;
-  }, [theme]);
+  }, [theme, user]);
   const [toggleMenu, setToggleMenu] = useState(false);
   return (
     <div className="bg-[#4765ebc3] py-4 dark:text-gray-100 dark:bg-slate-900">

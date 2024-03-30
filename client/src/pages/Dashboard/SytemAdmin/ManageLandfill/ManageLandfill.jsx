@@ -1,14 +1,13 @@
 import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../../../provider/AuthProvider";
-import axios from "axios";
 import { BallTriangle } from "react-loader-spinner";
+import axios from "axios";
+import LandfillManager from "./LandfillManager";
 import { Link } from "react-router-dom";
-import STSManager from "./STSManager";
-import STSVehicle from "./STSVehicle";
 
-const ManageSTS = () => {
+const ManageLandfill = () => {
   const { user } = useContext(AuthContext);
-  const [allsts, setAllSTS] = useState([]);
+  const [allLandfill, setAllLandfill] = useState([]);
   const [loading, setLoading] = useState(true);
   useEffect(() => {
     const fetchSTS = async () => {
@@ -31,12 +30,15 @@ const ManageSTS = () => {
           );
         }
 
-        const response = await axios.get("http://localhost:3000/sts", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        setAllSTS(response.data);
+        const response = await axios.get(
+          "http://localhost:3000/landfill/all-landfill",
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        setAllLandfill(response.data);
         setLoading(false);
       } catch (error) {
         console.error("Error fetching users:", error.message);
@@ -46,7 +48,7 @@ const ManageSTS = () => {
 
     fetchSTS();
   }, []);
-  console.log(allsts);
+  //   console.log(allLandfill);
   if (!user || loading) {
     return (
       <div className="flex justify-center items-center h-full">
@@ -65,34 +67,35 @@ const ManageSTS = () => {
   }
   return (
     <div className="overflow-x-auto">
-      <h1 className="text-5xl font-semibold mb-3">MANAGE STS</h1>
+      <h1 className="text-5xl font-semibold mb-3">MANAGE LANDFILL</h1>
       <table className="table text-center">
         <thead>
           <tr className="bg-blue-200">
             <th>SN</th>
-            <th>Ward</th>
             <th>Capacity</th>
             <th>Latitude & Longitude</th>
+            <th>Operation Period</th>
             <th>Registered At</th>
             <th>Managers</th>
-            <th>Vehicles</th>
             <th>Action</th>
           </tr>
         </thead>
         <tbody>
-          {allsts?.map((sts, index) => (
-            <tr key={sts._id} className="hover">
+          {allLandfill?.map((landfill, index) => (
+            <tr key={landfill._id} className="hover">
               <th>{index + 1}</th>
-              <td>{sts.ward_num}</td>
-              <td>{sts.capacity}</td>
+              {/* <td>{landfill.ward_num}</td> */}
+              <td>{landfill.capacity}</td>
               <td>
-                {sts.latitude} & {sts.longitude}
+                {landfill.latitude} & {landfill.longitude}
               </td>
-              <td>{sts.regAt}</td>
-              <STSManager stsId={sts.stsId}></STSManager>
-              <STSVehicle stsId={sts.stsId}></STSVehicle>
+              <td>{landfill.starttime}</td>
+              <td>{landfill.regAt}</td>
+              <LandfillManager
+                landfillId={landfill.landfillId}
+              ></LandfillManager>
               <td>
-                <Link to={`/dashboard/managests/${sts.stsId}`}>
+                <Link to={`/dashboard/managelandfill/${landfill.landfillId}`}>
                   <button className="btn btn-xs btn-primary btn-outline">
                     Update
                   </button>
@@ -106,4 +109,4 @@ const ManageSTS = () => {
   );
 };
 
-export default ManageSTS;
+export default ManageLandfill;
