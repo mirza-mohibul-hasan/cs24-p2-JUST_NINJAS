@@ -101,6 +101,64 @@ const DashboardLayout = () => {
               >
                 CREATE LANDFILL
               </NavLink>
+              <NavLink
+                to="managelandfill"
+                className={({ isActive }) =>
+                  isActive
+                    ? "bg-[#2145e6]  rounded p-1 text-center text-xl text-white"
+                    : "border border-[#2145e6] rounded p-1 text-center text-xl"
+                }
+              >
+                MANAGE LANDFILL
+              </NavLink>
+            </>
+          )}
+          {role == "stsmanager" && (
+            <>
+              <NavLink
+                to="mysts"
+                className={({ isActive }) =>
+                  isActive
+                    ? "bg-[#2145e6]  rounded p-1 text-center text-xl text-white"
+                    : "border border-[#2145e6] rounded p-1 text-center text-xl"
+                }
+              >
+                MY STS
+              </NavLink>
+              <NavLink
+                to="sts-vehicle-entry"
+                className={({ isActive }) =>
+                  isActive
+                    ? "bg-[#2145e6]  rounded p-1 text-center text-xl text-white"
+                    : "border border-[#2145e6] rounded p-1 text-center text-xl"
+                }
+              >
+                VEHICLE ENTRY
+              </NavLink>
+            </>
+          )}
+          {role == "landmanager" && (
+            <>
+              <NavLink
+                to="mylandfill"
+                className={({ isActive }) =>
+                  isActive
+                    ? "bg-[#2145e6]  rounded p-1 text-center text-xl text-white"
+                    : "border border-[#2145e6] rounded p-1 text-center text-xl"
+                }
+              >
+                MY LANDFILL
+              </NavLink>
+              <NavLink
+                to="landfill-vehicle-entry"
+                className={({ isActive }) =>
+                  isActive
+                    ? "bg-[#2145e6]  rounded p-1 text-center text-xl text-white"
+                    : "border border-[#2145e6] rounded p-1 text-center text-xl"
+                }
+              >
+                ADD TRUCK ENTRY
+              </NavLink>
             </>
           )}
           <NavLink
