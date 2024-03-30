@@ -21,6 +21,12 @@ import CreateSTS from "../pages/Dashboard/SytemAdmin/ManageSTS/CreateSTS";
 import CreateLandfill from "../pages/Dashboard/SytemAdmin/ManageLandfill/CreateLandfill";
 import ManageSTS from "../pages/Dashboard/SytemAdmin/ManageSTS/ManageSTS";
 import SingleSTSManagement from "../pages/Dashboard/SytemAdmin/ManageSTS/SingleSTSManagement";
+import ManageLandfill from "../pages/Dashboard/SytemAdmin/ManageLandfill/ManageLandfill";
+import SingleLandfillManagement from "../pages/Dashboard/SytemAdmin/ManageLandfill/SingleLandfillManagement";
+import STSVehicleEntry from "../pages/Dashboard/STSManager/STSVehicleEntry";
+import MySTS from "../pages/Dashboard/STSManager/MySTS";
+import MyLandfill from "../pages/Dashboard/LandfillManager/MyLandfill";
+import LandfillVehicleEntry from "../pages/Dashboard/LandfillManager/LandfillVehicleEntry";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -105,6 +111,33 @@ const router = createBrowserRouter([
       {
         path: "createlandfill",
         element: <CreateLandfill></CreateLandfill>,
+      },
+      {
+        path: "managelandfill",
+        element: <ManageLandfill></ManageLandfill>,
+      },
+      {
+        path: "managelandfill/:landfillId",
+        element: <SingleLandfillManagement></SingleLandfillManagement>,
+      },
+
+      // STS Manager Route
+      {
+        path: "mysts",
+        element: <MySTS></MySTS>,
+      },
+      {
+        path: "sts-vehicle-entry",
+        element: <STSVehicleEntry></STSVehicleEntry>,
+      },
+      // Landfill Manager Route
+      {
+        path: "mylandfill",
+        element: <MyLandfill></MyLandfill>,
+      },
+      {
+        path: "landfill-vehicle-entry",
+        element: <LandfillVehicleEntry></LandfillVehicleEntry>,
       },
     ],
   },
