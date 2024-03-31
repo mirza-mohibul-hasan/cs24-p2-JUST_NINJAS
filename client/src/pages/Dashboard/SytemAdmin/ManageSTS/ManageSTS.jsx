@@ -47,7 +47,7 @@ const ManageSTS = () => {
 
     fetchSTS();
   }, []);
-  console.log(allsts);
+  // console.log(allsts);
   if (!user || loading) {
     return (
       <div className="flex justify-center items-center h-full">

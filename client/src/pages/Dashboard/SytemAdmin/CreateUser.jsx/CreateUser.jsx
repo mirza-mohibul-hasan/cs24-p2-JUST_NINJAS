@@ -23,7 +23,7 @@ const CreateUser = () => {
           timer: 700,
         });
       } else {
-        console.log(data);
+        // console.log(data);
         const formData = new FormData();
         formData.append("name", data.name);
         formData.append("email", data.email);

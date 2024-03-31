@@ -44,7 +44,7 @@ const ChangePassword = () => {
           timer: 700,
         });
       } else {
-        console.log(data);
+        // console.log(data);
         const token = localStorage.getItem("token");
         if (!token) {
           throw new Error("Token not found");

@@ -1,5 +1,6 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { BallTriangle } from "react-loader-spinner";
 
 const Roles = () => {
   const [roles, setRoles] = useState([]);
@@ -11,7 +12,11 @@ const Roles = () => {
           throw new Error("Token not found");
         }
 
-        const response = await axios.get("http://localhost:3000/users/roles");
+        const response = await axios.get("http://localhost:3000/users/roles", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
         setRoles(response.data);
       } catch (error) {
         console.error("Error fetching users:", error.message);
@@ -20,7 +25,22 @@ const Roles = () => {
 
     fetchUsers();
   }, []);
-  // console.log(roles);
+  if (roles.length == 0) {
+    return (
+      <div className="flex justify-center items-center h-full">
+        <BallTriangle
+          height={100}
+          width={100}
+          radius={5}
+          color="#2145e6"
+          ariaLabel="ball-triangle-loading"
+          wrapperStyle={{}}
+          wrapperClass=""
+          visible={true}
+        />
+      </div>
+    );
+  }
   return (
     <div>
       <ul className="steps steps-vertical">
