@@ -16,15 +16,12 @@ const Profile = () => {
           return;
         }
 
-        const response = await axios.get(
-          `http://localhost:3000/users/${user?._id}`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-        setUserDetails(response.data);
+        const response = await axios.get(`http://localhost:3000/profile`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        setUserDetails(response.data.user);
         setLoading(false);
       } catch (error) {
         console.error("Error fetching users:", error.message);
@@ -50,6 +47,7 @@ const Profile = () => {
       </div>
     );
   }
+  // console.log(userDetails);
   return (
     <div>
       <div className="">

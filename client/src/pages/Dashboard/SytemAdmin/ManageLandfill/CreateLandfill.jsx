@@ -34,34 +34,34 @@ const CreateLandfill = () => {
 
     try {
       console.log(data);
-      const token = localStorage.getItem("token");
-      if (!token) {
-        throw new Error("Token not found");
-      }
-      const response = await axios.post(
-        "http://localhost:3000/landfill/add",
-        data,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-      console.log(response);
-      if (response.data?.success) {
-        Swal.fire({
-          icon: "success",
-          title: response.data?.message,
-          text: "Congratulations",
-        });
-        reset();
-      } else {
-        Swal.fire({
-          icon: "error",
-          title: response.data?.message,
-          text: "Try Agin Later",
-        });
-      }
+      // const token = localStorage.getItem("token");
+      // if (!token) {
+      //   throw new Error("Token not found");
+      // }
+      // const response = await axios.post(
+      //   "http://localhost:3000/landfill/add",
+      //   data,
+      //   {
+      //     headers: {
+      //       Authorization: `Bearer ${token}`,
+      //     },
+      //   }
+      // );
+      // console.log(response);
+      // if (response.data?.success) {
+      //   Swal.fire({
+      //     icon: "success",
+      //     title: response.data?.message,
+      //     text: "Congratulations",
+      //   });
+      //   reset();
+      // } else {
+      //   Swal.fire({
+      //     icon: "error",
+      //     title: response.data?.message,
+      //     text: "Try Agin Later",
+      //   });
+      // }
     } catch (error) {
       console.error("Error creating user:", error.message);
       Swal.fire({
@@ -79,7 +79,7 @@ const CreateLandfill = () => {
         <div className="card flex-shrink-0 w-full max-w-lg shadow-2xl bg-[#dadff3]">
           <div className="card-body">
             <h1 className="text-3xl text-center font-bold text-[#2145e6]">
-              CREATE Landfill
+              CREATE LANDFILL
             </h1>
             <p className="text-[#2145e6] text-center border border-[#2145e6] rounded-lg font-semibold"></p>
             <form onSubmit={handleSubmit(onSubmit)}>

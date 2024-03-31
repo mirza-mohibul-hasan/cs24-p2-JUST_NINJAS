@@ -1,5 +1,4 @@
 import { createBrowserRouter } from "react-router-dom";
-import DummyAuth from "../pages/DummyAuth/DummyAuth";
 import Login from "../pages/Authentication/Login";
 import MainLayout from "../layout/MainLayout";
 import RestPassword from "../pages/Authentication/RestPassword";
@@ -31,18 +30,16 @@ import RouteView from "../pages/Dashboard/STSManager/RouteView";
 import BillingReport from "../pages/Dashboard/LandfillManager/BillingReport";
 import FleetOfTruck from "../pages/Dashboard/STSManager/FleetOfTruck";
 import CreateRoles from "../pages/Dashboard/SytemAdmin/Roles/CreateRoles";
+import ErrorPage from "../pages/Error/ErrorPage";
 const router = createBrowserRouter([
   {
     path: "/",
+    errorElement: <ErrorPage></ErrorPage>,
     element: <MainLayout></MainLayout>,
     children: [
       {
         path: "/",
         element: <Home></Home>,
-      },
-      {
-        path: "/dummyauth",
-        element: <DummyAuth></DummyAuth>,
       },
       {
         path: "/login",

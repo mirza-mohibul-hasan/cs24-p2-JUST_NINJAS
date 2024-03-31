@@ -33,7 +33,7 @@ const UpdateUser = () => {
   // console.log(userDetails);
   const onSubmit = async (data) => {
     try {
-      console.log(data);
+      // console.log(data);
       const token = localStorage.getItem("token");
       if (!token) {
         throw new Error("Token not found");

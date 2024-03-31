@@ -102,6 +102,7 @@ async function run() {
     const landfieldVehicleEntryCollection = db.collection(
       "landfield_vehicle_entry"
     );
+    const billingCollection = db.collection("billing");
     const landfillCollection = db.collection("landfill");
     /* Common API */
     app.get("/rbac/roles", verifyJWT, async (req, res) => {
@@ -910,6 +911,20 @@ async function run() {
         res.status(500).send("Internal server error");
       }
     });
+
+    // SINGLE STS Details
+    app.get("/sts/single-info/:stsId", async (req, res) => {
+      const stsId = req.params.stsId;
+      try {
+        const result = await stsCollection.findOne({
+          stsId: stsId,
+        });
+        res.send(result);
+      } catch (error) {
+        console.error("Error checking manager ID:", error);
+        res.status(500).send("Internal server error");
+      }
+    });
     // assign manager to sts
     app.post("/sts/assign-manager", async (req, res) => {
       const stsId = req.body.stsId;
@@ -1142,7 +1157,8 @@ async function run() {
         const landfillInfo = await landfillCollection.findOne({
           landfillId: managerInfo.landfillId,
         });
-        res.send({ managerInfo, landfillInfo });
+        const trucks = await vehicleCollection.find().toArray();
+        res.send({ managerInfo, landfillInfo, trucks });
       } catch (error) {
         console.error("Error checking manager ID:", error);
         res.status(500).send("Internal server error");
@@ -1236,9 +1252,43 @@ async function run() {
         });
       }
     });
+    // Billing with entry
+    const calculateGPSDistance = async (lat1, lon1, lat2, lon2) => {
+      const R = 6371; // Radius of the Earth in kilometers
+      const dLat = ((lat2 - lat1) * Math.PI) / 180; // Convert degrees to radians
+      const dLon = ((lon2 - lon1) * Math.PI) / 180;
+      const a =
+        Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+        Math.cos((lat1 * Math.PI) / 180) *
+          Math.cos((lat2 * Math.PI) / 180) *
+          Math.sin(dLon / 2) *
+          Math.sin(dLon / 2);
+      const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+      const distance = R * c; // Distance in kilometers
+      return distance;
+    };
+    // OIL COST
+    const calculateCostPerKm = async (
+      weightOfWaste,
+      capacity,
+      fuel_cost_loaded,
+      fuel_cost_unloaded
+    ) => {
+      if (weightOfWaste >= capacity) {
+        return fuel_cost_loaded;
+      } else if (weightOfWaste <= 0) {
+        return fuel_cost_unloaded;
+      } else {
+        return (
+          fuel_cost_unloaded +
+          (weightOfWaste / capacity) * (fuel_cost_loaded - fuel_cost_unloaded)
+        );
+      }
+    };
     app.post("/landfill-manager/add-entry", async (req, res) => {
       try {
         const landfillId = req.body?.landfillId;
+        const vehicleId = req.body?.vehicleId;
         const timeOfArrival = req.body?.timeOfArrival;
         const timeOfDeparture = req.body?.timeOfDeparture;
         const weightOfWaste = req.body?.weightOfWaste;
@@ -1246,6 +1296,7 @@ async function run() {
         const addedBy = req.body?.addedBy;
         const newEntry = {
           landfillId: landfillId,
+          vehicleId: vehicleId,
           timeOfArrival: timeOfArrival,
           timeOfDeparture: timeOfDeparture,
           weightOfWaste: weightOfWaste,
@@ -1253,21 +1304,257 @@ async function run() {
           addedBy: addedBy,
           regAt: new Date(),
         };
-        const result = await landfieldVehicleEntryCollection.insertOne(
-          newEntry
+
+        // console.log("Incoming Data", newEntry);
+        const targetSTS = await stsVehicleCollection.findOne({
+          vehicles: vehicleId,
+        });
+        // console.log("Target Sts Info", targetSTS);
+        const stsInfo = await stsCollection.findOne({
+          stsId: targetSTS?.stsId,
+        });
+        const landfillInfo = await landfillCollection.findOne({
+          landfillId: landfillId,
+        });
+        const vehicleInfo = await vehicleCollection.findOne({
+          vehicleId: vehicleId,
+        });
+        // console.log("STS Informat", stsInfo);
+        // console.log("landfill info", landfillInfo);
+        // console.log("VehicleInfo info", vehicleInfo);
+        const distance = await calculateGPSDistance(
+          stsInfo?.latitude,
+          stsInfo?.longitude,
+          landfillInfo?.latitude,
+          landfillInfo?.longitude
         );
+        const costPerKm = await calculateCostPerKm(
+          weightOfWaste,
+          vehicleInfo?.capacity,
+          vehicleInfo?.fuel_cost_loaded,
+          vehicleInfo?.fuel_cost_unloaded
+        );
+        const fuelAllocation = costPerKm * distance;
+        // console.log("Distance", distance);
+        // console.log("Cost Per KM", costPerKm);
+        // console.log("Oil Allocation TK", fuelAllocation);
+        const bill = {
+          billTime: Date.now(),
+          weightOfWaste,
+          vehicleInfo,
+          distance,
+          costPerKm,
+          fuelAllocation,
+          stsId: stsInfo.stsId,
+          landfillId: landfillId,
+          billedBy: addedBy,
+        };
+        // console.log("Bill", bill);
+        await landfieldVehicleEntryCollection.insertOne(newEntry);
+        await billingCollection.insertOne(bill);
         res.status(201).json({
           success: true,
-          message: "Added Successfully",
+          message: "Added Successfully with Billing",
         });
       } catch (error) {
         console.error("Error Adding vehicle:", error);
         res.status(500).json({
-          success: true,
-          message: "An error occurred while creating the user",
+          success: false,
+          message: "An error occurred while calculating",
         });
       }
     });
+    app.get("/landfill-manager/billing/:landfillId", async (req, res) => {
+      try {
+        const landfillId = req.params.landfillId;
+        // console.log(landfillId);
+        const bills = await billingCollection
+          .find({ landfillId: landfillId })
+          .toArray();
+        res.send(bills);
+      } catch (error) {
+        console.error("Error Adding vehicle:", error);
+        res.status(500).json({
+          success: false,
+          message: "An error occurred while calculating",
+        });
+      }
+    });
+
+    // Fleet Optimization
+    const fleetOptimizer = (vehicles, totalWaste) => {
+      let maxUsage = 3;
+      let pairs = [];
+      for (let vehicle of vehicles) {
+        let fuelCostPerCapacity =
+          vehicle["fuel_cost_loaded"] / vehicle["capacity"];
+        pairs.push([
+          fuelCostPerCapacity,
+          vehicle["vehicleId"],
+          vehicle["capacity"],
+          0,
+        ]);
+      }
+      pairs.sort((a, b) => {
+        if (a[0] !== b[0]) {
+          return a[0] - b[0];
+        } else {
+          return b[2] - a[2];
+        }
+      });
+      let remainingWaste = totalWaste;
+      let vehiclesUsed = [];
+      while (remainingWaste > 0) {
+        let foundVehicle = false;
+        for (let i = 0; i < pairs.length; i++) {
+          let [ratio, vehicleID, capacityOfVehicle, usageCount] = pairs[i];
+          if (usageCount < maxUsage && remainingWaste > 0) {
+            let wasteCarried = Math.min(remainingWaste, capacityOfVehicle);
+            remainingWaste -= wasteCarried;
+            vehiclesUsed.push(vehicleID);
+            pairs[i] = [ratio, vehicleID, capacityOfVehicle, usageCount + 1];
+            foundVehicle = true;
+            break;
+          }
+        }
+        if (!foundVehicle) {
+          break;
+        }
+      }
+      return vehiclesUsed;
+    };
+    const findFleetVehicles = async (vehicleIds) => {
+      try {
+        const vehicleIdCounts = {};
+        vehicleIds.forEach((vehicleId) => {
+          vehicleIdCounts[vehicleId] = (vehicleIdCounts[vehicleId] || 0) + 1;
+        });
+        const uniqueVehicleIds = [...new Set(vehicleIds)];
+        const vehicles = await vehicleCollection
+          .find({ vehicleId: { $in: uniqueVehicleIds } })
+          .toArray();
+        vehicles.forEach((vehicle) => {
+          vehicle.numTrip = vehicleIdCounts[vehicle.vehicleId] || 0;
+        });
+
+        return vehicles;
+      } catch (err) {
+        console.error("Error finding vehicles:", err);
+        throw err;
+      }
+    };
+    app.get(
+      "/sts-manager/fleet-opt/:stsId/:wasteNeedToShift",
+      async (req, res) => {
+        const stsId = req.params.stsId;
+        const wasteNeedToShift = req.params.wasteNeedToShift;
+        const targetSTS = await stsVehicleCollection.findOne({
+          stsId: stsId,
+        });
+        // console.log("TARGET STS", targetSTS);
+        const stsInfo = await stsCollection.findOne({
+          stsId: stsId,
+        });
+        // console.log("STS ALL INFO", stsInfo);
+        const vehiclesInfo = await vehicleCollection
+          .find({ vehicleId: { $in: targetSTS.vehicles } })
+          .toArray();
+        // console.log("TARGET STS VEHICLE", vehiclesInfo);
+
+        const vehicleUsed = fleetOptimizer(vehiclesInfo, wasteNeedToShift);
+        // console.log("Vehicle USED", vehicleUsed);
+        const usedVehicleInfo = await findFleetVehicles(vehicleUsed);
+        // console.log("USED VEHICLES", usedVehicleInfo);
+        res.send(usedVehicleInfo);
+        try {
+        } catch (error) {
+          console.error("Error Adding vehicle:", error);
+          res.status(500).json({
+            success: false,
+            message: "An error occurred while calculating",
+          });
+        }
+      }
+    );
+    // Route View
+    app.get("/sts/route-view/:stsId", async (req, res) => {
+      const stsInfo = await stsCollection.findOne({ stsId: req.params.stsId });
+      // console.log("STS", stsInfo);
+      const allLandfill = await landfillCollection.find().toArray();
+      // console.log("LANDFILLS", allLandfill);
+      // const from = { latitude: stsInfo.latitude, longitude: stsInfo.longitude };
+      // console.log(from);
+      let minDistance = Number.MAX_VALUE;
+      // console.log(minDistance);
+      let targetLanfillId = null;
+      for (const landfill of allLandfill) {
+        const distance = await calculateGPSDistance(
+          stsInfo.latitude,
+          stsInfo.longitude,
+          landfill.latitude,
+          landfill.longitude
+        );
+        if (distance < minDistance) {
+          minDistance = distance;
+          targetLanfillId = landfill.landfillId;
+        }
+      }
+      // console.log(targetLanfillId);
+      const landfillInfo = await landfillCollection.findOne({
+        landfillId: targetLanfillId,
+      });
+      const optRoute = {
+        allLandfill: allLandfill,
+        from: stsInfo,
+        to: landfillInfo,
+      };
+      res.send(optRoute);
+    });
+
+    // Dashboard
+    app.get("/dashboard/statistics", async (req, res) => {
+      try {
+        const billing = await billingCollection.find().toArray();
+        const stsWasteTransport = await stsVehicleEntryCollection
+          .find()
+          .toArray();
+        const landfillWasteTransport = await landfieldVehicleEntryCollection
+          .find()
+          .toArray();
+
+        const totalWeightOfWaste = billing.reduce(
+          (total, bill) => total + bill.weightOfWaste,
+          0
+        );
+        const totalWeightAtSTS = stsWasteTransport.reduce(
+          (total, entry) => total + entry.weightOfWaste,
+          0
+        );
+        const totalWeightAtLandfill = landfillWasteTransport.reduce(
+          (total, entry) => total + entry.weightOfWaste,
+          0
+        );
+        const totalFuelCost = billing.reduce(
+          (total, bill) => total + bill.vehicleInfo.fuel_cost_loaded,
+          0
+        );
+        const response = {
+          billing,
+          stsWasteTransport,
+          landfillWasteTransport,
+          totalWeightOfWaste,
+          totalWeightAtSTS,
+          totalWeightAtLandfill,
+          totalFuelCost,
+        };
+
+        res.json(response);
+      } catch (error) {
+        console.error("Error fetching statistics:", error.message);
+        res.status(500).json({ error: "Internal server error" });
+      }
+    });
+
     /* Working Zone End */
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });

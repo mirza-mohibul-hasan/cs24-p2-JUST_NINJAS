@@ -11,7 +11,7 @@ const UpdateProfile = () => {
   const { register, handleSubmit, reset } = useForm();
   const onSubmit = async (data) => {
     try {
-      console.log(data);
+      // console.log(data);
       const token = localStorage.getItem("token");
       if (!token) {
         throw new Error("Token not found");
@@ -21,7 +21,7 @@ const UpdateProfile = () => {
           Authorization: `Bearer ${token}`,
         },
       });
-      console.log(response);
+      // console.log(response);
       if (response.data?.success) {
         Swal.fire({
           icon: "success",

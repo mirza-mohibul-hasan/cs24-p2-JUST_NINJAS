@@ -47,7 +47,7 @@ const AddVehicle = () => {
           },
         }
       );
-      console.log(response);
+      // console.log(response);
       if (response.data?.success) {
         Swal.fire({
           icon: "success",
