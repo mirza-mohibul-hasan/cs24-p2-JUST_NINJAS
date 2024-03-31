@@ -54,18 +54,22 @@ const MyLandfill = () => {
     );
   }
   if (!myLandfill && !landfillManagers) {
-    return <p>You Do not Have STS</p>;
+    return <p className="text-5xl text-center">You Do not Have STS</p>;
   }
   return (
     <div>
-      <h1 className="text-5xl">You have Landfill</h1>
-      <p>Area Name: {myLandfill?.areaName}</p>
-      <p>Capacity: {myLandfill?.capacity}</p>
-      <p>
-        Lattitude: {myLandfill?.latitude} & Longitude: {myLandfill?.longitude}
-      </p>
-      <p>Open: {myLandfill?.starttime}</p>
-      <p>Close: {myLandfill?.endtime}</p>
+      <h1 className="text-5xl text-center border-b-2 border-blue-500 p-2">
+        Your Landfill Details
+      </h1>
+      <div className="flex flex-col items-center gap-1 my-3 text-xl font-semibold">
+        <p>Area Name: {myLandfill?.areaName}</p>
+        <p>Capacity: {myLandfill?.capacity}</p>
+        <p>
+          Lattitude: {myLandfill?.latitude} & Longitude: {myLandfill?.longitude}
+        </p>
+        <p>Open: {myLandfill?.starttime}</p>
+        <p>Close: {myLandfill?.endtime}</p>
+      </div>
     </div>
   );
 };

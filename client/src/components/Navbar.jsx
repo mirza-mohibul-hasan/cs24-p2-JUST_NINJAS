@@ -1,6 +1,10 @@
 import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../provider/AuthProvider";
 import { Link, NavLink } from "react-router-dom";
+import { CiLight } from "react-icons/ci";
+import { MdDarkMode } from "react-icons/md";
+import { GiHamburgerMenu } from "react-icons/gi";
+import { IoIosCloseCircle } from "react-icons/io";
 import logo from "../assets/logo.png";
 const Navbar = () => {
   const { user, providerLogout } = useContext(AuthContext);
@@ -28,11 +32,29 @@ const Navbar = () => {
               </span>
             </Link>
             {/* primary */}
-            <div className="hidden lg:flex gap-8 text-lg">
-              <NavLink to="/">Home</NavLink>
-              <NavLink to="/">temp1</NavLink>
-              <NavLink to="/">temp2</NavLink>
-              {user && <NavLink to="/dashboard/home">Dashbord</NavLink>}
+            <div className="hidden lg:flex gap-8 text-lg uppercase font-semibold">
+              <NavLink
+                className={({ isActive }) =>
+                  isActive
+                    ? "bg-[#2145e6]  rounded p-1 text-center text-xl text-white"
+                    : " rounded p-1 text-center text-xl"
+                }
+                to="/"
+              >
+                Home
+              </NavLink>
+              {user && (
+                <NavLink
+                  className={({ isActive }) =>
+                    isActive
+                      ? "bg-[#2145e6]  rounded p-1 text-center text-xl text-white"
+                      : " rounded p-1 text-center text-xl"
+                  }
+                  to="/dashboard/home"
+                >
+                  Dashbord
+                </NavLink>
+              )}
             </div>
           </div>
           {/* secondary */}
@@ -44,9 +66,9 @@ const Navbar = () => {
                   onClick={toggleTheme}
                 >
                   {theme === "light" ? (
-                    <p className="h-6 w-6 ">Dark</p>
+                    <MdDarkMode className="h-5 w-5" />
                   ) : (
-                    <p className="h-6 w-6">Light</p>
+                    <CiLight className="h-5 w-5" />
                   )}
                 </button>
                 {user && <p>{user?.name}</p>}
@@ -54,7 +76,7 @@ const Navbar = () => {
               {!user ? (
                 <div className="hidden lg:flex gap-2 font-poppins">
                   <Link to="/login">
-                    <button className="w-28 mx-auto rounded-lg border-solid border-2 border-[#E94339] py-1 px-4 hover:bg-[#E94339] hover:text-white text-gray-900 dark:border-white dark:hover:border-[#E94339] dark:text-white dark:bg-transparent dark:hover:text-[#E94339]">
+                    <button className="w-20 mx-auto rounded-lg border-solid border-2 hover:border-blue-600 hover:bg-white hover:text-blue-600 py-1 px-1 bg-blue-800 dark:bg-gray-800 text-white">
                       LOGIN
                     </button>
                   </Link>
@@ -63,7 +85,7 @@ const Navbar = () => {
                 <div className="hidden lg:flex gap-2 font-poppins">
                   <button
                     onClick={providerLogout}
-                    className="w-20 mx-auto rounded-lg border-solid border-2 hover:border-[#E94339] hover:bg-white hover:text-gray-900 py-1 px-1 bg-[#E94339] dark:bg-gray-800 text-white"
+                    className="w-20 mx-auto rounded-lg border-solid border-2 hover:border-blue-600 hover:bg-white hover:text-blue-600 py-1 px-1 bg-blue-800 dark:bg-gray-800 text-white"
                   >
                     LOGOUT
                   </button>
@@ -73,7 +95,11 @@ const Navbar = () => {
             {/* Mobile navigation toggle */}
             <div className="lg:hidden flex items-center pr-4">
               <button onClick={() => setToggleMenu(!toggleMenu)}>
-                <p className="h-6">toggle</p>
+                {toggleMenu ? (
+                  <IoIosCloseCircle className="h-6 w-6" />
+                ) : (
+                  <GiHamburgerMenu className="h-6 w-6" />
+                )}
               </button>
             </div>
           </div>
@@ -81,28 +107,45 @@ const Navbar = () => {
       </div>
       {/* mobile navigation */}
       <div
-        className={`w-52 z-50 absolute overflow-hidden bg-red-100 flex flex-col lg:hidden origin-top duration-700 rounded-br-xl ${
+        className={`w-52 z-50 absolute overflow-hidden bg-[#4765ebc3] flex flex-col lg:hidden origin-top duration-700 rounded-br-xl ${
           !toggleMenu ? "h-0" : "h-fit mt-3 py-5"
         }`}
       >
         <div className="px-8">
           <div className="flex flex-col gap-6 text-sm tracking-wider">
-            <NavLink to="/">Home</NavLink>
-            <NavLink to="allrestaurants">Restaurants</NavLink>
-            <NavLink to="allrestaurantsitems">All Items</NavLink>
-            <NavLink to="offers">Offers</NavLink>
-            <NavLink to="">My Dashboard</NavLink>
+            <NavLink
+              className={({ isActive }) =>
+                isActive
+                  ? "bg-[#2145e6]  rounded p-1 text-center text-xl text-white"
+                  : " rounded p-1 text-center text-xl"
+              }
+              to="/"
+            >
+              Home
+            </NavLink>
+            {user && (
+              <NavLink
+                className={({ isActive }) =>
+                  isActive
+                    ? "bg-[#2145e6]  rounded p-1 text-center text-xl text-white"
+                    : " rounded p-1 text-center text-xl"
+                }
+                to="/dashboard/home"
+              >
+                Dashbord
+              </NavLink>
+            )}
             {!user ? (
               <>
                 <Link to="/login">
-                  <button className="w-28 mx-auto rounded-lg border-solid border-2 border-[#E94339] py-1 px-4 hover:bg-[#E94339] hover:text-white">
+                  <button className="w-20 mx-auto rounded-lg border-solid border-2 hover:border-blue-600 hover:bg-white hover:text-blue-600 py-1 px-1 bg-blue-800 dark:bg-gray-800 text-white">
                     LOGIN
                   </button>
                 </Link>
               </>
             ) : (
               <>
-                <button className="w-20 mx-auto rounded-lg border-solid border-2 hover:border-[#E94339] hover:bg-white hover:text-gray-900 py-1 px-1 bg-[#E94339] text-white">
+                <button className="w-20 mx-auto rounded-lg border-solid border-2 hover:border-blue-600 hover:bg-white hover:text-blue-600 py-1 px-1 bg-blue-800 dark:bg-gray-800 text-white">
                   LOGOUT
                 </button>
               </>

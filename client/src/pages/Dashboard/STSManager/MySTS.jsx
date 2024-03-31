@@ -5,11 +5,12 @@ import { BallTriangle } from "react-loader-spinner";
 
 const MySTS = () => {
   const [mySTS, setMySTS] = useState(null);
+  const [stsInfo, setStsInfo] = useState(null);
   const [myVehicles, setMyVehicles] = useState([]);
   const [loading, setLoading] = useState(true);
   const { user } = useContext(AuthContext);
   useEffect(() => {
-    const fetchUsers = async () => {
+    const fetchSTS = async () => {
       try {
         const token = localStorage.getItem("token");
         if (!token || !user) {
@@ -32,7 +33,7 @@ const MySTS = () => {
       }
     };
 
-    fetchUsers();
+    fetchSTS();
   }, [user]);
   useEffect(() => {
     const fetchAssignedVehicles = async () => {
@@ -56,7 +57,29 @@ const MySTS = () => {
 
     fetchAssignedVehicles();
   }, [mySTS]);
-  console.log(myVehicles);
+  useEffect(() => {
+    const fetchSTSDetails = async () => {
+      try {
+        if (!mySTS) return;
+
+        const token = localStorage.getItem("token");
+        const response = await axios.get(
+          `http://localhost:3000/sts/single-info/${mySTS.stsId}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        setStsInfo(response.data);
+      } catch (error) {
+        console.error("Error fetching assigned vehicles:", error.message);
+      }
+    };
+
+    fetchSTSDetails();
+  }, [mySTS]);
+  console.log(stsInfo);
   if (loading) {
     return (
       <div className="flex justify-center items-center h-full">
@@ -78,8 +101,14 @@ const MySTS = () => {
   }
   return (
     <div>
-      <h1>You have sts: {mySTS.stsId}</h1>
-      <h1 className="text-5xl my-3">Assigned Vehicles</h1>
+      <h1 className="text-5xl text-center border-b-2 border-blue-500 p-2">
+        Your STS Details
+      </h1>
+      <p>CAPACITY: {stsInfo?.capacity}</p>
+      <p>Ward Number: {stsInfo?.ward_num}</p>
+      <p>Lattitude:{stsInfo?.latitude}</p>
+      <p>Longitude: {stsInfo.longitude}</p>
+      <h1 className="text-3xl my-3">Assigned Vehicles:</h1>
       <div className="overflow-x-auto">
         <table className="table text-center">
           <thead>
