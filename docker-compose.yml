@@ -1,0 +1,20 @@
+version: '3'
+
+services:
+  backend:
+    build: 
+      context: ./server
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+
+  frontend:
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    ports:
+      - "5173:5173"
+    depends_on:
+      - backend
+
+# to build and run => docker compose up --build (no need for docker-compose, exclude the hyphen)

@@ -2,6 +2,8 @@ import { useState } from "react";
 import Swal from "sweetalert2";
 import { useForm } from "react-hook-form";
 import axios from "axios";
+import useUserType from "../../../../hooks/useUserType";
+import ErrorLoading from "../../../Error/ErrorLoading";
 const CreateUser = () => {
   const {
     register,
@@ -34,7 +36,7 @@ const CreateUser = () => {
           throw new Error("Token not found");
         }
         const response = await axios.post(
-          "http://localhost:3000/auth/create",
+          "http://localhost:3000/users",
           formData,
           {
             headers: {
@@ -74,6 +76,9 @@ const CreateUser = () => {
     const confirmPassword = e?.target?.value;
     setConfirmPassword(confirmPassword);
   };
+  if (useUserType() !== "sysadmin") {
+    return <ErrorLoading></ErrorLoading>;
+  }
   return (
     <div className="hero min-h-screen">
       <div className="hero-content w-full">
