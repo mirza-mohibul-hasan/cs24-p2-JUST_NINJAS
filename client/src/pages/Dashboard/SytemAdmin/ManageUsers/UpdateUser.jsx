@@ -22,7 +22,7 @@ const UpdateUser = () => {
           },
         });
         setUserDetails(response.data);
-        console.log(response.data);
+        // console.log(response.data);
       } catch (error) {
         console.error("Error fetching users:", error.message);
       }
@@ -30,7 +30,7 @@ const UpdateUser = () => {
 
     fetchUsers();
   }, [id]);
-  console.log(userDetails);
+  // console.log(userDetails);
   const onSubmit = async (data) => {
     try {
       console.log(data);
@@ -47,7 +47,7 @@ const UpdateUser = () => {
           },
         }
       );
-      console.log(response);
+      // console.log(response);
       if (response.data?.success) {
         Swal.fire({
           icon: "success",

@@ -27,7 +27,10 @@ import STSVehicleEntry from "../pages/Dashboard/STSManager/STSVehicleEntry";
 import MySTS from "../pages/Dashboard/STSManager/MySTS";
 import MyLandfill from "../pages/Dashboard/LandfillManager/MyLandfill";
 import LandfillVehicleEntry from "../pages/Dashboard/LandfillManager/LandfillVehicleEntry";
-import RouteView from "../pages/Dashboard/SytemAdmin/ManageSTS/RouteView";
+import RouteView from "../pages/Dashboard/STSManager/RouteView";
+import BillingReport from "../pages/Dashboard/LandfillManager/BillingReport";
+import FleetOfTruck from "../pages/Dashboard/STSManager/FleetOfTruck";
+import CreateRoles from "../pages/Dashboard/SytemAdmin/Roles/CreateRoles";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -82,6 +85,7 @@ const router = createBrowserRouter([
         path: "userdetails/:id",
         element: <UserDetails></UserDetails>,
       },
+      { path: "create-role", element: <CreateRoles></CreateRoles> },
       {
         path: "roles",
         element: <Roles></Roles>,
@@ -108,11 +112,16 @@ const router = createBrowserRouter([
         path: "managests/:stsId",
         element: <SingleSTSManagement></SingleSTSManagement>,
       },
+      { path: "fleet-of-truck", element: <FleetOfTruck></FleetOfTruck> },
       {
         path: "route-view",
         element: <RouteView></RouteView>,
       },
       // landfill
+      {
+        path: "billing-report",
+        element: <BillingReport></BillingReport>,
+      },
       {
         path: "createlandfill",
         element: <CreateLandfill></CreateLandfill>,

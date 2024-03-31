@@ -51,16 +51,7 @@ const DashboardLayout = () => {
               >
                 CREATE USER
               </NavLink>
-              <NavLink
-                to="/"
-                className={({ isActive }) =>
-                  isActive
-                    ? "bg-[#2145e6]  rounded p-1 text-center text-xl text-white"
-                    : "border border-[#2145e6] rounded p-1 text-center text-xl"
-                }
-              >
-                CREATE ROLES
-              </NavLink>
+
               <NavLink
                 to="addvehicle"
                 className={({ isActive }) =>
@@ -111,6 +102,16 @@ const DashboardLayout = () => {
               >
                 MANAGE LANDFILL
               </NavLink>
+              <NavLink
+                to="create-role"
+                className={({ isActive }) =>
+                  isActive
+                    ? "bg-[#2145e6]  rounded p-1 text-center text-xl text-white"
+                    : "border border-[#2145e6] rounded p-1 text-center text-xl"
+                }
+              >
+                CREATE ROLES
+              </NavLink>
             </>
           )}
           {role == "stsmanager" && (
@@ -134,6 +135,17 @@ const DashboardLayout = () => {
                 }
               >
                 VEHICLE ENTRY
+              </NavLink>
+
+              <NavLink
+                to="fleet-of-truck"
+                className={({ isActive }) =>
+                  isActive
+                    ? "bg-[#2145e6]  rounded p-1 text-center text-xl text-white"
+                    : "border border-[#2145e6] rounded p-1 text-center text-xl"
+                }
+              >
+                FLEET OF TRUCK
               </NavLink>
               <NavLink
                 to="route-view"
@@ -168,6 +180,16 @@ const DashboardLayout = () => {
                 }
               >
                 ADD TRUCK ENTRY
+              </NavLink>
+              <NavLink
+                to="billing-report"
+                className={({ isActive }) =>
+                  isActive
+                    ? "bg-[#2145e6]  rounded p-1 text-center text-xl text-white"
+                    : "border border-[#2145e6] rounded p-1 text-center text-xl"
+                }
+              >
+                BILLING REPORT
               </NavLink>
             </>
           )}

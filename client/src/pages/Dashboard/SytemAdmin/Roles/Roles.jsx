@@ -20,7 +20,7 @@ const Roles = () => {
 
     fetchUsers();
   }, []);
-  console.log(roles);
+  // console.log(roles);
   return (
     <div>
       <ul className="steps steps-vertical">
