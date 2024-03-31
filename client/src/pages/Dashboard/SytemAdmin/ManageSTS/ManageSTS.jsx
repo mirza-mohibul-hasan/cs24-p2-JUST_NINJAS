@@ -5,6 +5,7 @@ import { BallTriangle } from "react-loader-spinner";
 import { Link } from "react-router-dom";
 import STSManager from "./STSManager";
 import STSVehicle from "./STSVehicle";
+import moment from "moment";
 
 const ManageSTS = () => {
   const { user } = useContext(AuthContext);
@@ -88,7 +89,7 @@ const ManageSTS = () => {
               <td>
                 {sts.latitude} & {sts.longitude}
               </td>
-              <td>{sts.regAt}</td>
+              <td>{moment(sts.regAt).format("LLL")}</td>
               <STSManager stsId={sts.stsId}></STSManager>
               <STSVehicle stsId={sts.stsId}></STSVehicle>
               <td>

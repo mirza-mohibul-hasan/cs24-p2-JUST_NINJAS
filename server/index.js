@@ -911,6 +911,20 @@ async function run() {
         res.status(500).send("Internal server error");
       }
     });
+
+    // SINGLE STS Details
+    app.get("/sts/single-info/:stsId", async (req, res) => {
+      const stsId = req.params.stsId;
+      try {
+        const result = await stsCollection.findOne({
+          stsId: stsId,
+        });
+        res.send(result);
+      } catch (error) {
+        console.error("Error checking manager ID:", error);
+        res.status(500).send("Internal server error");
+      }
+    });
     // assign manager to sts
     app.post("/sts/assign-manager", async (req, res) => {
       const stsId = req.body.stsId;
@@ -1429,36 +1443,39 @@ async function run() {
         throw err;
       }
     };
-    app.get("/sts-manager/fleet-opt/:stsId", async (req, res) => {
-      const stsId = req.params.stsId;
-
-      const targetSTS = await stsVehicleCollection.findOne({
-        stsId: stsId,
-      });
-      // console.log("TARGET STS", targetSTS);
-      const stsInfo = await stsCollection.findOne({
-        stsId: stsId,
-      });
-      // console.log("STS ALL INFO", stsInfo);
-      const vehiclesInfo = await vehicleCollection
-        .find({ vehicleId: { $in: targetSTS.vehicles } })
-        .toArray();
-      // console.log("TARGET STS VEHICLE", vehiclesInfo);
-
-      const vehicleUsed = fleetOptimizer(vehiclesInfo, stsInfo.capacity);
-      // console.log("Vehicle USED", vehicleUsed);
-      const usedVehicleInfo = await findFleetVehicles(vehicleUsed);
-      // console.log("USED VEHICLES", usedVehicleInfo);
-      res.send(usedVehicleInfo);
-      try {
-      } catch (error) {
-        console.error("Error Adding vehicle:", error);
-        res.status(500).json({
-          success: false,
-          message: "An error occurred while calculating",
+    app.get(
+      "/sts-manager/fleet-opt/:stsId/:wasteNeedToShift",
+      async (req, res) => {
+        const stsId = req.params.stsId;
+        const wasteNeedToShift = req.params.wasteNeedToShift;
+        const targetSTS = await stsVehicleCollection.findOne({
+          stsId: stsId,
         });
+        // console.log("TARGET STS", targetSTS);
+        const stsInfo = await stsCollection.findOne({
+          stsId: stsId,
+        });
+        // console.log("STS ALL INFO", stsInfo);
+        const vehiclesInfo = await vehicleCollection
+          .find({ vehicleId: { $in: targetSTS.vehicles } })
+          .toArray();
+        // console.log("TARGET STS VEHICLE", vehiclesInfo);
+
+        const vehicleUsed = fleetOptimizer(vehiclesInfo, wasteNeedToShift);
+        // console.log("Vehicle USED", vehicleUsed);
+        const usedVehicleInfo = await findFleetVehicles(vehicleUsed);
+        // console.log("USED VEHICLES", usedVehicleInfo);
+        res.send(usedVehicleInfo);
+        try {
+        } catch (error) {
+          console.error("Error Adding vehicle:", error);
+          res.status(500).json({
+            success: false,
+            message: "An error occurred while calculating",
+          });
+        }
       }
-    });
+    );
     // Route View
     app.get("/sts/route-view/:stsId", async (req, res) => {
       const stsInfo = await stsCollection.findOne({ stsId: req.params.stsId });
@@ -1492,6 +1509,50 @@ async function run() {
         to: landfillInfo,
       };
       res.send(optRoute);
+    });
+
+    // Dashboard
+    app.get("/dashboard/statistics", async (req, res) => {
+      try {
+        const billing = await billingCollection.find().toArray();
+        const stsWasteTransport = await stsVehicleEntryCollection
+          .find()
+          .toArray();
+        const landfillWasteTransport = await landfieldVehicleEntryCollection
+          .find()
+          .toArray();
+
+        const totalWeightOfWaste = billing.reduce(
+          (total, bill) => total + bill.weightOfWaste,
+          0
+        );
+        const totalWeightAtSTS = stsWasteTransport.reduce(
+          (total, entry) => total + entry.weightOfWaste,
+          0
+        );
+        const totalWeightAtLandfill = landfillWasteTransport.reduce(
+          (total, entry) => total + entry.weightOfWaste,
+          0
+        );
+        const totalFuelCost = billing.reduce(
+          (total, bill) => total + bill.vehicleInfo.fuel_cost_loaded,
+          0
+        );
+        const response = {
+          billing,
+          stsWasteTransport,
+          landfillWasteTransport,
+          totalWeightOfWaste,
+          totalWeightAtSTS,
+          totalWeightAtLandfill,
+          totalFuelCost,
+        };
+
+        res.json(response);
+      } catch (error) {
+        console.error("Error fetching statistics:", error.message);
+        res.status(500).json({ error: "Internal server error" });
+      }
     });
 
     /* Working Zone End */

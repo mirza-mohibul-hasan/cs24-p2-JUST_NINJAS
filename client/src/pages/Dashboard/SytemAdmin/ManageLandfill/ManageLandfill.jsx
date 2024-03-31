@@ -4,6 +4,7 @@ import { BallTriangle } from "react-loader-spinner";
 import axios from "axios";
 import LandfillManager from "./LandfillManager";
 import { Link } from "react-router-dom";
+import moment from "moment";
 
 const ManageLandfill = () => {
   const { user } = useContext(AuthContext);
@@ -92,7 +93,7 @@ const ManageLandfill = () => {
                 {landfill.latitude} & {landfill.longitude}
               </td>
               <td>{landfill.starttime}</td>
-              <td>{landfill.regAt}</td>
+              <td>{moment(landfill.regAt).format("LLL")}</td>
               <LandfillManager
                 landfillId={landfill.landfillId}
               ></LandfillManager>

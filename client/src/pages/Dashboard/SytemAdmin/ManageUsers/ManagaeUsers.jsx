@@ -4,6 +4,7 @@ import { BallTriangle } from "react-loader-spinner";
 import { Link } from "react-router-dom";
 import Swal from "sweetalert2";
 import { AuthContext } from "../../../../provider/AuthProvider";
+import moment from "moment";
 const ManagaeUsers = () => {
   const { user } = useContext(AuthContext);
   const [users, setUsers] = useState([]);
@@ -254,7 +255,7 @@ const ManagaeUsers = () => {
               <th>{index + 1}</th>
               <td>{rowuser.name ? rowuser.name : "Not Available"}</td>
               <td>{rowuser.email}</td>
-              <td>{rowuser.createdAt}</td>
+              <td>{moment(rowuser.createdAt).format("LLL")}</td>
               <td>
                 {rowuser.role == "sysadmin"
                   ? "System Admin"
