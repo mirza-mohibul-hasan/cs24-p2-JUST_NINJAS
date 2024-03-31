@@ -26,10 +26,17 @@ const DashHome = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
+        const token = localStorage.getItem("token");
         const response = await axios.get(
-          `http://localhost:3000/dashboard/statistics`
+          `http://localhost:3000/dashboard/statistics`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
         );
         setStatistics(response.data);
+        console.log(response.data);
         setLoading(false);
       } catch (error) {
         console.error("Error fetching statistics:", error.message);
@@ -57,7 +64,6 @@ const DashHome = () => {
     );
   }
 
-  // Data for the pie chart
   const pieData = [
     { name: "Total Weight of Waste", value: statistics.totalWeightOfWaste },
     { name: "Total Weight at STS", value: statistics.totalWeightAtSTS },
@@ -68,7 +74,6 @@ const DashHome = () => {
     { name: "Total Fuel Cost", value: statistics.totalFuelCost },
   ];
 
-  // Colors for each pie slice
   const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042"];
 
   return (

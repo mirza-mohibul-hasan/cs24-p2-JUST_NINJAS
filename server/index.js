@@ -150,82 +150,13 @@ async function run() {
         });
       }
     });
-    /* Users related api */
-    // Create a user
-    const storage = multer.diskStorage({
-      destination: function (req, file, cb) {
-        cb(null, path.join(__dirname, "profilepic"));
-      },
-      filename: function (req, file, cb) {
-        const timestamp = Date.now();
-        const userEmail = req.body.email;
-        const sanitizedEmail = userEmail.replace(/[^a-zA-Z0-9]/g, "");
-        const extension = path.extname(file.originalname);
-        const filename = `${sanitizedEmail}_${timestamp}${extension}`;
-        cb(null, filename);
-      },
-    });
-    const fileFilter = function (req, file, cb) {
-      if (file.mimetype.startsWith("image/")) {
-        cb(null, true);
-      } else {
-        cb(new Error("Only image files are allowed!"), false);
-      }
-    };
-    const upload = multer({ storage: storage, fileFilter: fileFilter });
-    app.post(
-      "/auth/create",
-      verifyJWT,
-      verifyAdmin,
-      upload.single("avatar"),
-      async (req, res) => {
-        try {
-          const email = req.body?.email;
-          const name = req.body?.name;
-          const nid = req.body?.nid;
-          const address = req.body?.address;
-          const password = req.body?.password;
-          const avatar = req.file;
-          const query = { email: email };
-          const existingUser = await userCollection.findOne(query);
-          if (existingUser) {
-            return res.json({
-              success: false,
-              message: "Email already exists",
-            });
-          } else {
-            const hash = await bcrypt.hash(password, saltRound);
-            const filename = req.file ? req.file.filename : null;
-            const user = {
-              name: name,
-              email: email,
-              nid: nid,
-              address: address,
-              password: hash,
-              role: "unassigned",
-              createdAt: new Date(),
-              avatar: filename,
-            };
-            const result = await userCollection.insertOne(user);
-            res.status(201).json({
-              success: true,
-              message: "User created successfully",
-              userId: result.insertedId,
-            });
-          }
-        } catch (error) {
-          console.error("Error creating user:", error);
-          res.status(500).json({
-            success: true,
-            message: "An error occurred while creating the user",
-          });
-        }
-      }
-    );
-    /* Login Logout Related API */
+
+    /* Authentication Endpoints     */
+    // Login
     app.post("/auth/login", async (req, res) => {
       try {
         const { email, password } = req.body;
+        console.log(req.body);
         const existingUser = await userCollection.findOne({ email });
         if (existingUser?.role === "unassigned") {
           return res.json({
@@ -245,6 +176,7 @@ async function run() {
                 expiresIn: "24h",
               });
               req.session.user = existingUser;
+              console.log(req.session);
               res.status(200).json({
                 success: true,
                 token: token,
@@ -267,7 +199,7 @@ async function run() {
           .json({ success: false, message: "Internal server error" });
       }
     });
-
+    // Logout
     app.get("/auth/logout", (req, res) => {
       req.session.destroy((err) => {
         if (err) {
@@ -327,7 +259,7 @@ async function run() {
     });
     app.post("/auth/reset-password/confirm", async (req, res) => {
       const { resetEmail, otp: storedOTP, otpTimestamp } = req.session;
-      const newPassword = req.body?.newpasssword;
+      const newPassword = req.body?.newpassword;
       const currentTime = Date.now(); // Current time in milliseconds
       const timeDifference = currentTime - otpTimestamp;
       const timeThreshold = 60 * 1000;
@@ -337,6 +269,13 @@ async function run() {
         delete req.session.otpTimestamp;
         return res.json({ success: false, message: "OTP has expired" });
       }
+      console.log(
+        resetEmail,
+        req.body?.email,
+        storedOTP,
+        req.body?.otp,
+        newPassword
+      );
       if (resetEmail === req.body?.email && storedOTP === req.body?.otp) {
         try {
           const hash = await bcrypt.hash(newPassword, saltRound);
@@ -368,7 +307,7 @@ async function run() {
         return res.json({ success: false, message: "Invalid email or OTP" });
       }
     });
-    app.put("/auth/change-password", async (req, res) => {
+    app.put("/auth/change-password", verifyJWT, async (req, res) => {
       try {
         const oldpassword = req.body?.oldpassword;
         const newpassword = req.body?.newpassword;
@@ -414,6 +353,79 @@ async function run() {
     });
 
     /* User Management Endpoints */
+    // Create a user
+    const storage = multer.diskStorage({
+      destination: function (req, file, cb) {
+        cb(null, path.join(__dirname, "profilepic"));
+      },
+      filename: function (req, file, cb) {
+        const timestamp = Date.now();
+        const userEmail = req.body.email;
+        const sanitizedEmail = userEmail.replace(/[^a-zA-Z0-9]/g, "");
+        const extension = path.extname(file.originalname);
+        const filename = `${sanitizedEmail}_${timestamp}${extension}`;
+        cb(null, filename);
+      },
+    });
+    const fileFilter = function (req, file, cb) {
+      if (file.mimetype.startsWith("image/")) {
+        cb(null, true);
+      } else {
+        cb(new Error("Only image files are allowed!"), false);
+      }
+    };
+    const upload = multer({ storage: storage, fileFilter: fileFilter });
+    app.post(
+      "/users",
+      verifyJWT,
+      verifyAdmin,
+      upload.single("avatar"),
+      async (req, res) => {
+        try {
+          const email = req.body?.email;
+          const name = req.body?.name;
+          const nid = req.body?.nid;
+          const address = req.body?.address;
+          const password = req.body?.password;
+          const avatar = req.file;
+          const query = { email: email };
+          // console.log(email);
+          const existingUser = await userCollection.findOne(query);
+          if (existingUser) {
+            return res.json({
+              success: false,
+              message: "Email already exists",
+            });
+          } else {
+            const hash = await bcrypt.hash(password, saltRound);
+            const filename = req.file ? req.file.filename : null;
+            const user = {
+              name: name,
+              email: email,
+              nid: nid,
+              address: address,
+              password: hash,
+              role: "unassigned",
+              createdAt: new Date(),
+              avatar: filename,
+            };
+            const result = await userCollection.insertOne(user);
+            res.status(201).json({
+              success: true,
+              message: "User created successfully",
+              userId: result.insertedId,
+            });
+          }
+        } catch (error) {
+          console.error("Error creating user:", error);
+          res.status(500).json({
+            success: true,
+            message: "An error occurred while creating the user",
+          });
+        }
+      }
+    );
+    // get Image
     app.get("/profilepic/:imageName", (req, res) => {
       const imageName = req.params.imageName;
       const imagePath = `profilepic/${imageName}`;
@@ -460,17 +472,24 @@ async function run() {
       }
     });
     // User roles
-    app.get("/users/roles", async (req, res) => {
+    app.get("/users/roles", verifyJWT, async (req, res) => {
       try {
-        const roles = await roleCollection.find().toArray();
-        res.status(200).json(roles);
+        // const roles = await roleCollection.find().toArray();
+        const users = await userCollection.find().toArray();
+        const transformedData = users.map((user) => {
+          return {
+            _id: user._id,
+            role: user.role,
+          };
+        });
+        res.json(transformedData);
       } catch (error) {
         console.error("Error fetching roles:", error);
         res.status(500).json({ error: "Internal server error" });
       }
     });
 
-    app.get("/users/:id", async (req, res) => {
+    app.get("/users/:id", verifyJWT, verifyAdmin, async (req, res) => {
       // console.log("Single User details");
       try {
         const id = req.params.id;
@@ -577,7 +596,7 @@ async function run() {
       }
     });
     // verifyJWT, verifyAdmin,
-    app.put("/users/:id/roles", async (req, res) => {
+    app.put("/users/:id/roles", verifyJWT, verifyAdmin, async (req, res) => {
       try {
         const id = req.params?.id;
         const newRole = req.body.newRole;
@@ -652,7 +671,7 @@ async function run() {
           .json({ message: "An error occurred while creating the user" });
       }
     });
-    app.put("/profile", async (req, res) => {
+    app.put("/profile", verifyJWT, async (req, res) => {
       try {
         const newemail = req.body?.newemail;
         const newname = req.body?.newname;
@@ -746,7 +765,6 @@ async function run() {
           res.status(201).json({
             success: true,
             message: "Added Successfully",
-            userId: result.insertedId,
           });
         }
       } catch (error) {
@@ -757,6 +775,7 @@ async function run() {
         });
       }
     });
+    // Create STS
     app.post("/sts/add", verifyJWT, verifyAdmin, async (req, res) => {
       try {
         const stsId = req.body?.stsId;
@@ -765,14 +784,6 @@ async function run() {
         const latitude = req.body?.latitude;
         const longitude = req.body?.longitude;
         const ward_num = req.body?.ward_num;
-        const query = { stsId: stsId };
-        // const existingSts = await stsCollection.findOne(query);
-        // if (existingVehicle) {
-        //   return res.json({
-        //     success: false,
-        //     message: "VEHICLE ALREADY EXISTS",
-        //   });
-        // } else {
         const sts = {
           stsId: stsId,
           capacity: capacity,
@@ -786,7 +797,6 @@ async function run() {
         res.status(201).json({
           success: true,
           message: "Added Successfully",
-          userId: result.insertedId,
         });
         // }
       } catch (error) {
@@ -833,7 +843,7 @@ async function run() {
       }
     });
     // All STS
-    app.get("/sts", async (req, res) => {
+    app.get("/sts", verifyJWT, async (req, res) => {
       try {
         const sts = await stsCollection.find().toArray();
         res.send(sts);
@@ -843,13 +853,12 @@ async function run() {
       }
     });
 
-    app.get("/stsmanager", async (req, res) => {
+    app.get("/stsmanager", verifyJWT, async (req, res) => {
       const result = await stsmanagerCollection.find().toArray();
       res.send(result);
     });
-    // const { ObjectId } = require("mongodb"); // Import ObjectId from MongoDB package
 
-    app.get("/assignedstsmanager/:stsId", async (req, res) => {
+    app.get("/assignedstsmanager/:stsId", verifyJWT, async (req, res) => {
       try {
         const result = await stsmanagerCollection.findOne({
           stsId: req.params.stsId,
@@ -871,7 +880,7 @@ async function run() {
         res.status(500).send("Internal server error");
       }
     });
-    app.get("/availablestsmanager", async (req, res) => {
+    app.get("/availablestsmanager", verifyJWT, async (req, res) => {
       try {
         const users = await userCollection
           .find({ role: "stsmanager" })
@@ -899,7 +908,7 @@ async function run() {
     });
 
     // check manager or not
-    app.get("/sts/manager-info/:managerId", async (req, res) => {
+    app.get("/sts/manager-info/:managerId", verifyJWT, async (req, res) => {
       const managerId = req.params.managerId;
       try {
         const managerExists = await stsmanagerCollection.findOne({
@@ -913,7 +922,7 @@ async function run() {
     });
 
     // SINGLE STS Details
-    app.get("/sts/single-info/:stsId", async (req, res) => {
+    app.get("/sts/single-info/:stsId", verifyJWT, async (req, res) => {
       const stsId = req.params.stsId;
       try {
         const result = await stsCollection.findOne({
@@ -926,7 +935,7 @@ async function run() {
       }
     });
     // assign manager to sts
-    app.post("/sts/assign-manager", async (req, res) => {
+    app.post("/sts/assign-manager", verifyJWT, async (req, res) => {
       const stsId = req.body.stsId;
       const managerId = req.body.managerId;
       const query = { stsId: stsId };
@@ -954,7 +963,7 @@ async function run() {
       }
     });
     // Remove a manager from sts
-    app.delete("/sts/remove-manager", async (req, res) => {
+    app.delete("/sts/remove-manager", verifyJWT, async (req, res) => {
       const { stsId, managerId } = req.body;
       // console.log(stsId, managerId);
       try {
@@ -985,7 +994,7 @@ async function run() {
       res.send(result);
     });
     // co
-    app.get("/sts/assigned-vehicle/:stsId", async (req, res) => {
+    app.get("/sts/assigned-vehicle/:stsId", verifyJWT, async (req, res) => {
       try {
         const result = await stsVehicleCollection.findOne({
           stsId: req.params.stsId,
@@ -1004,7 +1013,7 @@ async function run() {
         res.status(500).send("Internal server error");
       }
     });
-    app.get("/sts/available-vehicles", async (req, res) => {
+    app.get("/sts/available-vehicles", verifyJWT, async (req, res) => {
       try {
         const vehicles = await vehicleCollection.find().toArray();
         let vehiclesIds = [];
@@ -1025,7 +1034,7 @@ async function run() {
       }
     });
     // assign Vehicle to sts
-    app.post("/sts/assign-vehicle", async (req, res) => {
+    app.post("/sts/assign-vehicle", verifyJWT, async (req, res) => {
       const stsId = req.body.stsId;
       const vehicleId = req.body.vehicleId;
       const query = { stsId: stsId };
@@ -1037,7 +1046,7 @@ async function run() {
         );
         res.send({
           success: true,
-          message: "Manager added successfully.",
+          message: "Vehicle added successfully.",
           result,
         });
       } else {
@@ -1053,7 +1062,7 @@ async function run() {
       }
     });
     // // Remove a vehicle from sts
-    app.delete("/sts/remove-vehicle", async (req, res) => {
+    app.delete("/sts/remove-vehicle", verifyJWT, async (req, res) => {
       const { stsId, vehicleId } = req.body;
       // console.log(stsId, managerId);
       try {
@@ -1079,7 +1088,7 @@ async function run() {
 
     /* Data Entry Endpoints => Manage Landfill */
 
-    app.get("/landfill/all-landfill", async (req, res) => {
+    app.get("/landfill/all-landfill", verifyJWT, async (req, res) => {
       try {
         const landfill = await landfillCollection.find().toArray();
         res.send(landfill);
@@ -1097,6 +1106,7 @@ async function run() {
 
     app.get(
       "/landfill/assigned-landfill-manager/:landfillId",
+      verifyJWT,
       async (req, res) => {
         try {
           const result = await landfillManagerCollection.findOne({
@@ -1120,52 +1130,60 @@ async function run() {
         }
       }
     );
-    app.get("/landfill/available-landfill-manager", async (req, res) => {
-      try {
-        const users = await userCollection
-          .find({ role: "landmanager" })
-          .toArray();
-        const userIds = users.map((user) => user._id);
-        let managerIds = [];
-        await landfillManagerCollection.find().forEach((doc) => {
-          managerIds = [...managerIds, ...doc.managers];
-        });
-        const managerObjectIds = managerIds.map(
-          (managerId) => new ObjectId(managerId)
-        );
-        const managersNotInLandfillManager = await userCollection
-          .find({ _id: { $nin: managerObjectIds }, role: "landmanager" })
-          .toArray();
+    app.get(
+      "/landfill/available-landfill-manager",
+      verifyJWT,
+      async (req, res) => {
+        try {
+          const users = await userCollection
+            .find({ role: "landmanager" })
+            .toArray();
+          const userIds = users.map((user) => user._id);
+          let managerIds = [];
+          await landfillManagerCollection.find().forEach((doc) => {
+            managerIds = [...managerIds, ...doc.managers];
+          });
+          const managerObjectIds = managerIds.map(
+            (managerId) => new ObjectId(managerId)
+          );
+          const managersNotInLandfillManager = await userCollection
+            .find({ _id: { $nin: managerObjectIds }, role: "landmanager" })
+            .toArray();
 
-        res.send(managersNotInLandfillManager);
-      } catch (error) {
-        console.error(
-          "Error fetching landmanager not in landmanagerCollection:",
-          error
-        );
-        res.status(500).send("Internal server error");
+          res.send(managersNotInLandfillManager);
+        } catch (error) {
+          console.error(
+            "Error fetching landmanager not in landmanagerCollection:",
+            error
+          );
+          res.status(500).send("Internal server error");
+        }
       }
-    });
+    );
 
     // // check landfill manager or not
-    app.get("/landfill/manager-info/:managerId", async (req, res) => {
-      const managerId = req.params.managerId;
-      try {
-        const managerInfo = await landfillManagerCollection.findOne({
-          managers: managerId,
-        });
-        const landfillInfo = await landfillCollection.findOne({
-          landfillId: managerInfo.landfillId,
-        });
-        const trucks = await vehicleCollection.find().toArray();
-        res.send({ managerInfo, landfillInfo, trucks });
-      } catch (error) {
-        console.error("Error checking manager ID:", error);
-        res.status(500).send("Internal server error");
+    app.get(
+      "/landfill/manager-info/:managerId",
+      verifyJWT,
+      async (req, res) => {
+        const managerId = req.params.managerId;
+        try {
+          const managerInfo = await landfillManagerCollection.findOne({
+            managers: managerId,
+          });
+          const landfillInfo = await landfillCollection.findOne({
+            landfillId: managerInfo?.landfillId,
+          });
+          const trucks = await vehicleCollection.find().toArray();
+          res.send({ managerInfo, landfillInfo, trucks });
+        } catch (error) {
+          console.error("Error checking manager ID:", error);
+          res.status(500).send("Internal server error");
+        }
       }
-    });
-    // assign manager to sts
-    app.post("/landfil/assign-manager", async (req, res) => {
+    );
+    // assign manager to Landfill
+    app.post("/landfil/assign-manager", verifyJWT, async (req, res) => {
       const landfillId = req.body.landfillId;
       const managerId = req.body.managerId;
       const query = { landfillId: landfillId };
@@ -1193,7 +1211,7 @@ async function run() {
       }
     });
     // // Remove a manager from sts
-    app.delete("/landfill/remove-manager", async (req, res) => {
+    app.delete("/landfill/remove-manager", verifyJWT, async (req, res) => {
       const { landfillId, managerId } = req.body;
       // console.log(landfillId, managerId);
       try {
@@ -1220,7 +1238,7 @@ async function run() {
     });
 
     /* STS MANAGERS WORKS */
-    app.post("/sts-manager/add-entry", async (req, res) => {
+    app.post("/sts-manager/add-entry", verifyJWT, async (req, res) => {
       try {
         const stsId = req.body?.stsId;
         const timeOfArrival = req.body?.timeOfArrival;
@@ -1285,7 +1303,7 @@ async function run() {
         );
       }
     };
-    app.post("/landfill-manager/add-entry", async (req, res) => {
+    app.post("/landfill-manager/add-entry", verifyJWT, async (req, res) => {
       try {
         const landfillId = req.body?.landfillId;
         const vehicleId = req.body?.vehicleId;
@@ -1364,22 +1382,26 @@ async function run() {
         });
       }
     });
-    app.get("/landfill-manager/billing/:landfillId", async (req, res) => {
-      try {
-        const landfillId = req.params.landfillId;
-        // console.log(landfillId);
-        const bills = await billingCollection
-          .find({ landfillId: landfillId })
-          .toArray();
-        res.send(bills);
-      } catch (error) {
-        console.error("Error Adding vehicle:", error);
-        res.status(500).json({
-          success: false,
-          message: "An error occurred while calculating",
-        });
+    app.get(
+      "/landfill-manager/billing/:landfillId",
+      verifyJWT,
+      async (req, res) => {
+        try {
+          const landfillId = req.params.landfillId;
+          // console.log(landfillId);
+          const bills = await billingCollection
+            .find({ landfillId: landfillId })
+            .toArray();
+          res.send(bills);
+        } catch (error) {
+          console.error("Error Adding vehicle:", error);
+          res.status(500).json({
+            success: false,
+            message: "An error occurred while calculating",
+          });
+        }
       }
-    });
+    );
 
     // Fleet Optimization
     const fleetOptimizer = (vehicles, totalWaste) => {
@@ -1445,6 +1467,7 @@ async function run() {
     };
     app.get(
       "/sts-manager/fleet-opt/:stsId/:wasteNeedToShift",
+      verifyJWT,
       async (req, res) => {
         const stsId = req.params.stsId;
         const wasteNeedToShift = req.params.wasteNeedToShift;
@@ -1477,7 +1500,7 @@ async function run() {
       }
     );
     // Route View
-    app.get("/sts/route-view/:stsId", async (req, res) => {
+    app.get("/sts/route-view/:stsId", verifyJWT, async (req, res) => {
       const stsInfo = await stsCollection.findOne({ stsId: req.params.stsId });
       // console.log("STS", stsInfo);
       const allLandfill = await landfillCollection.find().toArray();
@@ -1512,7 +1535,7 @@ async function run() {
     });
 
     // Dashboard
-    app.get("/dashboard/statistics", async (req, res) => {
+    app.get("/dashboard/statistics", verifyJWT, async (req, res) => {
       try {
         const billing = await billingCollection.find().toArray();
         const stsWasteTransport = await stsVehicleEntryCollection

@@ -41,8 +41,8 @@ const LandfillVehicleEntry = () => {
 
     fetchLandfill();
   }, [user]);
-
-  if (loading) {
+  console.log(myLandfill, landfillManagers);
+  if (loading || !myLandfill || !landfillManagers) {
     return (
       <div className="flex justify-center items-center h-full">
         <BallTriangle
@@ -62,6 +62,7 @@ const LandfillVehicleEntry = () => {
     return <p>You Do not Have STS</p>;
   }
   const onSubmit = async (data) => {
+    console.log(!landfillManagers, myLandfill);
     if (!landfillManagers || !myLandfill) {
       alert("Please refresh");
     }
@@ -70,12 +71,13 @@ const LandfillVehicleEntry = () => {
     data.weightOfWaste = parseFloat(data.weightOfWaste);
 
     data.landfillEntryId = (
-      myLandfill.landfillId +
-      data.weightOfWaste +
-      Date.now()
+      myLandfill.landfillId.toString() +
+      data.weightOfWaste.toString() +
+      Date.now().toString()
     )
       .toLowerCase()
       .replace(/[^a-z0-9]/g, "");
+
     data.addedBy = user?.email;
     // console.log(data);
     try {

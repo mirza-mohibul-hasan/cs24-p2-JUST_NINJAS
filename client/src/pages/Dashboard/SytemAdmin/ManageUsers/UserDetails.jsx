@@ -23,7 +23,7 @@ const UserDetails = () => {
           },
         });
         setUserDetails(response.data);
-        console.log(response.data);
+        // console.log(response.data);
         setLoading(false);
       } catch (error) {
         console.error("Error fetching users:", error.message);

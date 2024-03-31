@@ -34,7 +34,7 @@ const CreateSTS = () => {
     data.addedBy = user?.email;
 
     try {
-      console.log(data);
+      // console.log(data);
       const token = localStorage.getItem("token");
       if (!token) {
         throw new Error("Token not found");
@@ -44,7 +44,7 @@ const CreateSTS = () => {
           Authorization: `Bearer ${token}`,
         },
       });
-      console.log(response);
+      // console.log(response);
       if (response.data?.success) {
         Swal.fire({
           icon: "success",

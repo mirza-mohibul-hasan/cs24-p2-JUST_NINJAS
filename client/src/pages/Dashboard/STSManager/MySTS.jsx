@@ -79,8 +79,7 @@ const MySTS = () => {
 
     fetchSTSDetails();
   }, [mySTS]);
-  console.log(stsInfo);
-  if (loading) {
+  if (loading || !stsInfo) {
     return (
       <div className="flex justify-center items-center h-full">
         <BallTriangle

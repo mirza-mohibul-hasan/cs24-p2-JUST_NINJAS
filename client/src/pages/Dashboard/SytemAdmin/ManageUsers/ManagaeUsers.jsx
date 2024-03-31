@@ -5,7 +5,10 @@ import { Link } from "react-router-dom";
 import Swal from "sweetalert2";
 import { AuthContext } from "../../../../provider/AuthProvider";
 import moment from "moment";
+import useUserType from "../../../../hooks/useUserType";
+import ErrorLoading from "../../../Error/ErrorLoading";
 const ManagaeUsers = () => {
+  let role = useUserType();
   const { user } = useContext(AuthContext);
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -60,6 +63,9 @@ const ManagaeUsers = () => {
         />
       </div>
     );
+  }
+  if (!loading && role !== "sysadmin") {
+    return <ErrorLoading></ErrorLoading>;
   }
   const handleSearchChange = (e) => {
     setSearchTerm(e.target.value);
