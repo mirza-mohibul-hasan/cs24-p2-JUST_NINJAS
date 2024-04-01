@@ -4,8 +4,10 @@ import axios from "axios";
 import { BallTriangle } from "react-loader-spinner";
 import jsPDF from "jspdf";
 import moment from "moment";
+import useTitle from "../../../hooks/useTitle";
 
 const BillingReport = () => {
+  useTitle("Billing Report");
   const [myLandfill, setMyLandfill] = useState(null);
   const [myreports, setMyReports] = useState([]);
   const [loading, setLoading] = useState(true);

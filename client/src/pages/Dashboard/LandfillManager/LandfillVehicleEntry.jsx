@@ -4,8 +4,10 @@ import axios from "axios";
 import { BallTriangle } from "react-loader-spinner";
 import { useForm } from "react-hook-form";
 import Swal from "sweetalert2";
+import useTitle from "../../../hooks/useTitle";
 
 const LandfillVehicleEntry = () => {
+  useTitle("Entry Vehicle");
   const { register, handleSubmit, reset } = useForm();
   const [myLandfill, setMyLandfill] = useState(null);
   const [landfillManagers, setLandfillManagers] = useState([]);
@@ -41,7 +43,7 @@ const LandfillVehicleEntry = () => {
 
     fetchLandfill();
   }, [user]);
-  console.log(myLandfill, landfillManagers);
+  // console.log(myLandfill, landfillManagers);
   if (loading || !myLandfill || !landfillManagers) {
     return (
       <div className="flex justify-center items-center h-full">
@@ -62,7 +64,7 @@ const LandfillVehicleEntry = () => {
     return <p>You Do not Have STS</p>;
   }
   const onSubmit = async (data) => {
-    console.log(!landfillManagers, myLandfill);
+    // console.log(!landfillManagers, myLandfill);
     if (!landfillManagers || !myLandfill) {
       alert("Please refresh");
     }
@@ -95,7 +97,7 @@ const LandfillVehicleEntry = () => {
           },
         }
       );
-      console.log(response);
+      // console.log(response);
       if (response.data?.success) {
         Swal.fire({
           icon: "success",

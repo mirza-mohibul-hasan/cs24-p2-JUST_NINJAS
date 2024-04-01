@@ -5,10 +5,9 @@ import { Link } from "react-router-dom";
 import Swal from "sweetalert2";
 import { AuthContext } from "../../../../provider/AuthProvider";
 import moment from "moment";
-import useUserType from "../../../../hooks/useUserType";
-import ErrorLoading from "../../../Error/ErrorLoading";
+import useTitle from "../../../../hooks/useTitle";
 const ManagaeUsers = () => {
-  let role = useUserType();
+  useTitle("Manage Users");
   const { user } = useContext(AuthContext);
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -64,9 +63,6 @@ const ManagaeUsers = () => {
       </div>
     );
   }
-  if (!loading && role !== "sysadmin") {
-    return <ErrorLoading></ErrorLoading>;
-  }
   const handleSearchChange = (e) => {
     setSearchTerm(e.target.value);
   };
@@ -114,7 +110,7 @@ const ManagaeUsers = () => {
         if (response.data.success) {
           Swal.fire("Deleted!", "User has been deleted.", "success");
           setRefetch(!refetch);
-          console.log("User has been deleted successfully.");
+          // console.log("User has been deleted successfully.");
         } else {
           Swal.fire("Error!", "Failed to delete user.", "error");
           console.error("Failed to delete user.");

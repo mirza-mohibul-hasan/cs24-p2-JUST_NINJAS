@@ -3,8 +3,10 @@ import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useParams } from "react-router-dom";
 import Swal from "sweetalert2";
+import useTitle from "../../../../hooks/useTitle";
 
 const UpdateUser = () => {
+  useTitle("Update User");
   const { register, handleSubmit, reset } = useForm();
   const [userDetails, setUserDetails] = useState([]);
   const { id } = useParams();

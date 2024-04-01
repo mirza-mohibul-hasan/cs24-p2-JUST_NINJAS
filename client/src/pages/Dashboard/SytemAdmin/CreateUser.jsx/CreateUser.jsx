@@ -2,9 +2,9 @@ import { useState } from "react";
 import Swal from "sweetalert2";
 import { useForm } from "react-hook-form";
 import axios from "axios";
-import useUserType from "../../../../hooks/useUserType";
-import ErrorLoading from "../../../Error/ErrorLoading";
+import useTitle from "../../../../hooks/useTitle";
 const CreateUser = () => {
+  useTitle("Create User");
   const {
     register,
     handleSubmit,
@@ -76,9 +76,6 @@ const CreateUser = () => {
     const confirmPassword = e?.target?.value;
     setConfirmPassword(confirmPassword);
   };
-  if (useUserType() !== "sysadmin") {
-    return <ErrorLoading></ErrorLoading>;
-  }
   return (
     <div className="hero min-h-screen">
       <div className="hero-content w-full">

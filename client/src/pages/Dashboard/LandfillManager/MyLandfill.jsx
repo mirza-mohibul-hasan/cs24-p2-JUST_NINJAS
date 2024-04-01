@@ -2,8 +2,10 @@ import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../../provider/AuthProvider";
 import axios from "axios";
 import { BallTriangle } from "react-loader-spinner";
+import useTitle from "../../../hooks/useTitle";
 
 const MyLandfill = () => {
+  useTitle("My Landfill");
   const [myLandfill, setMyLandfill] = useState(null);
   const [landfillManagers, setLandfillManagers] = useState([]);
   // const [myVehicles, setMyVehicles] = useState([]);

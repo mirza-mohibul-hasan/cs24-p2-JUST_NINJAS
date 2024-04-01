@@ -104,7 +104,8 @@ async function run() {
     );
     const billingCollection = db.collection("billing");
     const landfillCollection = db.collection("landfill");
-    /* Common API */
+    /* API STARTS */
+    /* RBAC */
     app.get("/rbac/roles", verifyJWT, async (req, res) => {
       try {
         const email = req.session?.user?.email;

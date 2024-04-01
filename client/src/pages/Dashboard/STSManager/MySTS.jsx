@@ -2,8 +2,10 @@ import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../../provider/AuthProvider";
 import axios from "axios";
 import { BallTriangle } from "react-loader-spinner";
+import useTitle from "../../../hooks/useTitle";
 
 const MySTS = () => {
+  useTitle("My STS");
   const [mySTS, setMySTS] = useState(null);
   const [stsInfo, setStsInfo] = useState(null);
   const [myVehicles, setMyVehicles] = useState([]);

@@ -14,7 +14,6 @@ import UpdateUser from "../pages/Dashboard/SytemAdmin/ManageUsers/UpdateUser";
 import UserDetails from "../pages/Dashboard/SytemAdmin/ManageUsers/UserDetails";
 import UpdateProfile from "../pages/Dashboard/Profile/UpdateProfile";
 import Roles from "../pages/Dashboard/SytemAdmin/Roles/Roles";
-import UpdateUserRole from "../pages/Dashboard/SytemAdmin/ManageUsers/UpdateUserRole";
 import AddVehicle from "../pages/Dashboard/SytemAdmin/ManageVehicles/AddVehicle";
 import CreateSTS from "../pages/Dashboard/SytemAdmin/ManageSTS/CreateSTS";
 import CreateLandfill from "../pages/Dashboard/SytemAdmin/ManageLandfill/CreateLandfill";
@@ -31,6 +30,10 @@ import BillingReport from "../pages/Dashboard/LandfillManager/BillingReport";
 import FleetOfTruck from "../pages/Dashboard/STSManager/FleetOfTruck";
 import CreateRoles from "../pages/Dashboard/SytemAdmin/Roles/CreateRoles";
 import ErrorPage from "../pages/Error/ErrorPage";
+import AdminRoute from "./AdminRoute";
+import STSManagerRoute from "./STSManagerRoute";
+import LandfillManagerRoute from "./LandfillManagerRoute";
+import PrivateRoute from "./PrivateRoute";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -59,96 +62,209 @@ const router = createBrowserRouter([
     path: "/dashboard",
     element: <DashboardLayout></DashboardLayout>,
     children: [
-      { path: "home", element: <DashHome></DashHome> },
-      { path: "profile", element: <Profile></Profile> },
-      { path: "updateprofile", element: <UpdateProfile></UpdateProfile> },
+      {
+        path: "home",
+        element: (
+          <PrivateRoute>
+            <DashHome></DashHome>
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "profile",
+        element: (
+          <PrivateRoute>
+            <Profile></Profile>
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "updateprofile",
+        element: (
+          <PrivateRoute>
+            <UpdateProfile></UpdateProfile>
+          </PrivateRoute>
+        ),
+      },
       {
         path: "changepassword",
-        element: <ChangePassword></ChangePassword>,
+        element: (
+          <PrivateRoute>
+            <ChangePassword></ChangePassword>
+          </PrivateRoute>
+        ),
       },
       {
         path: "manageusers",
-        element: <ManagaeUsers></ManagaeUsers>,
+        element: (
+          <AdminRoute>
+            <ManagaeUsers></ManagaeUsers>
+          </AdminRoute>
+        ),
       },
       {
         path: "createuser",
-        element: <CreateUser></CreateUser>,
+        element: (
+          <AdminRoute>
+            <CreateUser></CreateUser>
+          </AdminRoute>
+        ),
       },
       {
         path: "updateuser/:id",
-        element: <UpdateUser></UpdateUser>,
+        element: (
+          <AdminRoute>
+            <UpdateUser></UpdateUser>
+          </AdminRoute>
+        ),
       },
       {
         path: "userdetails/:id",
-        element: <UserDetails></UserDetails>,
+        element: (
+          <AdminRoute>
+            <UserDetails></UserDetails>
+          </AdminRoute>
+        ),
       },
-      { path: "create-role", element: <CreateRoles></CreateRoles> },
+      {
+        path: "create-role",
+        element: (
+          <AdminRoute>
+            <CreateRoles></CreateRoles>
+          </AdminRoute>
+        ),
+      },
       {
         path: "roles",
         element: <Roles></Roles>,
       },
-      {
-        path: "updateuserrole/:id",
-        element: <UpdateUserRole></UpdateUserRole>,
-      },
+      // {
+      //   path: "updateuserrole/:id",
+      //   element: (
+      //     <AdminRoute>
+      //       <UpdateUserRole></UpdateUserRole>
+      //     </AdminRoute>
+      //   ),
+      // },
       // Vehicle Related
       {
         path: "addvehicle",
-        element: <AddVehicle></AddVehicle>,
+        element: (
+          <AdminRoute>
+            <AddVehicle></AddVehicle>
+          </AdminRoute>
+        ),
       },
       // STS Related
       {
         path: "creatests",
-        element: <CreateSTS></CreateSTS>,
+        element: (
+          <AdminRoute>
+            <CreateSTS></CreateSTS>
+          </AdminRoute>
+        ),
       },
       {
         path: "managests",
-        element: <ManageSTS></ManageSTS>,
+        element: (
+          <AdminRoute>
+            <ManageSTS></ManageSTS>
+          </AdminRoute>
+        ),
       },
       {
         path: "managests/:stsId",
-        element: <SingleSTSManagement></SingleSTSManagement>,
+        element: (
+          <AdminRoute>
+            <SingleSTSManagement></SingleSTSManagement>
+          </AdminRoute>
+        ),
       },
-      { path: "fleet-of-truck", element: <FleetOfTruck></FleetOfTruck> },
-      {
-        path: "route-view",
-        element: <RouteView></RouteView>,
-      },
+
       // landfill
-      {
-        path: "billing-report",
-        element: <BillingReport></BillingReport>,
-      },
+
       {
         path: "createlandfill",
-        element: <CreateLandfill></CreateLandfill>,
+        element: (
+          <AdminRoute>
+            <CreateLandfill></CreateLandfill>
+          </AdminRoute>
+        ),
       },
       {
         path: "managelandfill",
-        element: <ManageLandfill></ManageLandfill>,
+        element: (
+          <AdminRoute>
+            <ManageLandfill></ManageLandfill>
+          </AdminRoute>
+        ),
       },
       {
         path: "managelandfill/:landfillId",
-        element: <SingleLandfillManagement></SingleLandfillManagement>,
+        element: (
+          <AdminRoute>
+            <SingleLandfillManagement></SingleLandfillManagement>
+          </AdminRoute>
+        ),
       },
 
       // STS Manager Route
       {
         path: "mysts",
-        element: <MySTS></MySTS>,
+        element: (
+          <STSManagerRoute>
+            <MySTS></MySTS>
+          </STSManagerRoute>
+        ),
       },
       {
         path: "sts-vehicle-entry",
-        element: <STSVehicleEntry></STSVehicleEntry>,
+        element: (
+          <STSManagerRoute>
+            <STSVehicleEntry></STSVehicleEntry>
+          </STSManagerRoute>
+        ),
+      },
+      {
+        path: "fleet-of-truck",
+        element: (
+          <STSManagerRoute>
+            <FleetOfTruck></FleetOfTruck>
+          </STSManagerRoute>
+        ),
+      },
+      {
+        path: "route-view",
+        element: (
+          <STSManagerRoute>
+            <RouteView></RouteView>
+          </STSManagerRoute>
+        ),
       },
       // Landfill Manager Route
       {
         path: "mylandfill",
-        element: <MyLandfill></MyLandfill>,
+        element: (
+          <LandfillManagerRoute>
+            <MyLandfill></MyLandfill>
+          </LandfillManagerRoute>
+        ),
       },
       {
         path: "landfill-vehicle-entry",
-        element: <LandfillVehicleEntry></LandfillVehicleEntry>,
+        element: (
+          <LandfillManagerRoute>
+            <LandfillVehicleEntry></LandfillVehicleEntry>
+          </LandfillManagerRoute>
+        ),
+      },
+      {
+        path: "billing-report",
+        element: (
+          <LandfillManagerRoute>
+            <BillingReport></BillingReport>
+          </LandfillManagerRoute>
+        ),
       },
     ],
   },

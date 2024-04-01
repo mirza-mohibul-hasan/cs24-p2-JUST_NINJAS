@@ -6,8 +6,10 @@ import { Link } from "react-router-dom";
 import STSManager from "./STSManager";
 import STSVehicle from "./STSVehicle";
 import moment from "moment";
+import useTitle from "../../../../hooks/useTitle";
 
 const ManageSTS = () => {
+  useTitle("Manage STS");
   const { user } = useContext(AuthContext);
   const [allsts, setAllSTS] = useState([]);
   const [loading, setLoading] = useState(true);

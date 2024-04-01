@@ -1,6 +1,8 @@
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import useTitle from "../../hooks/useTitle";
 const RestPassword = () => {
+  useTitle("Reset Password");
   const navigate = useNavigate();
   const handleReset = async (event) => {
     event.preventDefault();
@@ -8,7 +10,7 @@ const RestPassword = () => {
     axios
       .post("http://localhost:3000/auth/reset-password/initiate", { email })
       .then((response) => {
-        console.log(response);
+        // console.log(response);
         if (response.data?.success) {
           alert(response.data?.message);
           sessionStorage.setItem("resetEmail", email);

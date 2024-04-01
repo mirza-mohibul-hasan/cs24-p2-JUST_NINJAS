@@ -7,7 +7,9 @@ import { useContext, useEffect, useState } from "react";
 import { BallTriangle } from "react-loader-spinner";
 import moment from "moment";
 import L from "leaflet";
+import useTitle from "../../../hooks/useTitle";
 const RouteView = () => {
+  useTitle("Route View");
   const [mySTS, setMySTS] = useState(null);
   const [allLandfill, setAllLandfill] = useState([]);
   const [from, setFrom] = useState(null);

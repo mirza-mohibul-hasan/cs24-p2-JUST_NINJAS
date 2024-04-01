@@ -4,8 +4,10 @@ import axios from "axios";
 import { BallTriangle } from "react-loader-spinner";
 import { useForm } from "react-hook-form";
 import Swal from "sweetalert2";
+import useTitle from "../../../hooks/useTitle";
 
 const FleetOfTruck = () => {
+  useTitle("Fleet of Trucks");
   const { register, handleSubmit, reset } = useForm();
   const [mySTS, setMySTS] = useState(null);
   const [stsInfo, setStsInfo] = useState(null);

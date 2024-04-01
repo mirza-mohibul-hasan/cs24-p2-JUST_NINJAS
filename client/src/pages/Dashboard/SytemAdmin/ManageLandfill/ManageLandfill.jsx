@@ -5,8 +5,10 @@ import axios from "axios";
 import LandfillManager from "./LandfillManager";
 import { Link } from "react-router-dom";
 import moment from "moment";
+import useTitle from "../../../../hooks/useTitle";
 
 const ManageLandfill = () => {
+  useTitle("Manage Landfill");
   const { user } = useContext(AuthContext);
   const [allLandfill, setAllLandfill] = useState([]);
   const [loading, setLoading] = useState(true);

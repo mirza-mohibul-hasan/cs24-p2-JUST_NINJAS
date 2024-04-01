@@ -3,8 +3,10 @@ import { useEffect, useState } from "react";
 import { BallTriangle } from "react-loader-spinner";
 import { useParams } from "react-router-dom";
 import Swal from "sweetalert2";
+import useTitle from "../../../../hooks/useTitle";
 
 const SingleLandfillManagement = () => {
+  useTitle("Landfill Info");
   const [assignedmanagers, setAssignedManagers] = useState([]);
   const [availablemanagers, setAvailableManagers] = useState([]);
   const [loading, setLoading] = useState(true);

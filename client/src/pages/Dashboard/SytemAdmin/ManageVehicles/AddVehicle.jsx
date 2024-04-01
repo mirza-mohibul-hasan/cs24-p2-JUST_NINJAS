@@ -4,7 +4,9 @@ import axios from "axios";
 import { useContext } from "react";
 import { AuthContext } from "../../../../provider/AuthProvider";
 import { BallTriangle } from "react-loader-spinner";
+import useTitle from "../../../../hooks/useTitle";
 const AddVehicle = () => {
+  useTitle("Add Vehicles");
   const { user, loading } = useContext(AuthContext);
   const { register, handleSubmit, reset } = useForm();
   if (!user || loading) {

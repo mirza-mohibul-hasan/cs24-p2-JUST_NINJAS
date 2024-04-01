@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 import { CgProfile } from "react-icons/cg";
 
 const LandfillManager = ({ landfillId }) => {
-  //   console.log(landfillId);
   const [managers, setManagers] = useState([]);
   useEffect(() => {
     const fetchSTS = async () => {

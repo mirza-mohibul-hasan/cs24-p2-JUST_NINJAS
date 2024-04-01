@@ -1,6 +1,8 @@
 import { BallTriangle } from "react-loader-spinner";
+import useTitle from "../../hooks/useTitle";
 
 const ErrorLoading = () => {
+  useTitle("Error");
   return (
     <div className="flex flex-col justify-center items-center h-full">
       <BallTriangle

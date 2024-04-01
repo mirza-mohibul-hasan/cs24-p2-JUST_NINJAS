@@ -1,9 +1,11 @@
 import { NavLink, Outlet } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
-import useUserType from "../hooks/useUserType";
+import { useContext } from "react";
+import { AuthContext } from "../provider/AuthProvider";
 const DashboardLayout = () => {
-  const role = useUserType();
+  const { user } = useContext(AuthContext);
+  const role = user?.role;
   return (
     <>
       <Navbar></Navbar>
