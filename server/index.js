@@ -105,59 +105,12 @@ async function run() {
     const billingCollection = db.collection("billing");
     const landfillCollection = db.collection("landfill");
     /* API STARTS */
-    /* RBAC */
-    app.get("/rbac/roles", verifyJWT, async (req, res) => {
-      try {
-        const email = req.session?.user?.email;
-        const query = { email: email };
-        const existingUser = await userCollection.findOne(query);
-        if (existingUser) {
-          res.send({ role: existingUser?.role });
-        }
-      } catch (error) {
-        console.error("Permission Denied:", error);
-        res.status(500).json({
-          message: "Permission Denied",
-        });
-      }
-    });
-    app.post("/rbac/roles", verifyJWT, verifyAdmin, async (req, res) => {
-      try {
-        const role = req.body?.role;
-        if (!role) {
-          return res.json({ success: false, message: "Role is required" });
-        }
-        const query = { role: role };
-        const existRole = await roleCollection.findOne(query);
-        if (existRole) {
-          return res.json({ success: false, message: "Role already exists" });
-        }
-        const result = await roleCollection.insertOne(req.body);
-        if (result.insertedId) {
-          return res.status(201).json({
-            success: true,
-            message: "Role created successfully",
-            roleId: result.insertedId,
-          });
-        } else {
-          return res
-            .status(500)
-            .json({ success: false, message: "Failed to get inserted ID" });
-        }
-      } catch (error) {
-        console.error("Failed creating role:", error);
-        res.status(500).json({
-          message: "Failed creating role",
-        });
-      }
-    });
-
     /* Authentication Endpoints     */
     // Login
     app.post("/auth/login", async (req, res) => {
       try {
         const { email, password } = req.body;
-        console.log(req.body);
+        // console.log(req.body);
         const existingUser = await userCollection.findOne({ email });
         if (existingUser?.role === "unassigned") {
           return res.json({
@@ -177,7 +130,7 @@ async function run() {
                 expiresIn: "24h",
               });
               req.session.user = existingUser;
-              console.log(req.session);
+              // console.log(req.session);
               res.status(200).json({
                 success: true,
                 token: token,
@@ -238,7 +191,7 @@ async function run() {
       req.session.resetEmail = email;
       req.session.otp = otp;
       req.session.otpTimestamp = otpTimestamp;
-      console.log(req.session);
+      // console.log(req.session);
       const mailOptions = {
         from: "ecosyncninjas@gmail.com",
         to: email,
@@ -602,7 +555,7 @@ async function run() {
         const id = req.params?.id;
         const newRole = req.body.newRole;
         const oldRole = req.body.oldRole;
-        console.log(id, oldRole, newRole);
+        // console.log(id, oldRole, newRole);
         if (!newRole || !oldRole) {
           return res.json({
             success: false,
@@ -652,6 +605,52 @@ async function run() {
       } catch (error) {
         console.error("Error updating role user:", error);
         res.status(500).json({ error: "Internal server error" });
+      }
+    });
+    /* RBAC */
+    app.get("/rbac/roles", verifyJWT, async (req, res) => {
+      try {
+        const email = req.session?.user?.email;
+        const query = { email: email };
+        const existingUser = await userCollection.findOne(query);
+        if (existingUser) {
+          res.send({ role: existingUser?.role });
+        }
+      } catch (error) {
+        console.error("Permission Denied:", error);
+        res.status(500).json({
+          message: "Permission Denied",
+        });
+      }
+    });
+    app.post("/rbac/roles", verifyJWT, verifyAdmin, async (req, res) => {
+      try {
+        const role = req.body?.role;
+        if (!role) {
+          return res.json({ success: false, message: "Role is required" });
+        }
+        const query = { role: role };
+        const existRole = await roleCollection.findOne(query);
+        if (existRole) {
+          return res.json({ success: false, message: "Role already exists" });
+        }
+        const result = await roleCollection.insertOne(req.body);
+        if (result.insertedId) {
+          return res.status(201).json({
+            success: true,
+            message: "Role created successfully",
+            roleId: result.insertedId,
+          });
+        } else {
+          return res
+            .status(500)
+            .json({ success: false, message: "Failed to get inserted ID" });
+        }
+      } catch (error) {
+        console.error("Failed creating role:", error);
+        res.status(500).json({
+          message: "Failed creating role",
+        });
       }
     });
 
@@ -1367,6 +1366,7 @@ async function run() {
           stsId: stsInfo.stsId,
           landfillId: landfillId,
           billedBy: addedBy,
+          areaName: landfillInfo?.areaName,
         };
         // console.log("Bill", bill);
         await landfieldVehicleEntryCollection.insertOne(newEntry);
@@ -1578,6 +1578,25 @@ async function run() {
         res.status(500).json({ error: "Internal server error" });
       }
     });
+
+    // Billing System Admin
+    app.get(
+      "/system-admin/billing",
+      verifyJWT,
+      verifyAdmin,
+      async (req, res) => {
+        try {
+          const bills = await billingCollection.find().toArray();
+          res.send(bills);
+        } catch (error) {
+          console.error("Error Adding vehicle:", error);
+          res.status(500).json({
+            success: false,
+            message: "An error occurred while calculating",
+          });
+        }
+      }
+    );
 
     /* Working Zone End */
     // Send a ping to confirm a successful connection
