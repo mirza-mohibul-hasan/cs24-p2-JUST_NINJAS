@@ -2,9 +2,9 @@ import { useState } from "react";
 import Swal from "sweetalert2";
 import { useForm } from "react-hook-form";
 import axios from "axios";
-import useUserType from "../../../../hooks/useUserType";
-import ErrorLoading from "../../../Error/ErrorLoading";
+import useTitle from "../../../../hooks/useTitle";
 const CreateUser = () => {
+  useTitle("Create User");
   const {
     register,
     handleSubmit,
@@ -45,7 +45,7 @@ const CreateUser = () => {
             },
           }
         );
-        console.log(response);
+        // console.log(response);
         if (response.data?.success) {
           Swal.fire({
             icon: "success",
@@ -76,19 +76,16 @@ const CreateUser = () => {
     const confirmPassword = e?.target?.value;
     setConfirmPassword(confirmPassword);
   };
-  if (useUserType() !== "sysadmin") {
-    return <ErrorLoading></ErrorLoading>;
-  }
   return (
     <div className="hero min-h-screen">
       <div className="hero-content w-full">
-        <div className="card flex-shrink-0 w-full max-w-lg shadow-2xl bg-[#dadff3]">
+        <div className="card flex-shrink-0 w-full max-w-lg shadow-2xl bg-[#dadff3] dark:bg-gray-600">
           <div className="card-body">
             <h1 className="text-3xl text-center font-bold text-[#2145e6]">
               Create User Here
             </h1>
             <p className="text-[#2145e6] text-center border border-[#2145e6] rounded-lg font-semibold"></p>
-            <form onSubmit={handleSubmit(onSubmit)}>
+            <form onSubmit={handleSubmit(onSubmit)} className="dark:text-black">
               <div className="form-control">
                 <label className="label">
                   <span className="label-text">Name</span>

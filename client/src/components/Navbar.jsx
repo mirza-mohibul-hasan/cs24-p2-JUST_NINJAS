@@ -28,7 +28,7 @@ const Navbar = () => {
             <Link href="/" className="flex gap-1 text-gray-800 items-center ">
               <img src={logo} className="h-8 w-8 rounded-full" alt="" />
               <span className="font-agbalumo text-2xl font-semibold dark:text-white">
-                EcoSync Ninja
+                EcoSync DNCC
               </span>
             </Link>
             {/* primary */}
@@ -52,7 +52,7 @@ const Navbar = () => {
                   }
                   to="/dashboard/home"
                 >
-                  Dashbord
+                  Dashboard
                 </NavLink>
               )}
             </div>
@@ -71,7 +71,7 @@ const Navbar = () => {
                     <CiLight className="h-5 w-5" />
                   )}
                 </button>
-                {user && <p>{user?.name}</p>}
+                {user && <p className="text-white font-bold">{user?.name}</p>}
               </div>
               {!user ? (
                 <div className="hidden lg:flex gap-2 font-poppins">

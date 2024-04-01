@@ -2,7 +2,9 @@ import axios from "axios";
 import { useState } from "react";
 import ReCAPTCHA from "react-google-recaptcha";
 import { useNavigate } from "react-router-dom";
+import useTitle from "../../hooks/useTitle";
 const OTPVerification = () => {
+  useTitle("OTP Verification");
   const navigate = useNavigate();
   const [passwordShown, setPasswordShown] = useState(false);
   const togglePasswordVisiblity = () => {

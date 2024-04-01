@@ -4,8 +4,10 @@ import ReCAPTCHA from "react-google-recaptcha";
 import { useForm } from "react-hook-form";
 import { useLocation, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
+import useTitle from "../../hooks/useTitle";
 
 const ChangePassword = () => {
+  useTitle("Change Password");
   const navigate = useNavigate();
   const location = useLocation();
   const from = location.state?.from?.pathname || "/";
@@ -22,17 +24,20 @@ const ChangePassword = () => {
     reset,
     formState: { errors },
   } = useForm();
+
   useEffect(() => {
     const timer = setInterval(() => {
       setExpiryTime((prevTime) => prevTime - 1);
     }, 1000);
     return () => clearInterval(timer);
   }, []);
+
   useEffect(() => {
     if (expiryTime <= 0) {
       navigate(from, { replace: true });
     }
-  });
+  }, [expiryTime, from, navigate]);
+
   const onSubmit = async (data) => {
     try {
       if (data.newpassword !== confirmPassword) {
@@ -64,7 +69,7 @@ const ChangePassword = () => {
             title: response.data?.message,
             text: "Congratulations",
           });
-          reset;
+          reset();
         } else {
           Swal.fire({
             icon: "error",
@@ -85,10 +90,15 @@ const ChangePassword = () => {
       });
     }
   };
+
   const handleConfim = (e) => {
     const confirmPassword = e?.target?.value;
     setConfirmPassword(confirmPassword);
   };
+
+  const seconds = expiryTime % 60;
+  const minutes = Math.floor(expiryTime / 60);
+
   return (
     <div className=" min-h-screen">
       <div className="hero-content w-full">
@@ -98,6 +108,10 @@ const ChangePassword = () => {
               Change Password
             </h1>
             <p className="text-[#2145e6] text-center border border-[#2145e6] rounded-lg font-semibold"></p>
+            <div className="text-center text-red-500 text-xl font-semibold">
+              Time remaining: {minutes < 10 ? `0${minutes}` : minutes}:
+              {seconds < 10 ? `0${seconds}` : seconds}
+            </div>
             <form onSubmit={handleSubmit(onSubmit)}>
               <div className="form-control">
                 <label className="label">
@@ -118,10 +132,6 @@ const ChangePassword = () => {
                 <input
                   type="password"
                   required
-                  // {...register("newpassword", {
-                  //   minLength: 6,
-                  //   pattern: /(?=.*[A-Z])(?=.*[!@#$&*])/,
-                  // })}
                   {...register("newpassword")}
                   placeholder="Your password"
                   className="input input-bordered bg-gray-100"
@@ -151,7 +161,7 @@ const ChangePassword = () => {
               </div>
               <div
                 className="flex justify-center mt-1"
-                style={{ transform: "scale(0.85)", transformOrigin: "0 0" }}
+                style={{ transform: "scale(0.95)", transformOrigin: "0 0" }}
               >
                 <ReCAPTCHA
                   sitekey={"6LdT1KYpAAAAAPxwh2xoSLCR7VK1QDiODBgeux-w"}

@@ -3,8 +3,10 @@ import { AuthContext } from "../../../../provider/AuthProvider";
 import axios from "axios";
 import { BallTriangle } from "react-loader-spinner";
 import { useParams } from "react-router-dom";
+import useTitle from "../../../../hooks/useTitle";
 
 const UserDetails = () => {
+  useTitle("User Details");
   const [userDetails, setUserDetails] = useState([]);
   const [loading, setLoading] = useState(true);
   const { user } = useContext(AuthContext);
