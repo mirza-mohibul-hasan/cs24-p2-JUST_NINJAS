@@ -106,6 +106,16 @@ const DashboardLayout = () => {
                   MANAGE LANDFILL
                 </NavLink>
                 <NavLink
+                  to="all-billing"
+                  className={({ isActive }) =>
+                    isActive
+                      ? "bg-[#2145e6]  rounded p-1 text-center text-xl text-white"
+                      : "border border-[#2145e6] rounded p-1 text-center text-xl"
+                  }
+                >
+                  ALL BILLING
+                </NavLink>
+                <NavLink
                   to="create-role"
                   className={({ isActive }) =>
                     isActive
@@ -114,6 +124,16 @@ const DashboardLayout = () => {
                   }
                 >
                   CREATE ROLES
+                </NavLink>
+                <NavLink
+                  to="roles"
+                  className={({ isActive }) =>
+                    isActive
+                      ? "bg-[#2145e6]  rounded p-1 text-center text-xl text-white"
+                      : "border border-[#2145e6] rounded p-1 text-center text-xl"
+                  }
+                >
+                  ROLES
                 </NavLink>
               </>
             )}
@@ -196,16 +216,6 @@ const DashboardLayout = () => {
                 </NavLink>
               </>
             )}
-            <NavLink
-              to="roles"
-              className={({ isActive }) =>
-                isActive
-                  ? "bg-[#2145e6]  rounded p-1 text-center text-xl text-white"
-                  : "border border-[#2145e6] rounded p-1 text-center text-xl"
-              }
-            >
-              ROLES
-            </NavLink>
           </div>
           <div className="w-full p-5">
             <Outlet></Outlet>

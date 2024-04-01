@@ -34,6 +34,7 @@ import AdminRoute from "./AdminRoute";
 import STSManagerRoute from "./STSManagerRoute";
 import LandfillManagerRoute from "./LandfillManagerRoute";
 import PrivateRoute from "./PrivateRoute";
+import AllBilling from "../pages/Dashboard/SytemAdmin/Billng/AllBilling";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -138,14 +139,14 @@ const router = createBrowserRouter([
         path: "roles",
         element: <Roles></Roles>,
       },
-      // {
-      //   path: "updateuserrole/:id",
-      //   element: (
-      //     <AdminRoute>
-      //       <UpdateUserRole></UpdateUserRole>
-      //     </AdminRoute>
-      //   ),
-      // },
+      {
+        path: "all-billing",
+        element: (
+          <AdminRoute>
+            <AllBilling></AllBilling>
+          </AdminRoute>
+        ),
+      },
       // Vehicle Related
       {
         path: "addvehicle",
