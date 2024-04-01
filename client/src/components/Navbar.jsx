@@ -71,7 +71,7 @@ const Navbar = () => {
                     <CiLight className="h-5 w-5" />
                   )}
                 </button>
-                {user && <p>{user?.name}</p>}
+                {user && <p className="text-white font-bold">{user?.name}</p>}
               </div>
               {!user ? (
                 <div className="hidden lg:flex gap-2 font-poppins">

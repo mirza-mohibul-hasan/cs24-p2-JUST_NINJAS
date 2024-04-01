@@ -43,7 +43,9 @@ const LandfillVehicleEntry = () => {
 
     fetchLandfill();
   }, [user]);
-  // console.log(myLandfill, landfillManagers);
+  if (!myLandfill && !landfillManagers) {
+    return <p className="text-5xl text-center">You Do not Have Landfill</p>;
+  }
   if (loading || !myLandfill || !landfillManagers) {
     return (
       <div className="flex justify-center items-center h-full">
@@ -59,9 +61,6 @@ const LandfillVehicleEntry = () => {
         />
       </div>
     );
-  }
-  if (!myLandfill && !landfillManagers) {
-    return <p>You Do not Have STS</p>;
   }
   const onSubmit = async (data) => {
     // console.log(!landfillManagers, myLandfill);
@@ -126,22 +125,24 @@ const LandfillVehicleEntry = () => {
   return (
     <div className=" min-h-screen">
       <div className="hero-content w-full">
-        <div className="card flex-shrink-0 w-full max-w-lg shadow-2xl bg-[#dadff3]">
-          <div className="card-body">
-            <h1 className="text-3xl text-center font-bold text-[#2145e6]">
+        <div className="card flex-shrink-0 w-full max-w-lg shadow-2xl bg-[#dadff3] dark:bg-gray-700 ">
+          <div className="card-body ">
+            <h1 className="text-3xl text-center font-bold text-[#2145e6] dark:text-white">
               ADD TRUCK ENTRY
             </h1>
             <p className="text-[#2145e6] text-center border border-[#2145e6] rounded-lg font-semibold"></p>
             <form onSubmit={handleSubmit(onSubmit)}>
               <div className="form-control">
                 <label className="label">
-                  <span className="label-text">Select Incomming Truck</span>
+                  <span className="label-text dark:text-white">
+                    Select Incomming Truck
+                  </span>
                 </label>
                 <select
                   id="vehicleId"
                   name="vehicleId"
                   {...register("vehicleId")}
-                  className="select select-bordered bg-gray-100"
+                  className="select select-bordered bg-gray-100 dark:text-black"
                   required
                 >
                   <option value="">Select Truck</option>
@@ -149,7 +150,7 @@ const LandfillVehicleEntry = () => {
                     <option
                       key={vehicle._id}
                       value={vehicle.vehicleId}
-                      className="uppercase"
+                      className="uppercase "
                     >
                       {vehicle.type} {vehicle.registration_number}
                     </option>
@@ -158,7 +159,9 @@ const LandfillVehicleEntry = () => {
               </div>
               <div className="form-control">
                 <label className="label">
-                  <span className="label-text">Weight of Waste (Ton)</span>
+                  <span className="label-text dark:text-white">
+                    Weight of Waste (Ton)
+                  </span>
                 </label>
                 <input
                   type="text"
@@ -166,33 +169,37 @@ const LandfillVehicleEntry = () => {
                   name="weightOfWaste"
                   {...register("weightOfWaste")}
                   placeholder="Enter weight in TON"
-                  className="input input-bordered bg-gray-100"
+                  className="input input-bordered bg-gray-100 dark:text-black"
                   required
                 />
               </div>
               <div className="form-control">
                 <label className="label">
-                  <span className="label-text">Time of Arrival</span>
+                  <span className="label-text dark:text-white">
+                    Time of Arrival
+                  </span>
                 </label>
                 <input
                   type="datetime-local"
                   id="timeOfArrival"
                   name="timeOfArrival"
                   {...register("timeOfArrival")}
-                  className="input input-bordered bg-gray-100"
+                  className="input input-bordered bg-gray-100 dark:text-black"
                   required
                 />
               </div>
               <div className="form-control">
                 <label className="label">
-                  <span className="label-text">Time of Departure</span>
+                  <span className="label-text dark:text-white">
+                    Time of Departure
+                  </span>
                 </label>
                 <input
                   type="datetime-local"
                   id="timeOfDeparture"
                   name="timeOfDeparture"
                   {...register("timeOfDeparture")}
-                  className="input input-bordered bg-gray-100"
+                  className="input input-bordered bg-gray-100 dark:text-black"
                   required
                 />
               </div>

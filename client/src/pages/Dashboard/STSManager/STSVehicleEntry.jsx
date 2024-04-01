@@ -79,7 +79,21 @@ const STSVehicleEntry = () => {
     );
   }
   if (!mySTS) {
-    return <p className="text-5xl text-center">You Do not Have STS</p>;
+    return (
+      <div className="flex justify-center flex-col items-center h-full">
+        <p className="text-5xl text-center">You Do not Have STS</p>
+        <BallTriangle
+          height={100}
+          width={100}
+          radius={5}
+          color="#ff0000"
+          ariaLabel="ball-triangle-loading"
+          wrapperStyle={{}}
+          wrapperClass=""
+          visible={true}
+        />
+      </div>
+    );
   }
   const onSubmit = async (data) => {
     if (!mySTS) {

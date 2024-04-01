@@ -32,7 +32,10 @@ const Login = () => {
         <h2 className="text-2xl font-bold text-center text-gray-700 mb-3 my-2">
           LOGIN HERE
         </h2>
-        <form className="flex flex-col gap-3 bg-r" onSubmit={handleLogin}>
+        <form
+          className="flex flex-col gap-3 dark:text-black"
+          onSubmit={handleLogin}
+        >
           <input
             type="email"
             name="email"

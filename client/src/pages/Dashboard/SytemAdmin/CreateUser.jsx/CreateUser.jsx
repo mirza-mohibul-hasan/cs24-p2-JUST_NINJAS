@@ -45,7 +45,7 @@ const CreateUser = () => {
             },
           }
         );
-        console.log(response);
+        // console.log(response);
         if (response.data?.success) {
           Swal.fire({
             icon: "success",
@@ -79,13 +79,13 @@ const CreateUser = () => {
   return (
     <div className="hero min-h-screen">
       <div className="hero-content w-full">
-        <div className="card flex-shrink-0 w-full max-w-lg shadow-2xl bg-[#dadff3]">
+        <div className="card flex-shrink-0 w-full max-w-lg shadow-2xl bg-[#dadff3] dark:bg-gray-600">
           <div className="card-body">
             <h1 className="text-3xl text-center font-bold text-[#2145e6]">
               Create User Here
             </h1>
             <p className="text-[#2145e6] text-center border border-[#2145e6] rounded-lg font-semibold"></p>
-            <form onSubmit={handleSubmit(onSubmit)}>
+            <form onSubmit={handleSubmit(onSubmit)} className="dark:text-black">
               <div className="form-control">
                 <label className="label">
                   <span className="label-text">Name</span>

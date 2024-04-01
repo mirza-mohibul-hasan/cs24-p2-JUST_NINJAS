@@ -27,7 +27,7 @@ const MySTS = () => {
           }
         );
         setMySTS(response.data);
-        console.log(response.data);
+        // console.log(response.data);
         setLoading(false);
       } catch (error) {
         console.error("Error fetching users:", error.message);
@@ -81,6 +81,13 @@ const MySTS = () => {
 
     fetchSTSDetails();
   }, [mySTS]);
+  if (!mySTS) {
+    return (
+      <div className="flex justify-center flex-col items-center h-full">
+        <p className="text-5xl text-center">You Do not Have STS</p>
+      </div>
+    );
+  }
   if (loading || !stsInfo) {
     return (
       <div className="flex justify-center items-center h-full">
@@ -97,9 +104,7 @@ const MySTS = () => {
       </div>
     );
   }
-  if (!mySTS) {
-    return <p>You Do not Have STS</p>;
-  }
+
   return (
     <div>
       <h1 className="text-5xl text-center border-b-2 border-blue-500 p-2">
@@ -111,7 +116,7 @@ const MySTS = () => {
       <p>Longitude: {stsInfo.longitude}</p>
       <h1 className="text-3xl my-3">Assigned Vehicles:</h1>
       <div className="overflow-x-auto">
-        <table className="table text-center">
+        <table className="table text-center dark:hover:text-black">
           <thead>
             <tr className="bg-blue-200">
               <th>SN</th>

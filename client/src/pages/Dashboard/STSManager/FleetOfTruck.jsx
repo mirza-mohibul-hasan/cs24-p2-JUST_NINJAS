@@ -62,6 +62,9 @@ const FleetOfTruck = () => {
 
     fetchSTSDetails();
   }, [mySTS]);
+  if (!mySTS) {
+    return <p className="text-5xl text-center">You Do not Have STS</p>;
+  }
   if (loading || !stsInfo || !mySTS) {
     return (
       <div className="flex justify-center items-center h-full">
@@ -158,7 +161,7 @@ const FleetOfTruck = () => {
                     name="wasteNeedToShift"
                     {...register("wasteNeedToShift")}
                     placeholder="Enter  weight of Waste in TON"
-                    className="input input-bordered bg-gray-100"
+                    className="input input-bordered bg-gray-100 dark:text-black"
                     required
                   />
                 </div>
@@ -178,7 +181,7 @@ const FleetOfTruck = () => {
         <>
           <h1 className="text-3xl">Required Trucks:</h1>
           <div className="overflow-x-auto">
-            <table className="table text-center">
+            <table className="table text-center dark:hover:text-black">
               <thead>
                 <tr className="bg-blue-200">
                   <th>SN</th>

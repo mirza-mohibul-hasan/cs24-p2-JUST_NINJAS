@@ -22,7 +22,7 @@ export const AuthProvider = ({ children }) => {
       .catch((error) => console.error("Error fetching login status:", error))
       .finally(() => setLoading(false));
   }, [refetch]);
-  console.log(user);
+  // console.log(user);
   const providerRegister = async (event) => {
     event.preventDefault();
     const email = event.target.regemail.value;

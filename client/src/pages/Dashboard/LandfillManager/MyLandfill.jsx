@@ -56,7 +56,7 @@ const MyLandfill = () => {
     );
   }
   if (!myLandfill && !landfillManagers) {
-    return <p className="text-5xl text-center">You Do not Have STS</p>;
+    return <p className="text-5xl text-center">You Do not Have Landfill</p>;
   }
   return (
     <div>

@@ -77,7 +77,7 @@ const BillingReport = () => {
     );
   }
   if (!myLandfill) {
-    return <p>You Do not Have STS</p>;
+    return <p className="text-5xl text-center">You Do not Have Landfill</p>;
   }
   const generatePDFReport = (report) => {
     const doc = new jsPDF();
