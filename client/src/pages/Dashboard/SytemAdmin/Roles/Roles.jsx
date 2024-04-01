@@ -1,8 +1,10 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { BallTriangle } from "react-loader-spinner";
+import useTitle from "../../../../hooks/useTitle";
 
 const Roles = () => {
+  useTitle("Roles");
   const [roles, setRoles] = useState([]);
   useEffect(() => {
     const fetchUsers = async () => {

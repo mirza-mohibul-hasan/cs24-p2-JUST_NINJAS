@@ -4,8 +4,10 @@ import { useForm } from "react-hook-form";
 import { BallTriangle } from "react-loader-spinner";
 import axios from "axios";
 import Swal from "sweetalert2";
+import useTitle from "../../../../hooks/useTitle";
 
 const CreateLandfill = () => {
+  useTitle("Create Landfill");
   const { user, loading } = useContext(AuthContext);
   const { register, handleSubmit, reset } = useForm();
   if (!user || loading) {
@@ -33,35 +35,35 @@ const CreateLandfill = () => {
     data.addedBy = user?.email;
 
     try {
-      console.log(data);
-      // const token = localStorage.getItem("token");
-      // if (!token) {
-      //   throw new Error("Token not found");
-      // }
-      // const response = await axios.post(
-      //   "http://localhost:3000/landfill/add",
-      //   data,
-      //   {
-      //     headers: {
-      //       Authorization: `Bearer ${token}`,
-      //     },
-      //   }
-      // );
+      // console.log(data);
+      const token = localStorage.getItem("token");
+      if (!token) {
+        throw new Error("Token not found");
+      }
+      const response = await axios.post(
+        "http://localhost:3000/landfill/add",
+        data,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
       // console.log(response);
-      // if (response.data?.success) {
-      //   Swal.fire({
-      //     icon: "success",
-      //     title: response.data?.message,
-      //     text: "Congratulations",
-      //   });
-      //   reset();
-      // } else {
-      //   Swal.fire({
-      //     icon: "error",
-      //     title: response.data?.message,
-      //     text: "Try Agin Later",
-      //   });
-      // }
+      if (response.data?.success) {
+        Swal.fire({
+          icon: "success",
+          title: response.data?.message,
+          text: "Congratulations",
+        });
+        reset();
+      } else {
+        Swal.fire({
+          icon: "error",
+          title: response.data?.message,
+          text: "Try Agin Later",
+        });
+      }
     } catch (error) {
       console.error("Error creating user:", error.message);
       Swal.fire({

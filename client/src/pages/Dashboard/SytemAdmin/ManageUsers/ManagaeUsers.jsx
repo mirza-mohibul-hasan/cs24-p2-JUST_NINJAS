@@ -5,10 +5,9 @@ import { Link } from "react-router-dom";
 import Swal from "sweetalert2";
 import { AuthContext } from "../../../../provider/AuthProvider";
 import moment from "moment";
-import useUserType from "../../../../hooks/useUserType";
-import ErrorLoading from "../../../Error/ErrorLoading";
+import useTitle from "../../../../hooks/useTitle";
 const ManagaeUsers = () => {
-  let role = useUserType();
+  useTitle("Manage Users");
   const { user } = useContext(AuthContext);
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -64,9 +63,6 @@ const ManagaeUsers = () => {
       </div>
     );
   }
-  if (!loading && role !== "sysadmin") {
-    return <ErrorLoading></ErrorLoading>;
-  }
   const handleSearchChange = (e) => {
     setSearchTerm(e.target.value);
   };
@@ -114,7 +110,7 @@ const ManagaeUsers = () => {
         if (response.data.success) {
           Swal.fire("Deleted!", "User has been deleted.", "success");
           setRefetch(!refetch);
-          console.log("User has been deleted successfully.");
+          // console.log("User has been deleted successfully.");
         } else {
           Swal.fire("Error!", "Failed to delete user.", "error");
           console.error("Failed to delete user.");
@@ -167,15 +163,18 @@ const ManagaeUsers = () => {
   // console.log(user.email == "mirzamohibul618@gmail.com");
   return (
     <div className="overflow-x-auto">
-      <dialog id="my_modal_3" className="modal">
-        <form method="dialog" className="modal-box">
+      <dialog id="my_modal_3" className="modal dark:bg-gray-700">
+        <form
+          method="dialog"
+          className="modal-box dark:bg-gray-800 dark:text-black"
+        >
           <button
             htmlFor="my-modal-3"
             className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"
           >
             ✕
           </button>
-          <h1>Update Role</h1>
+          <h1 className="dark:text-white">Update Role</h1>
           <div className="flex flex-col p-5 gap-5">
             <select
               value={newrole}
@@ -224,7 +223,7 @@ const ManagaeUsers = () => {
         <select
           value={sortBy}
           onChange={handleSortChange}
-          className="select select-bordered w-full max-w-xs select-primary select-sm"
+          className="select select-bordered w-full max-w-xs select-primary select-sm dark:text-gray-700"
         >
           <option value="">Sort By</option>
           <option value="name">Name</option>
@@ -237,14 +236,14 @@ const ManagaeUsers = () => {
         <select
           value={sortOrder}
           onChange={handleSortOrderChange}
-          className="select select-bordered w-full max-w-xs select-primary select-sm"
+          className="select select-bordered w-full max-w-xs select-primary select-sm dark:text-gray-700"
         >
           <option value="">Select Order</option>
           <option value="asc">Ascending</option>
           <option value="desc">Descending</option>
         </select>
       </div>
-      <table className="table text-center">
+      <table className="table text-center dark:hover:text-black">
         <thead>
           <tr className="bg-blue-200">
             <th>SN</th>

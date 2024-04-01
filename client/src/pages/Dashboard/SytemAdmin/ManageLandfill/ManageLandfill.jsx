@@ -5,8 +5,10 @@ import axios from "axios";
 import LandfillManager from "./LandfillManager";
 import { Link } from "react-router-dom";
 import moment from "moment";
+import useTitle from "../../../../hooks/useTitle";
 
 const ManageLandfill = () => {
+  useTitle("Manage Landfill");
   const { user } = useContext(AuthContext);
   const [allLandfill, setAllLandfill] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -69,7 +71,7 @@ const ManageLandfill = () => {
   return (
     <div className="overflow-x-auto">
       <h1 className="text-5xl font-semibold mb-3">MANAGE LANDFILL</h1>
-      <table className="table text-center">
+      <table className="table text-center dark:hover:text-black">
         <thead>
           <tr className="bg-blue-200">
             <th>SN</th>

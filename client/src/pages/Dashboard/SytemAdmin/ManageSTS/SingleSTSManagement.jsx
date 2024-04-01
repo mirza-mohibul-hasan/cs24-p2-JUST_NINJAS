@@ -3,8 +3,10 @@ import { useEffect, useState } from "react";
 import { BallTriangle } from "react-loader-spinner";
 import { useParams } from "react-router-dom";
 import Swal from "sweetalert2";
+import useTitle from "../../../../hooks/useTitle";
 
 const SingleSTSManagement = () => {
+  useTitle("STS Info");
   const [assignedmanagers, setAssignedManagers] = useState([]);
   const [availablemanagers, setAvailableManagers] = useState([]);
   const [assignedVehicles, setAssignedVehicles] = useState([]);

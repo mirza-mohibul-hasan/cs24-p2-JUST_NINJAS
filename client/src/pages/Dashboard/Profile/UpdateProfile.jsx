@@ -4,8 +4,10 @@ import { BallTriangle } from "react-loader-spinner";
 import Swal from "sweetalert2";
 import axios from "axios";
 import { useForm } from "react-hook-form";
+import useTitle from "../../../hooks/useTitle";
 
 const UpdateProfile = () => {
+  useTitle("Update Profile");
   const { user } = useContext(AuthContext);
   const [selectedFile, setSelectedFile] = useState(null);
   const { register, handleSubmit, reset } = useForm();
@@ -124,13 +126,18 @@ const UpdateProfile = () => {
               src={`http://localhost:3000/profilepic/${user?.avatar}`}
             />
           </div>
-          <div className="flex flex-col gap-4">
+          <div className="flex flex-col gap-4 disabled">
+            <p className="text-xl text-red-600 font-bold">
+              You can not update profile photo
+            </p>
             <input
+              disabled
               type="file"
               onChange={handleFileChange}
               className="file-input file-input-bordered w-full max-w-xs"
             />
             <button
+              disabled
               onClick={changePhoto}
               className="btn btn-xs btn-outline btn-primary"
             >

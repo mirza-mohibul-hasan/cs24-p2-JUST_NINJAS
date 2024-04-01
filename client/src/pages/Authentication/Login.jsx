@@ -2,8 +2,10 @@ import { useContext, useState } from "react";
 import { AuthContext } from "../../provider/AuthProvider";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import ReCAPTCHA from "react-google-recaptcha";
+import useTitle from "../../hooks/useTitle";
 
 const Login = () => {
+  useTitle("Login");
   const navigate = useNavigate();
   const location = useLocation();
   const from = location.state?.from?.pathname || "/";
@@ -30,7 +32,10 @@ const Login = () => {
         <h2 className="text-2xl font-bold text-center text-gray-700 mb-3 my-2">
           LOGIN HERE
         </h2>
-        <form className="flex flex-col gap-3 bg-r" onSubmit={handleLogin}>
+        <form
+          className="flex flex-col gap-3 dark:text-black"
+          onSubmit={handleLogin}
+        >
           <input
             type="email"
             name="email"

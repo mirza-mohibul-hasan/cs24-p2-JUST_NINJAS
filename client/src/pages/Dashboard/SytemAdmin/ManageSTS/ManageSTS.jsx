@@ -6,8 +6,10 @@ import { Link } from "react-router-dom";
 import STSManager from "./STSManager";
 import STSVehicle from "./STSVehicle";
 import moment from "moment";
+import useTitle from "../../../../hooks/useTitle";
 
 const ManageSTS = () => {
+  useTitle("Manage STS");
   const { user } = useContext(AuthContext);
   const [allsts, setAllSTS] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -67,7 +69,7 @@ const ManageSTS = () => {
   return (
     <div className="overflow-x-auto">
       <h1 className="text-5xl font-semibold mb-3">MANAGE STS</h1>
-      <table className="table text-center">
+      <table className="table text-center dark:hover:text-black">
         <thead>
           <tr className="bg-blue-200">
             <th>SN</th>

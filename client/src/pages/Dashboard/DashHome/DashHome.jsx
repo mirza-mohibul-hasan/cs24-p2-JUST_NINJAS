@@ -13,6 +13,7 @@ import {
   Pie,
   Cell,
 } from "recharts";
+import useTitle from "../../../hooks/useTitle";
 
 const formatTime = (timeString) => {
   const date = new Date(timeString);
@@ -20,6 +21,7 @@ const formatTime = (timeString) => {
 };
 
 const DashHome = () => {
+  useTitle("Dashboard");
   const [statistics, setStatistics] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -36,7 +38,7 @@ const DashHome = () => {
           }
         );
         setStatistics(response.data);
-        console.log(response.data);
+        // console.log(response.data);
         setLoading(false);
       } catch (error) {
         console.error("Error fetching statistics:", error.message);

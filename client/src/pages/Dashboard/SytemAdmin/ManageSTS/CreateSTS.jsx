@@ -4,8 +4,10 @@ import { useForm } from "react-hook-form";
 import { BallTriangle } from "react-loader-spinner";
 import axios from "axios";
 import Swal from "sweetalert2";
+import useTitle from "../../../../hooks/useTitle";
 
 const CreateSTS = () => {
+  useTitle("Create STS");
   const { user, loading } = useContext(AuthContext);
   const { register, handleSubmit, reset } = useForm();
   if (!user || loading) {

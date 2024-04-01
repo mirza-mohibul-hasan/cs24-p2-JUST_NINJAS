@@ -3,8 +3,10 @@ import { useContext, useEffect, useState } from "react";
 import { BallTriangle } from "react-loader-spinner";
 import { AuthContext } from "../../../provider/AuthProvider";
 import { Link } from "react-router-dom";
+import useTitle from "../../../hooks/useTitle";
 
 const Profile = () => {
+  useTitle("Profile");
   const [userDetails, setUserDetails] = useState([]);
   const [loading, setLoading] = useState(true);
   const { user } = useContext(AuthContext);
@@ -47,7 +49,6 @@ const Profile = () => {
       </div>
     );
   }
-  // console.log(userDetails);
   return (
     <div>
       <div className="">
