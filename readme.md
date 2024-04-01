@@ -69,7 +69,7 @@ $ cd cs24-p2-JUST_NINJAS
 2. Build and run using Docker:
 
 ```
-$ docker-compose up --build OR docker compose up —build
+$ docker-compose up --build OR docker compose up --build
 ```
 
 **Special Instructions:**
