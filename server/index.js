@@ -59,19 +59,6 @@ app.use("/billing", billingRoutes);
 // Dashboard Route
 const dashboardRoutes = require("./routes/dashboardRoute");
 app.use("/dashboard", dashboardRoutes);
-
-// Worker_Threads
-app.get("/blocking", (req, res) => {
-  const worker = new Worker("./worker.js");
-
-  worker.on("message", (data) => {
-    res.status(200).send(`Our final result is ${data}`);
-  });
-
-  worker.on("error", (err) => {
-    res.status(400).send(`An error occured ${err}`);
-  });
-});
 // Default
 app.get("/", (req, res) => {
   res.send("EcoSync is currently running");
