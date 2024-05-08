@@ -20,7 +20,7 @@ const BillingReport = () => {
           return;
         }
         const response = await axios.get(
-          `http://localhost:3000/landfill/manager-info/${user._id}`,
+          `http://localhost:3000/landfill-manager/landfill-info/${user._id}`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
