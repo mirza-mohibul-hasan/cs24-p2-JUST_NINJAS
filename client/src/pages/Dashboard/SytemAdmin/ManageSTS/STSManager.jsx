@@ -12,7 +12,7 @@ const STSManager = ({ stsId }) => {
         }
 
         const response = await axios.get(
-          `http://localhost:3000/assignedstsmanager/${stsId}`,
+          `http://localhost:3000/sts/assignedstsmanager/${stsId}`,
           {
             headers: {
               Authorization: `Bearer ${token}`,

@@ -24,7 +24,7 @@ const SingleSTSManagement = () => {
         }
         // assigned manager
         const response1 = await axios.get(
-          `http://localhost:3000/assignedstsmanager/${stsId}`,
+          `http://localhost:3000/sts/assignedstsmanager/${stsId}`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -44,7 +44,7 @@ const SingleSTSManagement = () => {
         setAssignedVehicles(response2.data);
         // available managers
         const response3 = await axios.get(
-          `http://localhost:3000/availablestsmanager`,
+          `http://localhost:3000/sts/availablestsmanager`,
           {
             headers: {
               Authorization: `Bearer ${token}`,

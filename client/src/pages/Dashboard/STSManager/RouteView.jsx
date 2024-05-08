@@ -49,7 +49,7 @@ const RouteView = () => {
 
         const token = localStorage.getItem("token");
         const response = await axios.get(
-          `http://localhost:3000/sts/route-view/${mySTS.stsId}`,
+          `http://localhost:3000/sts-manager/route-view/${mySTS.stsId}`,
           {
             headers: {
               Authorization: `Bearer ${token}`,

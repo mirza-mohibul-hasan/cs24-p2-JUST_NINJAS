@@ -113,7 +113,7 @@ const SingleLandfillManagement = () => {
         throw new Error("Token not found");
       }
       const response = await axios.post(
-        "http://localhost:3000/landfil/assign-manager",
+        "http://localhost:3000/landfill/assign-manager",
         { managerId, landfillId },
         {
           headers: {

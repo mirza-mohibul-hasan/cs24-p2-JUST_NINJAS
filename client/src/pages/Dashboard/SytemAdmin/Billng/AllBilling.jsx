@@ -19,7 +19,7 @@ const AllBilling = () => {
 
         const token = localStorage.getItem("token");
         const response = await axios.get(
-          `http://localhost:3000/system-admin/billing`,
+          `http://localhost:3000/billing/all-bills`,
           {
             headers: {
               Authorization: `Bearer ${token}`,

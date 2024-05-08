@@ -27,8 +27,8 @@ const CreateLandfill = () => {
     );
   }
   const onSubmit = async (data) => {
-    let landFillId = data.capacity + data.latitude + data.longitude;
-    data.landFillId = landFillId.replace(/[^a-z0-9]/g, "");
+    let landfillId = data.capacity + data.latitude + data.longitude;
+    data.landfillId = landfillId.replace(/[^a-z0-9]/g, "");
     data.capacity = parseFloat(data.capacity);
     data.latitude = parseFloat(data.latitude);
     data.longitude = parseFloat(data.longitude);
