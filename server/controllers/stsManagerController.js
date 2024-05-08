@@ -6,6 +6,9 @@ const fleetOptimizer = require("../utils/fleetOptimizer");
 const findFleetVehicles = require("../utils/findFleetVehicles");
 const calculateGPSDistance = require("../utils/calculateGPSDistance");
 const Landfill = require("../models/landfillModel");
+const { Worker } = require("worker_threads");
+const path = require("path");
+const logger = require("../config/logger");
 const addVehicleEntry = async (req, res) => {
   try {
     const stsId = req.body?.stsId;
@@ -40,29 +43,43 @@ const addVehicleEntry = async (req, res) => {
   }
 };
 const optimizedFleet = async (req, res) => {
-  const stsId = req.params.stsId;
-  const wasteNeedToShift = req.params.wasteNeedToShift;
-  const targetSTS = await STSVehicle.findOne({
-    stsId: stsId,
-  });
-  // console.log("TARGET STS", targetSTS);
-  const stsInfo = await STS.findOne({
-    stsId: stsId,
-  });
-  // console.log("STS ALL INFO", stsInfo);
-  const vehiclesInfo = await Vehicle.find({
-    vehicleId: { $in: targetSTS.vehicles },
-  });
-  // console.log("TARGET STS VEHICLE", vehiclesInfo);
-
-  const vehicleUsed = fleetOptimizer(vehiclesInfo, wasteNeedToShift);
-  // console.log("Vehicle USED", vehicleUsed);
-  const usedVehicleInfo = await findFleetVehicles(vehicleUsed);
-  // console.log("USED VEHICLES", usedVehicleInfo);
-  res.send(usedVehicleInfo);
   try {
+    const stsId = req.params.stsId;
+    const wasteNeedToShift = req.params.wasteNeedToShift;
+    const targetSTS = await STSVehicle.findOne({ stsId: stsId });
+    const vehiclesInfo = await Vehicle.find({
+      vehicleId: { $in: targetSTS.vehicles },
+    });
+    const worker = new Worker(
+      path.resolve(__dirname, "../utils/fleetOptimizerWorker.js")
+    );
+    worker.postMessage({
+      vehicles: vehiclesInfo,
+      totalWaste: wasteNeedToShift,
+    });
+    worker.on("message", async (usedVehicle) => {
+      try {
+        const usedVehicleInfo = await findFleetVehicles(usedVehicle);
+        res.send(usedVehicleInfo);
+      } catch (error) {
+        logger.error("Error finding fleet vehicles:", error.message);
+        console.error("Error finding fleet vehicles:", error);
+        res.status(500).json({
+          success: false,
+          message: "An error occurred while finding fleet vehicles",
+        });
+      }
+    });
+
+    worker.on("error", (err) => {
+      console.error("Worker error:", err);
+      res.status(500).json({
+        success: false,
+        message: "An error occurred while optimizing fleet",
+      });
+    });
   } catch (error) {
-    console.error("Errorcal;culating fleet:", error);
+    console.error("Error calculating fleet:", error);
     res.status(500).json({
       success: false,
       message: "An error occurred while calculating",
