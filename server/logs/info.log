@@ -175,3 +175,430 @@
 {"level":"info","message":"MongoDB Connected","timestamp":"2024-05-08T11:37:21.353Z"}
 {"level":"info","message":"EcoSync Server is running on port 3000","timestamp":"2024-05-08T11:38:00.349Z"}
 {"level":"info","message":"MongoDB Connected","timestamp":"2024-05-08T11:38:00.388Z"}
+{"level":"info","message":"EcoSync Server is running on port 3000","timestamp":"2024-05-08T11:38:06.438Z"}
+{"level":"info","message":"MongoDB Connected","timestamp":"2024-05-08T11:38:06.480Z"}
+{"level":"info","message":"EcoSync Server is running on port 3000","timestamp":"2024-05-08T12:00:13.546Z"}
+{"level":"info","message":"MongoDB Connected","timestamp":"2024-05-08T12:00:13.596Z"}
+{"level":"info","message":"EcoSync Server is running on port 3000","timestamp":"2024-05-08T14:49:52.149Z"}
+{"level":"info","message":"MongoDB Connected","timestamp":"2024-05-08T14:49:52.175Z"}
+{"level":"info","message":"Login Successfull","timestamp":"2024-05-08T15:18:00.979Z"}
+{"level":"info","message":"EcoSync Server is running on port 3000","timestamp":"2024-05-08T15:23:21.708Z"}
+{"level":"info","message":"MongoDB Connected","timestamp":"2024-05-08T15:23:21.739Z"}
+{"level":"info","message":"Login Successfull","timestamp":"2024-05-08T15:33:13.977Z"}
+{"level":"info","message":"Login Successfull","timestamp":"2024-05-08T15:36:01.477Z"}
+{"level":"info","message":"Login Successfull","timestamp":"2024-05-08T15:37:21.555Z"}
+{"level":"info","message":"Login Successfull","timestamp":"2024-05-08T15:48:27.103Z"}
+{"level":"info","message":"EcoSync Server is running on port 3000","timestamp":"2024-05-08T19:46:49.271Z"}
+{"level":"info","message":"MongoDB Connected","timestamp":"2024-05-08T19:46:49.309Z"}
+{"level":"info","message":"EcoSync Server is running on port 3000","timestamp":"2024-05-09T10:33:18.131Z"}
+{"level":"info","message":"MongoDB Connected","timestamp":"2024-05-09T10:33:18.155Z"}
+{"level":"info","message":"EcoSync Server is running on port 3000","timestamp":"2024-05-09T10:37:18.954Z"}
+{"level":"info","message":"MongoDB Connected","timestamp":"2024-05-09T10:37:19.004Z"}
+{"level":"info","message":"Login Successfull","timestamp":"2024-05-09T10:38:19.720Z"}
+{"level":"info","message":"EcoSync Server is running on port 3000","timestamp":"2024-05-09T10:39:44.461Z"}
+{"level":"info","message":"MongoDB Connected","timestamp":"2024-05-09T10:39:45.408Z"}
+{"level":"info","message":"Login Successfull","timestamp":"2024-05-09T10:39:57.734Z"}
+{"level":"info","message":"EcoSync Server is running on port 3000","timestamp":"2024-05-09T10:45:02.208Z"}
+{"level":"info","message":"MongoDB Connected","timestamp":"2024-05-09T10:45:03.227Z"}
+{"level":"info","message":"EcoSync Server is running on port 3000","timestamp":"2024-05-09T11:04:42.459Z"}
+{"level":"info","message":"MongoDB Connected","timestamp":"2024-05-09T11:04:43.421Z"}
+{"level":"info","message":"EcoSync Server is running on port 3000","timestamp":"2024-05-09T11:08:43.512Z"}
+{"level":"info","message":"MongoDB Connected","timestamp":"2024-05-09T11:08:44.482Z"}
+{"level":"info","message":"Login Successfull","timestamp":"2024-05-09T11:10:35.174Z"}
+{"level":"info","message":"EcoSync Server is running on port 3000","timestamp":"2024-05-09T11:12:07.415Z"}
+{"level":"info","message":"MongoDB Connected","timestamp":"2024-05-09T11:12:11.139Z"}
+{"level":"info","message":"EcoSync Server is running on port 3000","timestamp":"2024-05-09T11:12:13.751Z"}
+{"level":"info","message":"MongoDB Connected","timestamp":"2024-05-09T11:12:14.932Z"}
+{"level":"info","message":"EcoSync Server is running on port 3000","timestamp":"2024-05-09T11:12:28.475Z"}
+{"level":"info","message":"MongoDB Connected","timestamp":"2024-05-09T11:12:29.340Z"}
+{"level":"info","message":"EcoSync Server is running on port 3000","timestamp":"2024-05-09T11:13:10.995Z"}
+{"level":"info","message":"MongoDB Connected","timestamp":"2024-05-09T11:13:12.042Z"}
+{"level":"info","message":"EcoSync Server is running on port 3000","timestamp":"2024-05-09T11:14:10.138Z"}
+{"level":"info","message":"MongoDB Connected","timestamp":"2024-05-09T11:14:11.152Z"}
+{"level":"info","message":"EcoSync Server is running on port 3000","timestamp":"2024-05-09T11:15:49.537Z"}
+{"level":"info","message":"MongoDB Connected","timestamp":"2024-05-09T11:15:51.324Z"}
+{"level":"info","message":"EcoSync Server is running on port 3000","timestamp":"2024-05-09T11:18:55.543Z"}
+{"level":"info","message":"MongoDB Connected","timestamp":"2024-05-09T11:18:56.576Z"}
+{"level":"info","message":"Login Successfull","timestamp":"2024-05-09T11:21:15.192Z"}
+{"level":"info","message":"EcoSync Server is running on port 3000","timestamp":"2024-05-09T11:43:38.234Z"}
+{"level":"info","message":"MongoDB Connected","timestamp":"2024-05-09T11:43:44.692Z"}
+{"level":"info","message":"EcoSync Server is running on port 3000","timestamp":"2024-05-09T11:44:00.338Z"}
+{"level":"info","message":"MongoDB Connected","timestamp":"2024-05-09T11:44:01.407Z"}
+{"level":"info","message":"Login Successfull","timestamp":"2024-05-09T11:44:50.763Z"}
+{"level":"info","message":"EcoSync Server is running on port 3000","timestamp":"2024-05-09T11:45:38.952Z"}
+{"level":"info","message":"MongoDB Connected","timestamp":"2024-05-09T11:45:40.071Z"}
+{"level":"info","message":"Login Successfull","timestamp":"2024-05-09T11:45:45.316Z"}
+{"level":"info","message":"EcoSync Server is running on port 3000","timestamp":"2024-05-09T11:46:19.541Z"}
+{"level":"info","message":"MongoDB Connected","timestamp":"2024-05-09T11:46:20.582Z"}
+{"level":"info","message":"Login Successfull","timestamp":"2024-05-09T11:46:28.468Z"}
+{"level":"info","message":"EcoSync Server is running on port 3000","timestamp":"2024-05-09T11:47:38.429Z"}
+{"level":"info","message":"MongoDB Connected","timestamp":"2024-05-09T11:47:39.779Z"}
+{"level":"info","message":"Login Successfull","timestamp":"2024-05-09T11:47:50.515Z"}
+{"level":"info","message":"EcoSync Server is running on port 3000","timestamp":"2024-05-09T11:48:56.464Z"}
+{"level":"info","message":"MongoDB Connected","timestamp":"2024-05-09T11:48:57.420Z"}
+{"level":"info","message":"Login Successfull","timestamp":"2024-05-09T11:49:48.851Z"}
+{"level":"info","message":"Login Successfull","timestamp":"2024-05-09T11:50:58.881Z"}
+{"level":"info","message":"EcoSync Server is running on port 3000","timestamp":"2024-05-09T11:51:28.405Z"}
+{"level":"info","message":"MongoDB Connected","timestamp":"2024-05-09T11:51:29.440Z"}
+{"level":"info","message":"EcoSync Server is running on port 3000","timestamp":"2024-05-09T11:55:01.496Z"}
+{"level":"info","message":"EcoSync Server is running on port 3000","timestamp":"2024-05-09T11:55:06.978Z"}
+{"level":"info","message":"MongoDB Connected","timestamp":"2024-05-09T11:55:12.180Z"}
+{"level":"info","message":"EcoSync Server is running on port 3000","timestamp":"2024-05-09T11:56:16.098Z"}
+{"level":"info","message":"MongoDB Connected","timestamp":"2024-05-09T11:56:17.711Z"}
+{"level":"info","message":"EcoSync Server is running on port 3000","timestamp":"2024-05-09T11:56:47.512Z"}
+{"level":"info","message":"MongoDB Connected","timestamp":"2024-05-09T11:56:50.784Z"}
+{"level":"info","message":"EcoSync Server is running on port 3000","timestamp":"2024-05-09T11:57:22.337Z"}
+{"level":"info","message":"MongoDB Connected","timestamp":"2024-05-09T11:57:23.393Z"}
+{"level":"info","message":"EcoSync Server is running on port 3000","timestamp":"2024-05-09T11:57:25.086Z"}
+{"level":"info","message":"MongoDB Connected","timestamp":"2024-05-09T11:57:28.182Z"}
+{"level":"info","message":"EcoSync Server is running on port 3000","timestamp":"2024-05-09T12:01:19.876Z"}
+{"level":"info","message":"MongoDB Connected","timestamp":"2024-05-09T12:01:21.283Z"}
+{"level":"info","message":"Login Successfull","timestamp":"2024-05-09T12:01:54.988Z"}
+{"level":"info","message":"Login Successfull","timestamp":"2024-05-09T12:05:01.685Z"}
+{"level":"info","message":"EcoSync Server is running on port 3000","timestamp":"2024-05-09T12:05:48.886Z"}
+{"level":"info","message":"MongoDB Connected","timestamp":"2024-05-09T12:05:52.467Z"}
+{"level":"info","message":"EcoSync Server is running on port 3000","timestamp":"2024-05-09T15:58:46.390Z"}
+{"level":"info","message":"MongoDB Connected","timestamp":"2024-05-09T15:58:50.667Z"}
+{"level":"info","message":"EcoSync Server is running on port 3000","timestamp":"2024-05-09T16:02:45.112Z"}
+{"level":"info","message":"MongoDB Connected","timestamp":"2024-05-09T16:02:50.539Z"}
+{"level":"info","message":"EcoSync Server is running on port 3000","timestamp":"2024-05-09T16:03:06.217Z"}
+{"level":"info","message":"MongoDB Connected","timestamp":"2024-05-09T16:03:07.400Z"}
+{"level":"info","message":"EcoSync Server is running on port 3000","timestamp":"2024-05-09T16:03:11.584Z"}
+{"level":"info","message":"MongoDB Connected","timestamp":"2024-05-09T16:03:14.538Z"}
+{"level":"info","message":"Login Successfull","timestamp":"2024-05-09T16:05:23.259Z"}
+{"level":"info","message":"Login Successfull","timestamp":"2024-05-09T16:44:11.228Z"}
+{"level":"info","message":"Login Successfull","timestamp":"2024-05-09T17:29:44.738Z"}
+{"level":"info","message":"EcoSync Server is running on port 3000","timestamp":"2024-05-09T18:09:06.084Z"}
+{"level":"info","message":"MongoDB Connected","timestamp":"2024-05-09T18:09:08.274Z"}
+{"level":"info","message":"Admin user created","timestamp":"2024-05-09T18:09:09.309Z"}
+{"level":"info","message":"EcoSync Server is running on port 3000","timestamp":"2024-05-10T06:06:36.045Z"}
+{"level":"info","message":"MongoDB Connected","timestamp":"2024-05-10T06:06:36.955Z"}
+{"level":"info","message":"Login Successfull","timestamp":"2024-05-10T06:44:36.351Z"}
+{"level":"info","message":"EcoSync Server is running on port 3000","timestamp":"2024-05-10T09:11:21.636Z"}
+{"level":"info","message":"MongoDB Connected","timestamp":"2024-05-10T09:11:22.722Z"}
+{"level":"info","message":"EcoSync Server is running on port 3000","timestamp":"2024-05-10T09:11:35.037Z"}
+{"level":"info","message":"MongoDB Connected","timestamp":"2024-05-10T09:11:35.942Z"}
+{"level":"info","message":"EcoSync Server is running on port 3000","timestamp":"2024-05-10T09:11:54.934Z"}
+{"level":"info","message":"MongoDB Connected","timestamp":"2024-05-10T09:11:55.852Z"}
+{"level":"info","message":"EcoSync Server is running on port 3000","timestamp":"2024-05-10T09:12:26.031Z"}
+{"level":"info","message":"MongoDB Connected","timestamp":"2024-05-10T09:12:27.058Z"}
+{"level":"info","message":"EcoSync Server is running on port 3000","timestamp":"2024-05-10T09:12:37.197Z"}
+{"level":"info","message":"MongoDB Connected","timestamp":"2024-05-10T09:12:38.264Z"}
+{"level":"info","message":"EcoSync Server is running on port 3000","timestamp":"2024-05-10T09:13:21.983Z"}
+{"level":"info","message":"EcoSync Server is running on port 3000","timestamp":"2024-05-10T09:13:23.869Z"}
+{"level":"info","message":"MongoDB Connected","timestamp":"2024-05-10T09:13:24.833Z"}
+{"level":"info","message":"EcoSync Server is running on port 3000","timestamp":"2024-05-10T09:14:01.678Z"}
+{"level":"info","message":"MongoDB Connected","timestamp":"2024-05-10T09:14:02.583Z"}
+{"level":"info","message":"EcoSync Server is running on port 3000","timestamp":"2024-05-10T09:14:53.933Z"}
+{"level":"info","message":"MongoDB Connected","timestamp":"2024-05-10T09:14:57.015Z"}
+{"level":"info","message":"EcoSync Server is running on port 3000","timestamp":"2024-05-10T09:15:43.073Z"}
+{"level":"info","message":"MongoDB Connected","timestamp":"2024-05-10T09:15:43.992Z"}
+{"level":"info","message":"EcoSync Server is running on port 3000","timestamp":"2024-05-10T09:16:18.386Z"}
+{"level":"info","message":"MongoDB Connected","timestamp":"2024-05-10T09:16:19.371Z"}
+{"level":"info","message":"EcoSync Server is running on port 3000","timestamp":"2024-05-10T09:17:03.373Z"}
+{"level":"info","message":"MongoDB Connected","timestamp":"2024-05-10T09:17:04.350Z"}
+{"level":"info","message":"EcoSync Server is running on port 3000","timestamp":"2024-05-10T09:17:11.563Z"}
+{"level":"info","message":"MongoDB Connected","timestamp":"2024-05-10T09:17:12.484Z"}
+{"level":"info","message":"EcoSync Server is running on port 3000","timestamp":"2024-05-10T09:17:20.955Z"}
+{"level":"info","message":"MongoDB Connected","timestamp":"2024-05-10T09:17:21.965Z"}
+{"level":"info","message":"EcoSync Server is running on port 3000","timestamp":"2024-05-10T09:17:49.840Z"}
+{"level":"info","message":"MongoDB Connected","timestamp":"2024-05-10T09:17:50.776Z"}
+{"level":"info","message":"EcoSync Server is running on port 3000","timestamp":"2024-05-10T09:18:05.999Z"}
+{"level":"info","message":"MongoDB Connected","timestamp":"2024-05-10T09:18:06.916Z"}
+{"level":"info","message":"EcoSync Server is running on port 3000","timestamp":"2024-05-10T09:18:38.433Z"}
+{"level":"info","message":"MongoDB Connected","timestamp":"2024-05-10T09:18:39.402Z"}
+{"level":"info","message":"EcoSync Server is running on port 3000","timestamp":"2024-05-10T09:18:47.894Z"}
+{"level":"info","message":"MongoDB Connected","timestamp":"2024-05-10T09:18:48.820Z"}
+{"level":"info","message":"EcoSync Server is running on port 3000","timestamp":"2024-05-10T09:19:50.418Z"}
+{"level":"info","message":"MongoDB Connected","timestamp":"2024-05-10T09:19:51.456Z"}
+{"level":"info","message":"EcoSync Server is running on port 3000","timestamp":"2024-05-10T09:20:49.628Z"}
+{"level":"info","message":"MongoDB Connected","timestamp":"2024-05-10T09:20:50.614Z"}
+{"level":"info","message":"EcoSync Server is running on port 3000","timestamp":"2024-05-10T09:21:10.335Z"}
+{"level":"info","message":"MongoDB Connected","timestamp":"2024-05-10T09:21:11.278Z"}
+{"level":"info","message":"Login Successfull","timestamp":"2024-05-10T09:25:51.054Z"}
+{"level":"info","message":"EcoSync Server is running on port 3000","timestamp":"2024-05-10T09:28:04.966Z"}
+{"level":"info","message":"MongoDB Connected","timestamp":"2024-05-10T09:28:05.876Z"}
+{"level":"info","message":"EcoSync Server is running on port 3000","timestamp":"2024-05-10T09:28:43.737Z"}
+{"level":"info","message":"MongoDB Connected","timestamp":"2024-05-10T09:28:44.602Z"}
+{"level":"info","message":"EcoSync Server is running on port 3000","timestamp":"2024-05-10T09:29:31.526Z"}
+{"level":"info","message":"MongoDB Connected","timestamp":"2024-05-10T09:29:32.493Z"}
+{"level":"info","message":"EcoSync Server is running on port 3000","timestamp":"2024-05-10T09:29:50.510Z"}
+{"level":"info","message":"MongoDB Connected","timestamp":"2024-05-10T09:29:51.399Z"}
+{"level":"info","message":"EcoSync Server is running on port 3000","timestamp":"2024-05-10T09:30:10.622Z"}
+{"level":"info","message":"MongoDB Connected","timestamp":"2024-05-10T09:30:11.649Z"}
+{"level":"info","message":"EcoSync Server is running on port 3000","timestamp":"2024-05-10T09:30:13.619Z"}
+{"level":"info","message":"MongoDB Connected","timestamp":"2024-05-10T09:30:14.508Z"}
+{"level":"info","message":"EcoSync Server is running on port 3000","timestamp":"2024-05-10T09:30:19.003Z"}
+{"level":"info","message":"MongoDB Connected","timestamp":"2024-05-10T09:30:19.906Z"}
+{"level":"info","message":"EcoSync Server is running on port 3000","timestamp":"2024-05-10T09:30:28.596Z"}
+{"level":"info","message":"MongoDB Connected","timestamp":"2024-05-10T09:30:29.570Z"}
+{"level":"info","message":"EcoSync Server is running on port 3000","timestamp":"2024-05-10T09:30:34.798Z"}
+{"level":"info","message":"MongoDB Connected","timestamp":"2024-05-10T09:30:35.735Z"}
+{"level":"info","message":"EcoSync Server is running on port 3000","timestamp":"2024-05-10T09:30:39.908Z"}
+{"level":"info","message":"MongoDB Connected","timestamp":"2024-05-10T09:30:40.908Z"}
+{"level":"info","message":"EcoSync Server is running on port 3000","timestamp":"2024-05-10T09:30:42.338Z"}
+{"level":"info","message":"MongoDB Connected","timestamp":"2024-05-10T09:30:45.806Z"}
+{"level":"info","message":"EcoSync Server is running on port 3000","timestamp":"2024-05-10T09:31:45.614Z"}
+{"level":"info","message":"MongoDB Connected","timestamp":"2024-05-10T09:31:46.539Z"}
+{"level":"info","message":"EcoSync Server is running on port 3000","timestamp":"2024-05-10T09:31:50.155Z"}
+{"level":"info","message":"MongoDB Connected","timestamp":"2024-05-10T09:31:51.061Z"}
+{"level":"info","message":"EcoSync Server is running on port 3000","timestamp":"2024-05-10T09:32:08.816Z"}
+{"level":"info","message":"MongoDB Connected","timestamp":"2024-05-10T09:32:09.755Z"}
+{"level":"info","message":"EcoSync Server is running on port 3000","timestamp":"2024-05-10T09:32:21.893Z"}
+{"level":"info","message":"MongoDB Connected","timestamp":"2024-05-10T09:32:22.778Z"}
+{"level":"info","message":"EcoSync Server is running on port 3000","timestamp":"2024-05-10T09:32:44.879Z"}
+{"level":"info","message":"MongoDB Connected","timestamp":"2024-05-10T09:32:45.865Z"}
+{"level":"info","message":"EcoSync Server is running on port 3000","timestamp":"2024-05-10T09:33:12.238Z"}
+{"level":"info","message":"MongoDB Connected","timestamp":"2024-05-10T09:33:13.159Z"}
+{"level":"info","message":"EcoSync Server is running on port 3000","timestamp":"2024-05-10T09:33:42.550Z"}
+{"level":"info","message":"MongoDB Connected","timestamp":"2024-05-10T09:33:43.477Z"}
+{"level":"info","message":"EcoSync Server is running on port 3000","timestamp":"2024-05-10T09:33:50.374Z"}
+{"level":"info","message":"MongoDB Connected","timestamp":"2024-05-10T09:33:51.315Z"}
+{"level":"info","message":"EcoSync Server is running on port 3000","timestamp":"2024-05-10T09:34:19.039Z"}
+{"level":"info","message":"MongoDB Connected","timestamp":"2024-05-10T09:34:19.944Z"}
+{"level":"info","message":"EcoSync Server is running on port 3000","timestamp":"2024-05-10T09:34:23.316Z"}
+{"level":"info","message":"MongoDB Connected","timestamp":"2024-05-10T09:34:24.332Z"}
+{"level":"info","message":"Login Successfull","timestamp":"2024-05-10T09:34:38.287Z"}
+{"level":"error","message":"ThirdpartyCompany validation failed: companyName: Path `companyName` is required.","timestamp":"2024-05-10T09:35:29.046Z"}
+{"level":"info","message":"EcoSync Server is running on port 3000","timestamp":"2024-05-10T09:37:08.794Z"}
+{"level":"info","message":"MongoDB Connected","timestamp":"2024-05-10T09:37:09.829Z"}
+{"level":"info","message":"EcoSync Server is running on port 3000","timestamp":"2024-05-10T09:37:19.912Z"}
+{"level":"info","message":"MongoDB Connected","timestamp":"2024-05-10T09:37:20.811Z"}
+{"level":"info","message":"Login Successfull","timestamp":"2024-05-10T09:37:54.318Z"}
+{"level":"error","message":"ThirdpartyCompany validation failed: companyName: Path `companyName` is required.","timestamp":"2024-05-10T09:38:25.054Z"}
+{"level":"info","message":"EcoSync Server is running on port 3000","timestamp":"2024-05-10T09:40:51.934Z"}
+{"level":"info","message":"MongoDB Connected","timestamp":"2024-05-10T09:40:52.899Z"}
+{"level":"info","message":"EcoSync Server is running on port 3000","timestamp":"2024-05-10T09:49:34.580Z"}
+{"level":"info","message":"MongoDB Connected","timestamp":"2024-05-10T09:49:35.529Z"}
+{"level":"info","message":"EcoSync Server is running on port 3000","timestamp":"2024-05-10T09:49:50.436Z"}
+{"level":"info","message":"MongoDB Connected","timestamp":"2024-05-10T09:49:51.358Z"}
+{"level":"info","message":"EcoSync Server is running on port 3000","timestamp":"2024-05-10T09:50:25.904Z"}
+{"level":"info","message":"MongoDB Connected","timestamp":"2024-05-10T09:50:26.850Z"}
+{"level":"info","message":"EcoSync Server is running on port 3000","timestamp":"2024-05-10T09:51:18.188Z"}
+{"level":"info","message":"MongoDB Connected","timestamp":"2024-05-10T09:51:19.085Z"}
+{"level":"info","message":"EcoSync Server is running on port 3000","timestamp":"2024-05-10T09:51:52.961Z"}
+{"level":"info","message":"MongoDB Connected","timestamp":"2024-05-10T09:51:53.900Z"}
+{"level":"info","message":"EcoSync Server is running on port 3000","timestamp":"2024-05-10T09:55:10.909Z"}
+{"level":"info","message":"MongoDB Connected","timestamp":"2024-05-10T09:55:11.973Z"}
+{"level":"info","message":"EcoSync Server is running on port 3000","timestamp":"2024-05-10T09:57:08.522Z"}
+{"level":"info","message":"MongoDB Connected","timestamp":"2024-05-10T09:57:09.733Z"}
+{"level":"info","message":"EcoSync Server is running on port 3000","timestamp":"2024-05-10T09:57:33.767Z"}
+{"level":"info","message":"MongoDB Connected","timestamp":"2024-05-10T09:57:36.985Z"}
+{"level":"info","message":"EcoSync Server is running on port 3000","timestamp":"2024-05-10T09:57:41.639Z"}
+{"level":"info","message":"MongoDB Connected","timestamp":"2024-05-10T09:57:42.976Z"}
+{"level":"error","message":"`Model.find()` cannot run without a model as `this`. Make sure you are not calling `new Model.find()`","timestamp":"2024-05-10T09:57:46.686Z"}
+{"level":"info","message":"EcoSync Server is running on port 3000","timestamp":"2024-05-10T09:58:04.480Z"}
+{"level":"info","message":"MongoDB Connected","timestamp":"2024-05-10T09:58:05.385Z"}
+{"level":"info","message":"EcoSync Server is running on port 3000","timestamp":"2024-05-10T09:58:21.534Z"}
+{"level":"info","message":"MongoDB Connected","timestamp":"2024-05-10T09:58:22.422Z"}
+{"level":"info","message":"EcoSync Server is running on port 3000","timestamp":"2024-05-10T09:58:44.064Z"}
+{"level":"info","message":"MongoDB Connected","timestamp":"2024-05-10T09:58:44.971Z"}
+{"level":"info","message":"Login Successfull","timestamp":"2024-05-10T10:04:40.570Z"}
+{"level":"info","message":"EcoSync Server is running on port 3000","timestamp":"2024-05-10T11:02:25.014Z"}
+{"level":"info","message":"MongoDB Connected","timestamp":"2024-05-10T11:02:25.983Z"}
+{"level":"info","message":"Login Successfull","timestamp":"2024-05-10T11:02:47.806Z"}
+{"level":"info","message":"EcoSync Server is running on port 3000","timestamp":"2024-05-10T11:03:37.566Z"}
+{"level":"info","message":"MongoDB Connected","timestamp":"2024-05-10T11:03:38.540Z"}
+{"level":"info","message":"EcoSync Server is running on port 3000","timestamp":"2024-05-10T11:03:51.242Z"}
+{"level":"info","message":"MongoDB Connected","timestamp":"2024-05-10T11:03:52.138Z"}
+{"level":"info","message":"EcoSync Server is running on port 3000","timestamp":"2024-05-10T11:04:03.455Z"}
+{"level":"info","message":"MongoDB Connected","timestamp":"2024-05-10T11:04:04.505Z"}
+{"level":"info","message":"EcoSync Server is running on port 3000","timestamp":"2024-05-10T11:04:13.567Z"}
+{"level":"info","message":"MongoDB Connected","timestamp":"2024-05-10T11:04:14.509Z"}
+{"level":"info","message":"EcoSync Server is running on port 3000","timestamp":"2024-05-10T11:04:40.828Z"}
+{"level":"info","message":"MongoDB Connected","timestamp":"2024-05-10T11:04:41.770Z"}
+{"level":"info","message":"EcoSync Server is running on port 3000","timestamp":"2024-05-10T11:04:44.659Z"}
+{"level":"info","message":"MongoDB Connected","timestamp":"2024-05-10T11:04:45.539Z"}
+{"level":"info","message":"Login Successfull","timestamp":"2024-05-10T11:05:54.117Z"}
+{"level":"info","message":"EcoSync Server is running on port 3000","timestamp":"2024-05-10T11:11:36.574Z"}
+{"level":"info","message":"MongoDB Connected","timestamp":"2024-05-10T11:11:37.503Z"}
+{"level":"info","message":"Login Successfull","timestamp":"2024-05-10T11:11:47.032Z"}
+{"level":"info","message":"EcoSync Server is running on port 3000","timestamp":"2024-05-10T11:13:18.436Z"}
+{"level":"info","message":"MongoDB Connected","timestamp":"2024-05-10T11:13:19.324Z"}
+{"level":"info","message":"EcoSync Server is running on port 3000","timestamp":"2024-05-10T11:13:35.237Z"}
+{"level":"info","message":"MongoDB Connected","timestamp":"2024-05-10T11:13:36.126Z"}
+{"level":"info","message":"EcoSync Server is running on port 3000","timestamp":"2024-05-10T11:13:58.953Z"}
+{"level":"info","message":"MongoDB Connected","timestamp":"2024-05-10T11:13:59.829Z"}
+{"level":"info","message":"EcoSync Server is running on port 3000","timestamp":"2024-05-10T11:15:56.308Z"}
+{"level":"info","message":"MongoDB Connected","timestamp":"2024-05-10T11:15:57.267Z"}
+{"level":"info","message":"EcoSync Server is running on port 3000","timestamp":"2024-05-10T11:16:13.665Z"}
+{"level":"info","message":"MongoDB Connected","timestamp":"2024-05-10T11:16:14.540Z"}
+{"level":"info","message":"EcoSync Server is running on port 3000","timestamp":"2024-05-10T11:17:45.110Z"}
+{"level":"info","message":"MongoDB Connected","timestamp":"2024-05-10T11:17:46.045Z"}
+{"level":"info","message":"EcoSync Server is running on port 3000","timestamp":"2024-05-10T11:21:03.791Z"}
+{"level":"info","message":"MongoDB Connected","timestamp":"2024-05-10T11:21:04.697Z"}
+{"level":"info","message":"EcoSync Server is running on port 3000","timestamp":"2024-05-10T11:22:03.446Z"}
+{"level":"info","message":"MongoDB Connected","timestamp":"2024-05-10T11:22:04.382Z"}
+{"level":"info","message":"EcoSync Server is running on port 3000","timestamp":"2024-05-10T11:25:17.287Z"}
+{"level":"info","message":"MongoDB Connected","timestamp":"2024-05-10T11:25:18.218Z"}
+{"level":"info","message":"EcoSync Server is running on port 3000","timestamp":"2024-05-10T11:26:11.311Z"}
+{"level":"info","message":"MongoDB Connected","timestamp":"2024-05-10T11:26:12.153Z"}
+{"level":"info","message":"EcoSync Server is running on port 3000","timestamp":"2024-05-10T11:26:17.955Z"}
+{"level":"info","message":"MongoDB Connected","timestamp":"2024-05-10T11:26:18.869Z"}
+{"level":"info","message":"EcoSync Server is running on port 3000","timestamp":"2024-05-10T11:26:42.889Z"}
+{"level":"info","message":"MongoDB Connected","timestamp":"2024-05-10T11:26:43.794Z"}
+{"level":"info","message":"EcoSync Server is running on port 3000","timestamp":"2024-05-10T11:26:47.831Z"}
+{"level":"info","message":"MongoDB Connected","timestamp":"2024-05-10T11:26:48.710Z"}
+{"level":"info","message":"EcoSync Server is running on port 3000","timestamp":"2024-05-10T11:27:05.426Z"}
+{"level":"info","message":"MongoDB Connected","timestamp":"2024-05-10T11:27:06.273Z"}
+{"level":"info","message":"EcoSync Server is running on port 3000","timestamp":"2024-05-10T11:27:18.325Z"}
+{"level":"info","message":"MongoDB Connected","timestamp":"2024-05-10T11:27:19.229Z"}
+{"level":"info","message":"EcoSync Server is running on port 3000","timestamp":"2024-05-10T11:27:41.883Z"}
+{"level":"info","message":"MongoDB Connected","timestamp":"2024-05-10T11:27:42.782Z"}
+{"level":"info","message":"EcoSync Server is running on port 3000","timestamp":"2024-05-10T11:27:44.100Z"}
+{"level":"info","message":"MongoDB Connected","timestamp":"2024-05-10T11:27:44.980Z"}
+{"level":"info","message":"EcoSync Server is running on port 3000","timestamp":"2024-05-10T11:27:54.848Z"}
+{"level":"info","message":"MongoDB Connected","timestamp":"2024-05-10T11:27:55.753Z"}
+{"level":"info","message":"EcoSync Server is running on port 3000","timestamp":"2024-05-10T11:27:58.060Z"}
+{"level":"info","message":"MongoDB Connected","timestamp":"2024-05-10T11:27:58.913Z"}
+{"level":"info","message":"EcoSync Server is running on port 3000","timestamp":"2024-05-10T11:28:02.047Z"}
+{"level":"info","message":"MongoDB Connected","timestamp":"2024-05-10T11:28:02.924Z"}
+{"level":"info","message":"EcoSync Server is running on port 3000","timestamp":"2024-05-10T11:28:28.914Z"}
+{"level":"info","message":"MongoDB Connected","timestamp":"2024-05-10T11:28:29.831Z"}
+{"level":"info","message":"EcoSync Server is running on port 3000","timestamp":"2024-05-10T11:28:48.843Z"}
+{"level":"info","message":"MongoDB Connected","timestamp":"2024-05-10T11:28:49.730Z"}
+{"level":"info","message":"EcoSync Server is running on port 3000","timestamp":"2024-05-10T11:28:52.793Z"}
+{"level":"info","message":"MongoDB Connected","timestamp":"2024-05-10T11:28:53.660Z"}
+{"level":"info","message":"EcoSync Server is running on port 3000","timestamp":"2024-05-10T11:28:55.815Z"}
+{"level":"info","message":"EcoSync Server is running on port 3000","timestamp":"2024-05-10T11:28:57.697Z"}
+{"level":"info","message":"MongoDB Connected","timestamp":"2024-05-10T11:28:58.570Z"}
+{"level":"info","message":"EcoSync Server is running on port 3000","timestamp":"2024-05-10T11:29:26.636Z"}
+{"level":"info","message":"MongoDB Connected","timestamp":"2024-05-10T11:29:27.535Z"}
+{"level":"info","message":"EcoSync Server is running on port 3000","timestamp":"2024-05-10T11:30:13.546Z"}
+{"level":"info","message":"MongoDB Connected","timestamp":"2024-05-10T11:30:14.445Z"}
+{"level":"info","message":"EcoSync Server is running on port 3000","timestamp":"2024-05-10T11:30:30.928Z"}
+{"level":"info","message":"MongoDB Connected","timestamp":"2024-05-10T11:30:31.869Z"}
+{"level":"info","message":"Login Successfull","timestamp":"2024-05-10T11:32:09.022Z"}
+{"level":"info","message":"EcoSync Server is running on port 3000","timestamp":"2024-05-10T11:33:02.845Z"}
+{"level":"info","message":"MongoDB Connected","timestamp":"2024-05-10T11:33:03.759Z"}
+{"level":"info","message":"Login Successfull","timestamp":"2024-05-10T11:34:27.498Z"}
+{"level":"info","message":"EcoSync Server is running on port 3000","timestamp":"2024-05-10T11:36:35.088Z"}
+{"level":"info","message":"MongoDB Connected","timestamp":"2024-05-10T11:36:36.017Z"}
+{"level":"info","message":"EcoSync Server is running on port 3000","timestamp":"2024-05-10T11:37:08.934Z"}
+{"level":"info","message":"MongoDB Connected","timestamp":"2024-05-10T11:37:09.832Z"}
+{"level":"info","message":"EcoSync Server is running on port 3000","timestamp":"2024-05-10T11:37:17.578Z"}
+{"level":"info","message":"MongoDB Connected","timestamp":"2024-05-10T11:37:18.487Z"}
+{"level":"info","message":"EcoSync Server is running on port 3000","timestamp":"2024-05-10T11:37:43.499Z"}
+{"level":"info","message":"MongoDB Connected","timestamp":"2024-05-10T11:37:44.445Z"}
+{"level":"info","message":"EcoSync Server is running on port 3000","timestamp":"2024-05-10T11:38:13.063Z"}
+{"level":"info","message":"MongoDB Connected","timestamp":"2024-05-10T11:38:13.951Z"}
+{"level":"info","message":"EcoSync Server is running on port 3000","timestamp":"2024-05-10T11:38:54.604Z"}
+{"level":"info","message":"MongoDB Connected","timestamp":"2024-05-10T11:38:55.497Z"}
+{"level":"info","message":"EcoSync Server is running on port 3000","timestamp":"2024-05-10T11:39:15.179Z"}
+{"level":"info","message":"MongoDB Connected","timestamp":"2024-05-10T11:39:16.083Z"}
+{"level":"info","message":"EcoSync Server is running on port 3000","timestamp":"2024-05-10T11:39:17.670Z"}
+{"level":"info","message":"MongoDB Connected","timestamp":"2024-05-10T11:39:18.543Z"}
+{"level":"info","message":"EcoSync Server is running on port 3000","timestamp":"2024-05-10T11:39:59.933Z"}
+{"level":"info","message":"MongoDB Connected","timestamp":"2024-05-10T11:40:00.878Z"}
+{"level":"info","message":"EcoSync Server is running on port 3000","timestamp":"2024-05-10T11:40:20.544Z"}
+{"level":"info","message":"MongoDB Connected","timestamp":"2024-05-10T11:40:21.434Z"}
+{"level":"info","message":"EcoSync Server is running on port 3000","timestamp":"2024-05-10T11:40:31.797Z"}
+{"level":"info","message":"MongoDB Connected","timestamp":"2024-05-10T11:40:32.669Z"}
+{"level":"info","message":"EcoSync Server is running on port 3000","timestamp":"2024-05-10T11:40:50.430Z"}
+{"level":"info","message":"MongoDB Connected","timestamp":"2024-05-10T11:40:51.329Z"}
+{"level":"info","message":"EcoSync Server is running on port 3000","timestamp":"2024-05-10T11:44:11.533Z"}
+{"level":"info","message":"MongoDB Connected","timestamp":"2024-05-10T11:44:12.460Z"}
+{"level":"info","message":"EcoSync Server is running on port 3000","timestamp":"2024-05-10T11:44:27.471Z"}
+{"level":"info","message":"MongoDB Connected","timestamp":"2024-05-10T11:44:28.334Z"}
+{"level":"info","message":"EcoSync Server is running on port 3000","timestamp":"2024-05-10T11:46:38.594Z"}
+{"level":"info","message":"MongoDB Connected","timestamp":"2024-05-10T11:46:39.523Z"}
+{"level":"info","message":"EcoSync Server is running on port 3000","timestamp":"2024-05-10T11:47:38.637Z"}
+{"level":"info","message":"MongoDB Connected","timestamp":"2024-05-10T11:47:39.578Z"}
+{"level":"info","message":"EcoSync Server is running on port 3000","timestamp":"2024-05-10T11:48:49.844Z"}
+{"level":"info","message":"MongoDB Connected","timestamp":"2024-05-10T11:48:52.124Z"}
+{"level":"info","message":"EcoSync Server is running on port 3000","timestamp":"2024-05-10T11:48:58.224Z"}
+{"level":"info","message":"MongoDB Connected","timestamp":"2024-05-10T11:48:59.411Z"}
+{"level":"info","message":"EcoSync Server is running on port 3000","timestamp":"2024-05-10T11:49:01.371Z"}
+{"level":"info","message":"MongoDB Connected","timestamp":"2024-05-10T11:49:02.534Z"}
+{"level":"info","message":"EcoSync Server is running on port 3000","timestamp":"2024-05-10T11:49:49.587Z"}
+{"level":"info","message":"MongoDB Connected","timestamp":"2024-05-10T11:49:50.765Z"}
+{"level":"info","message":"EcoSync Server is running on port 3000","timestamp":"2024-05-10T11:50:52.670Z"}
+{"level":"info","message":"MongoDB Connected","timestamp":"2024-05-10T11:50:53.578Z"}
+{"level":"info","message":"EcoSync Server is running on port 3000","timestamp":"2024-05-10T11:56:02.489Z"}
+{"level":"info","message":"MongoDB Connected","timestamp":"2024-05-10T11:56:03.407Z"}
+{"level":"info","message":"EcoSync Server is running on port 3000","timestamp":"2024-05-10T11:57:11.644Z"}
+{"level":"info","message":"MongoDB Connected","timestamp":"2024-05-10T11:57:12.569Z"}
+{"level":"info","message":"EcoSync Server is running on port 3000","timestamp":"2024-05-10T11:57:35.561Z"}
+{"level":"info","message":"MongoDB Connected","timestamp":"2024-05-10T11:57:36.445Z"}
+{"level":"info","message":"EcoSync Server is running on port 3000","timestamp":"2024-05-10T11:58:35.675Z"}
+{"level":"info","message":"MongoDB Connected","timestamp":"2024-05-10T11:58:36.615Z"}
+{"level":"info","message":"EcoSync Server is running on port 3000","timestamp":"2024-05-10T12:00:53.592Z"}
+{"level":"info","message":"MongoDB Connected","timestamp":"2024-05-10T12:00:54.535Z"}
+{"level":"info","message":"EcoSync Server is running on port 3000","timestamp":"2024-05-10T12:01:01.544Z"}
+{"level":"info","message":"MongoDB Connected","timestamp":"2024-05-10T12:01:02.438Z"}
+{"level":"info","message":"EcoSync Server is running on port 3000","timestamp":"2024-05-10T12:01:11.609Z"}
+{"level":"info","message":"MongoDB Connected","timestamp":"2024-05-10T12:01:12.535Z"}
+{"level":"info","message":"EcoSync Server is running on port 3000","timestamp":"2024-05-10T12:01:21.543Z"}
+{"level":"info","message":"MongoDB Connected","timestamp":"2024-05-10T12:01:22.453Z"}
+{"level":"info","message":"EcoSync Server is running on port 3000","timestamp":"2024-05-10T12:01:34.334Z"}
+{"level":"info","message":"MongoDB Connected","timestamp":"2024-05-10T12:01:35.632Z"}
+{"level":"info","message":"EcoSync Server is running on port 3000","timestamp":"2024-05-10T12:01:40.212Z"}
+{"level":"info","message":"MongoDB Connected","timestamp":"2024-05-10T12:01:41.131Z"}
+{"level":"info","message":"Login Successfull","timestamp":"2024-05-10T12:02:05.728Z"}
+{"level":"info","message":"EcoSync Server is running on port 3000","timestamp":"2024-05-10T12:05:09.073Z"}
+{"level":"info","message":"EcoSync Server is running on port 3000","timestamp":"2024-05-10T12:05:10.985Z"}
+{"level":"info","message":"MongoDB Connected","timestamp":"2024-05-10T12:05:11.887Z"}
+{"level":"info","message":"Login Successfull","timestamp":"2024-05-10T12:05:58.145Z"}
+{"level":"info","message":"EcoSync Server is running on port 3000","timestamp":"2024-05-10T12:08:01.597Z"}
+{"level":"info","message":"MongoDB Connected","timestamp":"2024-05-10T12:08:02.570Z"}
+{"level":"info","message":"EcoSync Server is running on port 3000","timestamp":"2024-05-10T12:09:30.604Z"}
+{"level":"info","message":"MongoDB Connected","timestamp":"2024-05-10T12:09:31.782Z"}
+{"level":"info","message":"EcoSync Server is running on port 3000","timestamp":"2024-05-10T12:10:24.545Z"}
+{"level":"info","message":"MongoDB Connected","timestamp":"2024-05-10T12:10:25.425Z"}
+{"level":"info","message":"EcoSync Server is running on port 3000","timestamp":"2024-05-10T12:10:40.793Z"}
+{"level":"info","message":"MongoDB Connected","timestamp":"2024-05-10T12:10:41.922Z"}
+{"level":"info","message":"EcoSync Server is running on port 3000","timestamp":"2024-05-10T12:10:53.958Z"}
+{"level":"info","message":"MongoDB Connected","timestamp":"2024-05-10T12:10:54.904Z"}
+{"level":"info","message":"EcoSync Server is running on port 3000","timestamp":"2024-05-10T12:44:42.505Z"}
+{"level":"info","message":"MongoDB Connected","timestamp":"2024-05-10T12:44:43.722Z"}
+{"level":"info","message":"EcoSync Server is running on port 3000","timestamp":"2024-05-10T12:44:55.046Z"}
+{"level":"info","message":"MongoDB Connected","timestamp":"2024-05-10T12:44:56.136Z"}
+{"level":"info","message":"EcoSync Server is running on port 3000","timestamp":"2024-05-10T12:45:11.177Z"}
+{"level":"info","message":"MongoDB Connected","timestamp":"2024-05-10T12:45:12.236Z"}
+{"level":"info","message":"EcoSync Server is running on port 3000","timestamp":"2024-05-10T12:46:37.860Z"}
+{"level":"info","message":"MongoDB Connected","timestamp":"2024-05-10T12:46:39.000Z"}
+{"level":"info","message":"EcoSync Server is running on port 3000","timestamp":"2024-05-10T12:47:35.763Z"}
+{"level":"info","message":"MongoDB Connected","timestamp":"2024-05-10T12:47:37.016Z"}
+{"level":"info","message":"Login Successfull","timestamp":"2024-05-10T12:48:09.680Z"}
+{"level":"info","message":"Login Successfull","timestamp":"2024-05-10T12:48:55.741Z"}
+{"level":"info","message":"EcoSync Server is running on port 3000","timestamp":"2024-05-10T12:51:07.098Z"}
+{"level":"info","message":"MongoDB Connected","timestamp":"2024-05-10T12:51:13.492Z"}
+{"level":"info","message":"EcoSync Server is running on port 3000","timestamp":"2024-05-10T12:51:15.090Z"}
+{"level":"info","message":"MongoDB Connected","timestamp":"2024-05-10T12:51:16.688Z"}
+{"level":"info","message":"Login Successfull","timestamp":"2024-05-10T12:52:29.751Z"}
+{"level":"info","message":"EcoSync Server is running on port 3000","timestamp":"2024-05-10T13:09:16.861Z"}
+{"level":"info","message":"MongoDB Connected","timestamp":"2024-05-10T13:09:19.128Z"}
+{"level":"info","message":"EcoSync Server is running on port 3000","timestamp":"2024-05-10T13:09:23.884Z"}
+{"level":"info","message":"MongoDB Connected","timestamp":"2024-05-10T13:09:25.960Z"}
+{"level":"info","message":"EcoSync Server is running on port 3000","timestamp":"2024-05-10T13:09:58.860Z"}
+{"level":"info","message":"MongoDB Connected","timestamp":"2024-05-10T13:10:00.774Z"}
+{"level":"info","message":"EcoSync Server is running on port 3000","timestamp":"2024-05-10T13:10:12.823Z"}
+{"level":"info","message":"MongoDB Connected","timestamp":"2024-05-10T13:10:14.097Z"}
+{"level":"info","message":"EcoSync Server is running on port 3000","timestamp":"2024-05-10T13:10:41.733Z"}
+{"level":"info","message":"MongoDB Connected","timestamp":"2024-05-10T13:10:42.650Z"}
+{"level":"info","message":"Login Successfull","timestamp":"2024-05-10T13:13:41.252Z"}
+{"level":"error","message":"ThirdpartyCompany validation failed: registrationId: Path `registrationId` is required.","timestamp":"2024-05-10T13:18:36.504Z"}
+{"level":"error","message":"ThirdpartyCompany validation failed: registrationId: Path `registrationId` is required.","timestamp":"2024-05-10T13:18:45.152Z"}
+{"level":"info","message":"EcoSync Server is running on port 3000","timestamp":"2024-05-10T13:20:47.803Z"}
+{"level":"info","message":"MongoDB Connected","timestamp":"2024-05-10T13:20:48.787Z"}
+{"level":"info","message":"EcoSync Server is running on port 3000","timestamp":"2024-05-10T13:20:55.413Z"}
+{"level":"info","message":"MongoDB Connected","timestamp":"2024-05-10T13:20:56.646Z"}
+{"level":"info","message":"Login Successfull","timestamp":"2024-05-10T13:23:54.177Z"}
+{"level":"info","message":"EcoSync Server is running on port 3000","timestamp":"2024-05-10T13:27:01.693Z"}
+{"level":"info","message":"MongoDB Connected","timestamp":"2024-05-10T13:27:06.526Z"}
+{"level":"info","message":"EcoSync Server is running on port 3000","timestamp":"2024-05-10T13:27:10.636Z"}
+{"level":"info","message":"MongoDB Connected","timestamp":"2024-05-10T13:27:12.061Z"}
+{"level":"info","message":"EcoSync Server is running on port 3000","timestamp":"2024-05-10T13:27:29.373Z"}
+{"level":"info","message":"MongoDB Connected","timestamp":"2024-05-10T13:27:30.890Z"}
+{"level":"info","message":"EcoSync Server is running on port 3000","timestamp":"2024-05-10T13:28:09.801Z"}
+{"level":"info","message":"MongoDB Connected","timestamp":"2024-05-10T13:28:10.796Z"}
+{"level":"info","message":"EcoSync Server is running on port 3000","timestamp":"2024-05-10T13:28:19.014Z"}
+{"level":"info","message":"MongoDB Connected","timestamp":"2024-05-10T13:28:20.733Z"}
+{"level":"info","message":"EcoSync Server is running on port 3000","timestamp":"2024-05-10T13:28:43.017Z"}
+{"level":"info","message":"MongoDB Connected","timestamp":"2024-05-10T13:28:43.949Z"}
+{"level":"info","message":"EcoSync Server is running on port 3000","timestamp":"2024-05-10T13:28:59.705Z"}
+{"level":"info","message":"MongoDB Connected","timestamp":"2024-05-10T13:29:01.251Z"}
+{"level":"info","message":"EcoSync Server is running on port 3000","timestamp":"2024-05-10T13:29:48.493Z"}
+{"level":"info","message":"MongoDB Connected","timestamp":"2024-05-10T13:29:50.262Z"}
+{"level":"info","message":"EcoSync Server is running on port 3000","timestamp":"2024-05-10T13:29:59.779Z"}
+{"level":"info","message":"MongoDB Connected","timestamp":"2024-05-10T13:30:00.718Z"}

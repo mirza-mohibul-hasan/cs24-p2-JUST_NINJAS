@@ -59,6 +59,14 @@ app.use("/billing", billingRoutes);
 // Dashboard Route
 const dashboardRoutes = require("./routes/dashboardRoute");
 app.use("/dashboard", dashboardRoutes);
+
+// thirdpartyRoutes
+const thirdpartyCompanyRoutes = require("./routes/thirdpartyRoutes");
+app.use("/thirdparty", thirdpartyCompanyRoutes);
+
+// Wards Routes
+const wardRoutes = require("./routes/wardRoutes");
+app.use("/ward", wardRoutes);
 // Default
 app.get("/", (req, res) => {
   res.send("EcoSync is currently running");

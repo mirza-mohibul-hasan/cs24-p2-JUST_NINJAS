@@ -35,6 +35,9 @@ import STSManagerRoute from "./STSManagerRoute";
 import LandfillManagerRoute from "./LandfillManagerRoute";
 import PrivateRoute from "./PrivateRoute";
 import AllBilling from "../pages/Dashboard/SytemAdmin/Billng/AllBilling";
+import RegisterThirdpartyCompany from "../pages/Dashboard/SytemAdmin/ManageThardParty/RegisterThirdpartyCompany";
+import CreateContractorManager from "../pages/Dashboard/SytemAdmin/ManageThardParty/CreateContractorManager";
+import RegisterWorkforce from "../pages/Dashboard/ContractorManger/RegisterWorkforce";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -147,6 +150,7 @@ const router = createBrowserRouter([
           </AdminRoute>
         ),
       },
+      /* Final Event */
       // Vehicle Related
       {
         path: "addvehicle",
@@ -209,6 +213,17 @@ const router = createBrowserRouter([
         ),
       },
 
+      /* ThirdParty Related Admin Works */
+      // Create 3rd Party Contractor
+      {
+        path: "register-third-party",
+        element: <RegisterThirdpartyCompany></RegisterThirdpartyCompany>,
+      },
+      {
+        path: "create-contractor-manager",
+        element: <CreateContractorManager></CreateContractorManager>,
+      },
+
       // STS Manager Route
       {
         path: "mysts",
@@ -266,6 +281,12 @@ const router = createBrowserRouter([
             <BillingReport></BillingReport>
           </LandfillManagerRoute>
         ),
+      },
+
+      /* Contractor Manager Routes */
+      {
+        path: "register-workforce",
+        element: <RegisterWorkforce></RegisterWorkforce>,
       },
     ],
   },

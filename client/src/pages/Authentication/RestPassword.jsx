@@ -8,7 +8,9 @@ const RestPassword = () => {
     event.preventDefault();
     const email = event.target.email.value;
     axios
-      .post("http://localhost:3000/auth/reset-password/initiate", { email })
+      .post("http://localhost:3000/auth/reset-password/initiate", {
+        email,
+      })
       .then((response) => {
         // console.log(response);
         if (response.data?.success) {
@@ -21,12 +23,15 @@ const RestPassword = () => {
       });
   };
   return (
-    <div className="flex justify-center items-center">
-      <div className="p-5 m-5 md:w-1/5 rounded-xl shadow-2xl border border-[#2145e6]">
+    <div className="flex justify-center items-center min-h-[50vh]">
+      <div className="p-5 m-5 lg:w-1/5 rounded-xl shadow-2xl">
         <h2 className="text-2xl font-bold text-center text-gray-700 mb-3 my-2">
           Reset Password
         </h2>
-        <form className="flex flex-col gap-3 bg-r" onSubmit={handleReset}>
+        <form
+          className="flex flex-col justify-between gap-3 bg-r min-h-[15vh]"
+          onSubmit={handleReset}
+        >
           <input
             type="email"
             name="email"
@@ -39,7 +44,7 @@ const RestPassword = () => {
           <input
             type="submit"
             value="Send OTP"
-            className="bg-[#2145e6db] text-white font-semibold rounded"
+            className="bg-[#4765ebc3] text-white font-semibold rounded hover:bg-white hover:text-[#4765ebc3] hover:border hover:border-[#4765ebc3]"
           />
         </form>
       </div>

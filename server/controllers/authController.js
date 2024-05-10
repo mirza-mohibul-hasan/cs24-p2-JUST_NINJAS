@@ -5,29 +5,32 @@ const transporter = require("../utils/nodeMailer");
 const generateOTP = require("../utils/generateOTP");
 const logger = require("../config/logger");
 const saltRound = 10;
+const CONTRACTORMANAGER = require("../models/contractorManagerModel");
 // Login
 const handleLogin = async (req, res) => {
   try {
     const { email, password } = req.body;
     const existingUser = await User.findOne({ email });
-    if (existingUser?.role === "unassigned") {
+    const existingContractor = await CONTRACTORMANAGER.findOne({ email });
+    const user = existingUser || existingContractor;
+    if (user?.role === "unassigned") {
       return res.json({
         success: false,
         message: "You don't have permission to Login",
       });
     }
-    if (existingUser) {
-      bcrypt.compare(password, existingUser.password, (error, response) => {
+    if (user) {
+      bcrypt.compare(password, user.password, (error, response) => {
         if (error) {
           console.log("Login error in bcrypt", error);
           return res.status(500).json({ message: "Internal server error" });
         }
         if (response) {
-          const id = existingUser._id.toString();
+          const id = user._id.toString();
           const token = jwt.sign({ id }, "jwtSecret", {
             expiresIn: "24h",
           });
-          req.session.user = existingUser;
+          req.session.user = user;
           logger.info("Login Successfull");
           res.status(200).json({
             success: true,

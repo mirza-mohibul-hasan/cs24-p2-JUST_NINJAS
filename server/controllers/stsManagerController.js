@@ -48,7 +48,7 @@ const optimizedFleet = async (req, res) => {
     const wasteNeedToShift = req.params.wasteNeedToShift;
     const targetSTS = await STSVehicle.findOne({ stsId: stsId });
     const vehiclesInfo = await Vehicle.find({
-      vehicleId: { $in: targetSTS.vehicles },
+      vehicleId: { $in: targetSTS?.vehicles },
     });
     const worker = new Worker(
       path.resolve(__dirname, "../utils/fleetOptimizerWorker.js")

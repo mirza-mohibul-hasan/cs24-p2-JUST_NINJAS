@@ -1,1 +1,6 @@
 {"level":"error","message":"Error logging in user:","timestamp":"2024-05-07T17:54:40.080Z"}
+{"level":"error","message":"ThirdpartyCompany validation failed: companyName: Path `companyName` is required.","timestamp":"2024-05-10T09:35:29.046Z"}
+{"level":"error","message":"ThirdpartyCompany validation failed: companyName: Path `companyName` is required.","timestamp":"2024-05-10T09:38:25.054Z"}
+{"level":"error","message":"`Model.find()` cannot run without a model as `this`. Make sure you are not calling `new Model.find()`","timestamp":"2024-05-10T09:57:46.686Z"}
+{"level":"error","message":"ThirdpartyCompany validation failed: registrationId: Path `registrationId` is required.","timestamp":"2024-05-10T13:18:36.504Z"}
+{"level":"error","message":"ThirdpartyCompany validation failed: registrationId: Path `registrationId` is required.","timestamp":"2024-05-10T13:18:45.152Z"}
