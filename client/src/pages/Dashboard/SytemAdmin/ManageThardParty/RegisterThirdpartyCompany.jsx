@@ -114,7 +114,10 @@ const RegisterThirdpartyCompany = () => {
         <h1 className="text-lg text-center font-semibold text-[#717070] p-5 uppercase">
           Fill-up the information
         </h1>
-        <form onSubmit={handleSubmit(onSubmit)} className="text-base">
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          className="text-base grid lg:grid-cols-2 gap-2"
+        >
           <div className="form-control flex flex-col mt-1">
             <label className="label">
               <span className="label-text uppercase">Company Name</span>
@@ -124,7 +127,7 @@ const RegisterThirdpartyCompany = () => {
               name="companyName"
               {...register("companyName")}
               placeholder="Arif Traders"
-              className="input input-bordered bg-gray-100 rounded py-2 px-4 border border-gray-300 mb-4 focus:border-[#5D5FEF] focus:ring-1 focus:ring-[#5D5FEF] focus:outline-none"
+              className="input input-bordered bg-gray-100 rounded py-2 px-4 border border-gray-300  focus:border-[#5D5FEF] focus:ring-1 focus:ring-[#5D5FEF] focus:outline-none"
               required
             />
           </div>
@@ -137,7 +140,7 @@ const RegisterThirdpartyCompany = () => {
               name="contractId"
               {...register("contractId")}
               placeholder="DNCC-123456"
-              className="input input-bordered bg-gray-100 rounded py-2 px-4 border border-gray-300 mb-4 focus:border-[#5D5FEF] focus:ring-1 focus:ring-[#5D5FEF] focus:outline-none"
+              className="input input-bordered bg-gray-100 rounded py-2 px-4 border border-gray-300  focus:border-[#5D5FEF] focus:ring-1 focus:ring-[#5D5FEF] focus:outline-none"
               required
             />
           </div>
@@ -149,7 +152,7 @@ const RegisterThirdpartyCompany = () => {
               type="text"
               name="designation"
               placeholder="Vice-chancellor"
-              className="input input-bordered bg-gray-100 rounded py-2 px-4 border border-gray-300 mb-4 focus:border-[#5D5FEF] focus:ring-1 focus:ring-[#5D5FEF] focus:outline-none"
+              className="input input-bordered bg-gray-100 rounded py-2 px-4 border border-gray-300  focus:border-[#5D5FEF] focus:ring-1 focus:ring-[#5D5FEF] focus:outline-none"
             />
           </div> */}
           <div className="form-control flex flex-col mt-1">
@@ -161,7 +164,7 @@ const RegisterThirdpartyCompany = () => {
               name="registrationDate"
               {...register("registrationDate")}
               placeholder="Vice-chancellor"
-              className="input input-bordered bg-gray-100 rounded py-2 px-4 border border-gray-300 mb-4 focus:border-[#5D5FEF] focus:ring-1 focus:ring-[#5D5FEF] focus:outline-none"
+              className="input input-bordered bg-gray-100 rounded py-2 px-4 border border-gray-300  focus:border-[#5D5FEF] focus:ring-1 focus:ring-[#5D5FEF] focus:outline-none"
               required
             />
           </div>
@@ -176,7 +179,7 @@ const RegisterThirdpartyCompany = () => {
               name="tinNumber"
               {...register("tinNumber")}
               placeholder="DNCC3672"
-              className="input input-bordered bg-gray-100 rounded py-2 px-4 border border-gray-300 mb-4 focus:border-[#5D5FEF] focus:ring-1 focus:ring-[#5D5FEF] focus:outline-none"
+              className="input input-bordered bg-gray-100 rounded py-2 px-4 border border-gray-300  focus:border-[#5D5FEF] focus:ring-1 focus:ring-[#5D5FEF] focus:outline-none"
               required
             />
           </div>
@@ -189,7 +192,7 @@ const RegisterThirdpartyCompany = () => {
               name="contact"
               {...register("contact")}
               placeholder="+8801991347811"
-              className="input input-bordered bg-gray-100 rounded py-2 px-4 border border-gray-300 mb-4 focus:border-[#5D5FEF] focus:ring-1 focus:ring-[#5D5FEF] focus:outline-none"
+              className="input input-bordered bg-gray-100 rounded py-2 px-4 border border-gray-300  focus:border-[#5D5FEF] focus:ring-1 focus:ring-[#5D5FEF] focus:outline-none"
               required
             />
           </div>
@@ -202,7 +205,7 @@ const RegisterThirdpartyCompany = () => {
               name="workforceSize"
               {...register("workforceSize")}
               placeholder="Dhaka Metro-Ha 678910"
-              className="input input-bordered bg-gray-100 rounded py-2 px-4 border border-gray-300 mb-4 focus:border-[#5D5FEF] focus:ring-1 focus:ring-[#5D5FEF] focus:outline-none"
+              className="input input-bordered bg-gray-100 rounded py-2 px-4 border border-gray-300  focus:border-[#5D5FEF] focus:ring-1 focus:ring-[#5D5FEF] focus:outline-none"
               required
             />
           </div>
@@ -217,14 +220,14 @@ const RegisterThirdpartyCompany = () => {
               name="paymentPerTonWaste"
               {...register("paymentPerTonWaste")}
               placeholder="220.50"
-              className="input input-bordered bg-gray-100 rounded py-2 px-4 border border-gray-300 mb-4 focus:border-[#5D5FEF] focus:ring-1 focus:ring-[#5D5FEF] focus:outline-none"
+              className="input input-bordered bg-gray-100 rounded py-2 px-4 border border-gray-300  focus:border-[#5D5FEF] focus:ring-1 focus:ring-[#5D5FEF] focus:outline-none"
               required
             />
           </div>
           <div className="form-control flex flex-col mt-1">
             <label className="label">
               <span className="label-text uppercase">
-                Required Amount of Waste Per Day (IN Ton)
+                Required Waste Per Day (Ton)
               </span>
             </label>
             <input
@@ -232,7 +235,7 @@ const RegisterThirdpartyCompany = () => {
               name="reqAmountWastePerDay"
               {...register("reqAmountWastePerDay")}
               placeholder="5"
-              className="input input-bordered bg-gray-100 rounded py-2 px-4 border border-gray-300 mb-4 focus:border-[#5D5FEF] focus:ring-1 focus:ring-[#5D5FEF] focus:outline-none"
+              className="input input-bordered bg-gray-100 rounded py-2 px-4 border border-gray-300  focus:border-[#5D5FEF] focus:ring-1 focus:ring-[#5D5FEF] focus:outline-none"
               required
             />
           </div>
@@ -244,7 +247,7 @@ const RegisterThirdpartyCompany = () => {
               id="contactDuration"
               name="contactDuration"
               {...register("contactDuration")}
-              className="input input-bordered bg-gray-100 rounded py-2 px-4 border border-gray-300 mb-4 focus:border-[#5D5FEF] focus:ring-1 focus:ring-[#5D5FEF] focus:outline-none"
+              className="input input-bordered bg-gray-100 rounded py-2 px-4 border border-gray-300  focus:border-[#5D5FEF] focus:ring-1 focus:ring-[#5D5FEF] focus:outline-none"
               required
             >
               <option>Select Duration</option>
@@ -262,7 +265,7 @@ const RegisterThirdpartyCompany = () => {
               name="areaOfCollection"
               {...register("areaOfCollection")}
               placeholder="Dhaka Metro-Ha 678910"
-              className="input input-bordered bg-gray-100 rounded py-2 px-4 border border-gray-300 mb-4 focus:border-[#5D5FEF] focus:ring-1 focus:ring-[#5D5FEF] focus:outline-none"
+              className="input input-bordered bg-gray-100 rounded py-2 px-4 border border-gray-300  focus:border-[#5D5FEF] focus:ring-1 focus:ring-[#5D5FEF] focus:outline-none"
               required
             />
           </div>
@@ -288,14 +291,14 @@ const RegisterThirdpartyCompany = () => {
               type="text"
               name="license"
               placeholder="Dhaka Metro-Ha 678910"
-              className="input input-bordered bg-gray-100 rounded py-2 px-4 border border-gray-300 mb-4 focus:border-[#5D5FEF] focus:ring-1 focus:ring-[#5D5FEF] focus:outline-none"
+              className="input input-bordered bg-gray-100 rounded py-2 px-4 border border-gray-300  focus:border-[#5D5FEF] focus:ring-1 focus:ring-[#5D5FEF] focus:outline-none"
             /> */}
           </div>
           <div className="form-control mt-6 flex justify-center pb-3">
             <input
               type="submit"
               value="Register"
-              className="text-[#4765ebc3] border rounded p-1 font-semibold hover:bg-[#4765ebc3] hover:text-white border-[#4765ebc3] uppercase w-full"
+              className="text-[#4765ebc3] border rounded p-1 lg:p-2 lg:-mb-6 font-semibold hover:bg-[#4765ebc3] hover:text-white border-[#4765ebc3] uppercase w-full"
             />
           </div>
         </form>

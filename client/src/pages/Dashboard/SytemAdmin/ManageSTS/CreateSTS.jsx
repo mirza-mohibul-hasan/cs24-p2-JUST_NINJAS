@@ -32,6 +32,7 @@ const CreateSTS = () => {
     data.capacity = parseFloat(data.capacity);
     data.latitude = parseFloat(data.latitude);
     data.longitude = parseFloat(data.longitude);
+    data.fineRate = parseFloat(data.fineRate);
     data.ward_num = parseInt(data.ward_num);
     data.addedBy = user?.email;
 
@@ -134,6 +135,20 @@ const CreateSTS = () => {
                   name="longitude"
                   {...register("longitude")}
                   placeholder="Enter longitude"
+                  className="input input-bordered bg-gray-100"
+                  required
+                />
+              </div>
+              <div className="form-control">
+                <label className="label">
+                  <span className="label-text">Fine Rate(Per Ton) TAKA</span>
+                </label>
+                <input
+                  type="text"
+                  id="fineRate"
+                  name="fineRate"
+                  {...register("fineRate")}
+                  placeholder="200.20"
                   className="input input-bordered bg-gray-100"
                   required
                 />

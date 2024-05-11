@@ -67,6 +67,11 @@ app.use("/thirdparty", thirdpartyCompanyRoutes);
 // Wards Routes
 const wardRoutes = require("./routes/wardRoutes");
 app.use("/ward", wardRoutes);
+
+// workforce route
+const workforceRoute = require("./routes/workforceRoute");
+app.use("/workforce", workforceRoute);
+
 // Default
 app.get("/", (req, res) => {
   res.send("EcoSync is currently running");

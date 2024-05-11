@@ -75,6 +75,8 @@ const Profile = () => {
             ? "Landfill Manager"
             : userDetails.role == "contractormanager"
             ? "Contractor Manager"
+            : userDetails.role == "workforce"
+            ? "Workforce"
             : "Unassigned"}
         </h1>
       </div>

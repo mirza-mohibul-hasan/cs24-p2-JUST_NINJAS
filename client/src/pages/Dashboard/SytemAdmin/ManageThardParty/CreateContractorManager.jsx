@@ -142,12 +142,15 @@ const CreateContractorManager = () => {
     setConfirmPassword(confirmPassword);
   };
   return (
-    <div className="card flex-shrink-0 md:w-2/5 mx-auto my-5 rounded p-5 bg-[#97979719] text-[#717070]">
+    <div className="card flex-shrink-0 lg:w-2/5 mx-auto my-5 rounded p-5 bg-[#97979719] text-[#717070]">
       <div className="card-body">
         <h1 className="text-lg text-center font-semibold text-[#717070] px-5 uppercase">
           Create of Contractor Manager
         </h1>
-        <form onSubmit={handleSubmit(onSubmit)} className="text-base">
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          className="text-base grid lg:grid-cols-2 gap-2"
+        >
           <div className="form-control flex flex-col mt-1">
             <label className="label">
               <span className="label-text uppercase">Full Name</span>
@@ -295,7 +298,7 @@ const CreateContractorManager = () => {
             <input
               type="submit"
               value="Register"
-              className="text-[#4765ebc3] border rounded p-1 font-semibold hover:bg-[#4765ebc3] hover:text-white border-[#4765ebc3] uppercase w-full"
+              className="text-[#4765ebc3] border rounded p-1 font-semibold hover:bg-[#4765ebc3] hover:text-white border-[#4765ebc3] uppercase w-full lg:-mb-4 lg:p-2"
             />
           </div>
         </form>

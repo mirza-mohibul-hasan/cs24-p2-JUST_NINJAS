@@ -172,6 +172,7 @@ const DashboardLayout = () => {
                       : "border border-[#4765ebc3] rounded p-1 text-left text-md inline-flex items-center gap-1 pl-2 text-[#4765ebc3]"
                   }
                 >
+                  <IoIosAddCircle />
                   CREATE THIRDPARTY
                 </NavLink>
                 <NavLink
@@ -182,6 +183,7 @@ const DashboardLayout = () => {
                       : "border border-[#4765ebc3] rounded p-1 text-left text-md inline-flex items-center gap-1 pl-2 text-[#4765ebc3]"
                   }
                 >
+                  <IoIosAddCircle />
                   CREATE CONTRACTOR MANAGER
                 </NavLink>
               </>
@@ -192,31 +194,53 @@ const DashboardLayout = () => {
                   to="mysts"
                   className={({ isActive }) =>
                     isActive
-                      ? "bg-[#4765ebc3]  rounded p-1 text-left text-md text-white"
-                      : "border border-[#4765ebc3] rounded p-1 text-left text-md"
+                      ? "bg-[#4765ebc3]  rounded p-1 text-left text-md text-white inline-flex items-center gap-1 pl-2"
+                      : "border border-[#4765ebc3] rounded p-1 text-left text-md inline-flex items-center gap-1 pl-2 text-[#4765ebc3]"
                   }
                 >
                   <FaDumpster />
                   MY STS
                 </NavLink>
                 <NavLink
+                  to="sts-vehicle-exit"
+                  className={({ isActive }) =>
+                    isActive
+                      ? "bg-[#4765ebc3]  rounded p-1 text-left text-md text-white inline-flex items-center gap-1 pl-2"
+                      : "border border-[#4765ebc3] rounded p-1 text-left text-md inline-flex items-center gap-1 pl-2 text-[#4765ebc3]"
+                  }
+                >
+                  <IoIosAddCircle />
+                  VEHICLE EXIT
+                </NavLink>
+                <NavLink
                   to="sts-vehicle-entry"
                   className={({ isActive }) =>
                     isActive
-                      ? "bg-[#4765ebc3]  rounded p-1 text-left text-md text-white"
-                      : "border border-[#4765ebc3] rounded p-1 text-left text-md"
+                      ? "bg-[#4765ebc3]  rounded p-1 text-left text-md text-white inline-flex items-center gap-1 pl-2"
+                      : "border border-[#4765ebc3] rounded p-1 text-left text-md inline-flex items-center gap-1 pl-2 text-[#4765ebc3]"
                   }
                 >
                   <IoIosAddCircle />
                   VEHICLE ENTRY
+                </NavLink>
+                <NavLink
+                  to="calculate-bills"
+                  className={({ isActive }) =>
+                    isActive
+                      ? "bg-[#4765ebc3]  rounded p-1 text-left text-md text-white inline-flex items-center gap-1 pl-2"
+                      : "border border-[#4765ebc3] rounded p-1 text-left text-md inline-flex items-center gap-1 pl-2 text-[#4765ebc3]"
+                  }
+                >
+                  <IoIosAddCircle />
+                  CALCULATE BILLS
                 </NavLink>
 
                 <NavLink
                   to="fleet-of-truck"
                   className={({ isActive }) =>
                     isActive
-                      ? "bg-[#4765ebc3]  rounded p-1 text-left text-md text-white"
-                      : "border border-[#4765ebc3] rounded p-1 text-left text-md"
+                      ? "bg-[#4765ebc3]  rounded p-1 text-left text-md text-white inline-flex items-center gap-1 pl-2"
+                      : "border border-[#4765ebc3] rounded p-1 text-left text-md inline-flex items-center gap-1 pl-2 text-[#4765ebc3]"
                   }
                 >
                   <LiaTruckSolid />
@@ -226,8 +250,8 @@ const DashboardLayout = () => {
                   to="route-view"
                   className={({ isActive }) =>
                     isActive
-                      ? "bg-[#4765ebc3]  rounded p-1 text-left text-md text-white"
-                      : "border border-[#4765ebc3] rounded p-1 text-left text-md"
+                      ? "bg-[#4765ebc3]  rounded p-1 text-left text-md text-white inline-flex items-center gap-1 pl-2"
+                      : "border border-[#4765ebc3] rounded p-1 text-left text-md inline-flex items-center gap-1 pl-2 text-[#4765ebc3]"
                   }
                 >
                   <FaRoute />
@@ -284,6 +308,21 @@ const DashboardLayout = () => {
                 >
                   <IoMdPersonAdd />
                   REGISTER WORKFORCE
+                </NavLink>
+              </>
+            )}
+            {role == "workforce" && (
+              <>
+                <NavLink
+                  to="track-workforce"
+                  className={({ isActive }) =>
+                    isActive
+                      ? "bg-[#4765ebc3]  rounded p-1 text-left text-md text-white inline-flex items-center gap-1 pl-2"
+                      : "border border-[#4765ebc3] rounded p-1 text-left text-md inline-flex items-center gap-1 pl-2 text-[#4765ebc3]"
+                  }
+                >
+                  <IoMdPersonAdd />
+                  TRACK WORKFORCE
                 </NavLink>
               </>
             )}

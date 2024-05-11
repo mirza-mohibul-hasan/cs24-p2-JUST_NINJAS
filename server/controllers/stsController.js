@@ -10,12 +10,14 @@ const createSTS = async (req, res) => {
     const capacity = req.body?.capacity;
     const latitude = req.body?.latitude;
     const longitude = req.body?.longitude;
+    const fineRate = req.body?.fineRate;
     const ward_num = req.body?.ward_num;
     const sts = {
       stsId: stsId,
       capacity: capacity,
       latitude: latitude,
       longitude: longitude,
+      fineRate: fineRate,
       ward_num: ward_num,
       addedBy: addedBy,
       regAt: new Date(),
