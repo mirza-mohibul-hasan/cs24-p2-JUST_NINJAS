@@ -62,8 +62,9 @@ const Profile = () => {
       <div className="flex flex-col items-center gap-1 my-3 text-xl font-semibold">
         <h1>Name: {userDetails?.name}</h1>
         <h1>Email: {userDetails?.email}</h1>
-        <h1>Address: {userDetails?.address}</h1>
-        <h1>NID: {userDetails?.nid}</h1>{" "}
+
+        {userDetails?.address && <h1>Address: {userDetails?.address}</h1>}
+        {userDetails?.nid && <h1>NID: {userDetails?.nid}</h1>}
         <h1>
           Role:
           {userDetails.role == "sysadmin"
@@ -72,6 +73,10 @@ const Profile = () => {
             ? "STS Manager"
             : userDetails.role == "landmanager"
             ? "Landfill Manager"
+            : userDetails.role == "contractormanager"
+            ? "Contractor Manager"
+            : userDetails.role == "workforce"
+            ? "Workforce"
             : "Unassigned"}
         </h1>
       </div>

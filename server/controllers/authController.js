@@ -4,30 +4,57 @@ const User = require("../models/userModel");
 const transporter = require("../utils/nodeMailer");
 const generateOTP = require("../utils/generateOTP");
 const logger = require("../config/logger");
+const WORKFORCE = require("../models/workforceModel");
 const saltRound = 10;
+const CONTRACTORMANAGER = require("../models/contractorManagerModel");
+const WORKFORCEWORKINGTRACK = require("../models/workforceWorkingSchema");
 // Login
 const handleLogin = async (req, res) => {
   try {
     const { email, password } = req.body;
     const existingUser = await User.findOne({ email });
-    if (existingUser?.role === "unassigned") {
+    const existingContractor = await CONTRACTORMANAGER.findOne({ email });
+    const existingWorkforce = await WORKFORCE.findOne({ email });
+    const user = existingUser || existingContractor || existingWorkforce;
+    if (user?.role === "unassigned") {
       return res.json({
         success: false,
         message: "You don't have permission to Login",
       });
     }
-    if (existingUser) {
-      bcrypt.compare(password, existingUser.password, (error, response) => {
+    if (user) {
+      bcrypt.compare(password, user.password, async (error, response) => {
         if (error) {
           console.log("Login error in bcrypt", error);
           return res.status(500).json({ message: "Internal server error" });
         }
         if (response) {
-          const id = existingUser._id.toString();
+          const id = user._id.toString();
           const token = jwt.sign({ id }, "jwtSecret", {
             expiresIn: "24h",
           });
-          req.session.user = existingUser;
+          req.session.user = user;
+          if (user?.role === "workforce") {
+            // console.log(user);
+            const currentDate = new Date();
+            const dateOnly = new Date(currentDate.toDateString());
+            const existingTrack = await WORKFORCEWORKINGTRACK.findOne({
+              employeeId: user?.employeeId,
+              date: dateOnly,
+            });
+            if (existingTrack) {
+              existingTrack.logInTime.push(Date.now());
+              (existingTrack.finishWorking = null), await existingTrack.save();
+            } else {
+              const newTrack = new WORKFORCEWORKINGTRACK({
+                employeeId: user?.employeeId,
+                date: dateOnly,
+                absences: false,
+                logInTime: [Date.now()],
+              });
+              await newTrack.save();
+            }
+          }
           logger.info("Login Successfull");
           res.status(200).json({
             success: true,
@@ -52,6 +79,32 @@ const handleLogin = async (req, res) => {
 };
 // Logout
 const handleLogout = async (req, res) => {
+  const user = req.session.user;
+  const currentDate = new Date();
+  const dateOnly = new Date(currentDate.toDateString());
+  const existingTrack = await WORKFORCEWORKINGTRACK.findOne({
+    employeeId: user?.employeeId,
+    date: dateOnly,
+  });
+
+  if (existingTrack && existingTrack.startWorking) {
+    const lastStartTime = existingTrack.startWorking;
+    const timeDifference = currentDate.getTime() - lastStartTime.getTime();
+    const totalHoursWorked =
+      timeDifference / (1000 * 60 * 60) + existingTrack.totalHoursWorked;
+    if (totalHoursWorked > 8) {
+      existingTrack.overtimeHours = totalHoursWorked - 8;
+    }
+    existingTrack.dutyHours = Math.min(8, totalHoursWorked);
+    existingTrack.totalHoursWorked = totalHoursWorked;
+    if (existingTrack.startWorking) {
+      existingTrack.finishWorking = Date.now();
+      existingTrack.startWorking = null;
+    }
+  }
+  existingTrack?.logOutTime.push(Date.now());
+  await existingTrack?.save();
+
   req.session.destroy((err) => {
     if (err) {
       res.send({ success: false, message: "Logout Failed" });

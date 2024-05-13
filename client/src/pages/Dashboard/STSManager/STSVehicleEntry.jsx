@@ -8,28 +8,43 @@ import useTitle from "../../../hooks/useTitle";
 
 const STSVehicleEntry = () => {
   useTitle("Vehicle Entry");
-  const [mySTS, setMySTS] = useState(null);
-  const [myVehicles, setMyVehicles] = useState([]);
+  const [stsInfo, setStsInfo] = useState(null);
+  const [contractorsInfo, setContractorsInfo] = useState([]);
   const [loading, setLoading] = useState(true);
   const { user } = useContext(AuthContext);
   const { register, handleSubmit, reset } = useForm();
   useEffect(() => {
-    const fetchUsers = async () => {
+    const fetchData = async () => {
       try {
+        setLoading(true);
         const token = localStorage.getItem("token");
         if (!token || !user) {
-          return;
+          return (
+            <div className="flex justify-center flex-col items-center h-full">
+              <BallTriangle
+                height={100}
+                width={100}
+                radius={5}
+                color="#ff0000"
+                ariaLabel="ball-triangle-loading"
+                wrapperStyle={{}}
+                wrapperClass=""
+                visible={true}
+              />
+            </div>
+          );
         }
         const response = await axios.get(
-          `http://localhost:3000/sts/manager-info/${user._id}`,
+          `http://localhost:3000/sts-manager/details-for-entry/${user._id}`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
             },
           }
         );
-        setMySTS(response.data);
-        // console.log(response.data);
+        console.log(response.data);
+        setStsInfo(response.data?.stsInfo);
+        setContractorsInfo(response.data?.contractorsInfo);
         setLoading(false);
       } catch (error) {
         console.error("Error fetching users:", error.message);
@@ -37,48 +52,9 @@ const STSVehicleEntry = () => {
       }
     };
 
-    fetchUsers();
+    fetchData();
   }, [user]);
-  useEffect(() => {
-    const fetchAssignedVehicles = async () => {
-      try {
-        if (!mySTS) return;
-
-        const token = localStorage.getItem("token");
-        const response = await axios.get(
-          `http://localhost:3000/sts/assigned-vehicle/${mySTS.stsId}`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-        setMyVehicles(response.data);
-      } catch (error) {
-        console.error("Error fetching assigned vehicles:", error.message);
-      }
-    };
-
-    fetchAssignedVehicles();
-  }, [mySTS]);
-  // console.log(myVehicles);
-  if (loading) {
-    return (
-      <div className="flex justify-center items-center h-full">
-        <BallTriangle
-          height={100}
-          width={100}
-          radius={5}
-          color="#2145e6"
-          ariaLabel="ball-triangle-loading"
-          wrapperStyle={{}}
-          wrapperClass=""
-          visible={true}
-        />
-      </div>
-    );
-  }
-  if (!mySTS) {
+  if (loading || !stsInfo) {
     return (
       <div className="flex justify-center flex-col items-center h-full">
         <p className="text-5xl text-center">You Do not Have STS</p>
@@ -96,18 +72,8 @@ const STSVehicleEntry = () => {
     );
   }
   const onSubmit = async (data) => {
-    if (!mySTS) {
-      alert("Please refresh");
-    }
-
-    data.stsId = mySTS.stsId;
-    data.weightOfWaste = parseFloat(data.weightOfWaste);
-
-    data.stsEntryId = (data.vehicleId + data.weightOfWaste + Date.now())
-      .toLowerCase()
-      .replace(/[^a-z0-9]/g, "");
-    data.addedBy = user?.email;
-    // console.log(data);
+    data.wasteCollectedKg = parseFloat(data.wasteCollectedKg);
+    data.designatedSts = stsInfo._id;
     try {
       console.log(data);
       const token = localStorage.getItem("token");
@@ -115,7 +81,7 @@ const STSVehicleEntry = () => {
         throw new Error("Token not found");
       }
       const response = await axios.post(
-        "http://localhost:3000/sts-manager/add-entry",
+        "http://localhost:3000/sts-manager/add-vehicle-enter-sts",
         data,
         {
           headers: {
@@ -139,7 +105,7 @@ const STSVehicleEntry = () => {
         });
       }
     } catch (error) {
-      console.error("Error creating user:", error.message);
+      console.error("Error Adding Entry:", error.message);
       Swal.fire({
         position: "center",
         icon: "error",
@@ -149,92 +115,118 @@ const STSVehicleEntry = () => {
       });
     }
   };
+  console.log(contractorsInfo);
   return (
-    <div className=" min-h-screen">
-      <div className="hero-content w-full">
-        <div className="card flex-shrink-0 w-full max-w-lg shadow-2xl bg-[#dadff3]">
-          <div className="card-body">
-            <h1 className="text-3xl text-center font-bold text-[#2145e6]">
-              ADD VEHICLE ENTRY
-            </h1>
-            <p className="text-[#2145e6] text-center border border-[#2145e6] rounded-lg font-semibold"></p>
-            <form onSubmit={handleSubmit(onSubmit)}>
-              <div className="form-control">
-                <label className="label">
-                  <span className="label-text">Vehicle Number</span>
-                </label>
-                <select
-                  id="vehicleId"
-                  name="vehicleId"
-                  {...register("vehicleId")}
-                  className="select select-bordered bg-gray-100"
-                  required
-                >
-                  <option value="">Select Truck</option>
-                  {myVehicles.map((vehicle) => (
-                    <option
-                      key={vehicle._id}
-                      value={vehicle.vehicleId}
-                      className="uppercase"
-                    >
-                      {vehicle.type} {vehicle.registration_number}
-                    </option>
-                  ))}
-                </select>
-              </div>
-              <div className="form-control">
-                <label className="label">
-                  <span className="label-text">Weight of Waste (kg)</span>
-                </label>
-                <input
-                  type="text"
-                  id="weightOfWaste"
-                  name="weightOfWaste"
-                  {...register("weightOfWaste")}
-                  placeholder="Enter weight in TON"
-                  className="input input-bordered bg-gray-100"
-                  required
-                />
-              </div>
-              <div className="form-control">
-                <label className="label">
-                  <span className="label-text">Time of Arrival</span>
-                </label>
-                <input
-                  type="datetime-local"
-                  id="timeOfArrival"
-                  name="timeOfArrival"
-                  {...register("timeOfArrival")}
-                  className="input input-bordered bg-gray-100"
-                  required
-                />
-              </div>
-              <div className="form-control">
-                <label className="label">
-                  <span className="label-text">Time of Departure</span>
-                </label>
-                <input
-                  type="datetime-local"
-                  id="timeOfDeparture"
-                  name="timeOfDeparture"
-                  {...register("timeOfDeparture")}
-                  className="input input-bordered bg-gray-100"
-                  required
-                />
-              </div>
-              <div className="form-control mt-6 ">
-                <input
-                  className="text-white btn bg-[#2145e6] border-[#2145e6]"
-                  type="submit"
-                  value="Submit"
-                />
-              </div>
-            </form>
+    <div className="card flex-shrink-0 md:w-2/5 mx-auto my-5 rounded p-5 bg-[#97979719] text-[#717070]">
+      <div className="card-body">
+        <h1 className="text-lg text-center font-semibold text-[#717070] px-5 uppercase">
+          Fill-up the information
+        </h1>
+        <form onSubmit={handleSubmit(onSubmit)} className="text-base uppercase">
+          <div className="form-control flex flex-col mt-1">
+            <label className="label">
+              <span className="label-text uppercase">Entry Time</span>
+            </label>
+            <input
+              type="datetime-local"
+              name="timeDate"
+              {...register("timeDate")}
+              className="input input-bordered bg-gray-100 rounded py-2 px-4 border border-gray-300 focus:border-[#5D5FEF] focus:ring-1 focus:ring-[#5D5FEF] focus:outline-none"
+              required
+            />
           </div>
-        </div>
+          <div className="form-control flex flex-col mt-1">
+            <label className="label">
+              <span className="label-text">Waste Collected in KG</span>
+            </label>
+            <input
+              type="text"
+              name="wasteCollectedKg"
+              {...register("wasteCollectedKg")}
+              placeholder="200.5"
+              className="input input-bordered bg-gray-100 rounded py-2 px-4 border border-gray-300 focus:border-[#5D5FEF] focus:ring-1 focus:ring-[#5D5FEF] focus:outline-none"
+              required
+            />
+          </div>
+
+          <div className="form-control flex flex-col mt-1">
+            <label className="label">
+              <span className="label-text uppercase">
+                Type of Waste Collected
+              </span>
+            </label>
+            <select
+              id="wasteType"
+              name="wasteType"
+              {...register("wasteType")}
+              className="input input-bordered bg-gray-100 rounded py-2 px-4 border border-gray-300 focus:border-[#5D5FEF] focus:ring-1 focus:ring-[#5D5FEF] focus:outline-none"
+              required
+            >
+              <option>Select Type</option>
+              <option value="domestic">Domestic Waste</option>
+              <option value="Plastic">Plastic Waste</option>
+              <option value="construction">Construction Waste</option>
+            </select>
+          </div>
+          <div className="form-control flex flex-col mt-1">
+            <label className="label">
+              <span className="label-text uppercase">Select Contractor ID</span>
+            </label>
+            <select
+              id="contractorId"
+              name="contractorId"
+              {...register("contractorId")}
+              className="input input-bordered bg-gray-100 rounded py-2 px-4 border border-gray-300  focus:border-[#5D5FEF] focus:ring-1 focus:ring-[#5D5FEF] focus:outline-none"
+              required
+            >
+              <option>Select ID</option>
+              {contractorsInfo?.map((contractor) => (
+                <option key={contractor._id} value={contractor?.registrationId}>
+                  {contractor.companyName} {contractor.registrationId}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div className="form-control flex flex-col mt-1">
+            <label className="label">
+              <span className="label-text">Designated sts for deposit</span>
+            </label>
+            <input
+              disabled
+              type="text"
+              value={"STS OF WARD-" + stsInfo.ward_num}
+              className="input input-bordered bg-gray-100 rounded py-2 px-4 border border-gray-300 focus:border-[#5D5FEF] focus:ring-1 focus:ring-[#5D5FEF] focus:outline-none"
+              required
+            />
+          </div>
+          <div className="form-control flex flex-col mt-1">
+            <label className="label">
+              <span className="label-text uppercase">
+                Vehicle Used for Transportation
+              </span>
+            </label>
+            <select
+              id="vehicle"
+              name="vehicle"
+              {...register("vehicle")}
+              className="input input-bordered bg-gray-100 rounded py-2 px-4 border border-gray-300  focus:border-[#5D5FEF] focus:ring-1 focus:ring-[#5D5FEF] focus:outline-none"
+              required
+            >
+              <option>Select Vehicle</option>
+              <option value="utilityvans">Utility Vans</option>
+              <option value="minitruck">Mini Truck</option>
+            </select>
+          </div>
+          <div className="form-control mt-6 flex justify-center pb-3">
+            <input
+              type="submit"
+              value="ADD ENTRY"
+              className="text-[#4765ebc3] border rounded p-1 font-semibold hover:bg-[#4765ebc3] hover:text-white border-[#4765ebc3] uppercase w-full"
+            />
+          </div>
+        </form>
       </div>
     </div>
   );
 };
-
 export default STSVehicleEntry;

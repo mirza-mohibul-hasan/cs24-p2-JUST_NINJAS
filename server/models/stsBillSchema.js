@@ -1,37 +1,38 @@
 const mongoose = require("mongoose");
-const stsSchema = new mongoose.Schema({
+
+const billSchema = new mongoose.Schema({
   stsId: {
     type: String,
     required: true,
   },
-  capacity: {
-    type: Number,
-    required: true,
-  },
-  latitude: {
-    type: Number,
-    required: true,
-  },
-  longitude: {
-    type: Number,
-    required: true,
-  },
-  ward_num: {
-    type: Number,
-    required: true,
-  },
-  addedBy: {
+  contractorId: {
     type: String,
-  },
-  regAt: {
-    type: Date,
-    default: Date.now,
+    required: true,
   },
   fineRate: {
     type: Number,
-    default: 0,
+    required: true,
+  },
+  basicPay: {
+    type: Number,
+    required: true,
+  },
+  deficit: {
+    type: Number,
+    required: true,
+  },
+  contractorFine: {
+    type: Number,
+    required: true,
+  },
+  totalBill: {
+    type: Number,
+    required: true,
+  },
+  date: {
+    type: Date,
+    default: Date.now,
   },
 });
 
-const STS = mongoose.model("Sts", stsSchema);
-module.exports = STS;
+module.exports = mongoose.model("STSBill", billSchema);

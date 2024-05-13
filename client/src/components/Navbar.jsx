@@ -1,11 +1,14 @@
 import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../provider/AuthProvider";
 import { Link, NavLink } from "react-router-dom";
-import { CiLight } from "react-icons/ci";
+import { CiLight, CiLogin } from "react-icons/ci";
 import { MdDarkMode } from "react-icons/md";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { IoIosCloseCircle } from "react-icons/io";
 import logo from "../assets/logo.png";
+import { IoHomeOutline } from "react-icons/io5";
+import { RxDashboard } from "react-icons/rx";
+import { SlLogout } from "react-icons/sl";
 const Navbar = () => {
   const { user, providerLogout } = useContext(AuthContext);
   const [theme, setTheme] = useState(localStorage.getItem("theme") || "light");
@@ -27,31 +30,33 @@ const Navbar = () => {
             {/* logo */}
             <Link href="/" className="flex gap-1 text-gray-800 items-center ">
               <img src={logo} className="h-8 w-8 rounded-full" alt="" />
-              <span className="font-agbalumo text-2xl font-semibold dark:text-white">
+              <span className=" text-2xl font-semibold text-white">
                 EcoSync DNCC
               </span>
             </Link>
             {/* primary */}
-            <div className="hidden lg:flex gap-8 text-lg uppercase font-semibold">
+            <div className="hidden lg:flex gap-8 text-md uppercase font-semibold text-white">
               <NavLink
                 className={({ isActive }) =>
                   isActive
-                    ? "bg-[#2145e6]  rounded p-1 text-center text-xl text-white"
-                    : " rounded p-1 text-center text-xl"
+                    ? "border  rounded p-1 text-center text-md text-white hover:bg-white hover:text-[#4765ebc3] inline-flex items-center gap-1"
+                    : " rounded p-1 text-center text-md hover:bg-white hover:text-[#4765ebc3] inline-flex items-center gap-1"
                 }
                 to="/"
               >
+                <IoHomeOutline />
                 Home
               </NavLink>
               {user && (
                 <NavLink
                   className={({ isActive }) =>
                     isActive
-                      ? "bg-[#2145e6]  rounded p-1 text-center text-xl text-white"
-                      : " rounded p-1 text-center text-xl"
+                      ? "border  rounded p-1 text-center text-md text-white hover:bg-white hover:text-[#4765ebc3] inline-flex items-center gap-1"
+                      : " rounded p-1 text-center text-md hover:bg-white hover:text-[#4765ebc3] inline-flex items-center gap-1"
                   }
                   to="/dashboard/home"
                 >
+                  <RxDashboard />
                   Dashboard
                 </NavLink>
               )}
@@ -75,8 +80,9 @@ const Navbar = () => {
               </div>
               {!user ? (
                 <div className="hidden lg:flex gap-2 font-poppins">
-                  <Link to="/login">
-                    <button className="w-20 mx-auto rounded-lg border-solid border-2 hover:border-blue-600 hover:bg-white hover:text-blue-600 py-1 px-1 bg-blue-800 dark:bg-gray-800 text-white">
+                  <Link to="/login" className="">
+                    <button className="w-20 mx-auto rounded border-solid border hover:bg-white hover:text-[#4765ebc3] py-1 px-1  dark:bg-gray-800 text-white inline-flex items-center gap-1">
+                      <CiLogin />
                       LOGIN
                     </button>
                   </Link>
@@ -85,8 +91,9 @@ const Navbar = () => {
                 <div className="hidden lg:flex gap-2 font-poppins">
                   <button
                     onClick={providerLogout}
-                    className="w-20 mx-auto rounded-lg border-solid border-2 hover:border-blue-600 hover:bg-white hover:text-blue-600 py-1 px-1 bg-blue-800 dark:bg-gray-800 text-white"
+                    className="mx-auto border-solid border  rounded p-1 text-center text-md py-1 px- dark:bg-gray-800 text-white hover:bg-white hover:text-[#4765ebc3] inline-flex items-center gap-1"
                   >
+                    <SlLogout />
                     LOGOUT
                   </button>
                 </div>
@@ -107,8 +114,8 @@ const Navbar = () => {
       </div>
       {/* mobile navigation */}
       <div
-        className={`w-52 z-50 absolute overflow-hidden bg-[#4765ebc3] flex flex-col lg:hidden origin-top duration-700 rounded-br-xl ${
-          !toggleMenu ? "h-0" : "h-fit mt-3 py-5"
+        className={`w-1/2 z-50 absolute overflow-hidden bg-[#4765ebc3] flex flex-col lg:hidden origin-top duration-700 rounded-br-xl ${
+          !toggleMenu ? "h-0" : "h-fit mt-4 py-5"
         }`}
       >
         <div className="px-8">
@@ -116,36 +123,43 @@ const Navbar = () => {
             <NavLink
               className={({ isActive }) =>
                 isActive
-                  ? "bg-[#2145e6]  rounded p-1 text-center text-xl text-white"
-                  : " rounded p-1 text-center text-xl"
+                  ? "border  rounded p-1 text-center text-md text-white hover:bg-white hover:text-[#4765ebc3] inline-flex items-center gap-1"
+                  : " rounded p-1 text-center text-md hover:bg-white hover:text-[#4765ebc3] inline-flex items-center gap-1"
               }
               to="/"
             >
+              <IoHomeOutline />
               Home
             </NavLink>
             {user && (
               <NavLink
                 className={({ isActive }) =>
                   isActive
-                    ? "bg-[#2145e6]  rounded p-1 text-center text-xl text-white"
-                    : " rounded p-1 text-center text-xl"
+                    ? "border  rounded p-1 text-center text-md text-white hover:bg-white hover:text-[#4765ebc3] inline-flex items-center gap-1"
+                    : " rounded p-1 text-center text-md hover:bg-white hover:text-[#4765ebc3] inline-flex items-center gap-1 text-white border"
                 }
                 to="/dashboard/home"
               >
-                Dashbord
+                <RxDashboard />
+                Dashboard
               </NavLink>
             )}
             {!user ? (
               <>
-                <Link to="/login">
-                  <button className="w-20 mx-auto rounded-lg border-solid border-2 hover:border-blue-600 hover:bg-white hover:text-blue-600 py-1 px-1 bg-blue-800 dark:bg-gray-800 text-white">
+                <Link to="/login" className="">
+                  <button className="w-full mx-auto rounded border-solid border hover:bg-white hover:text-[#4765ebc3] py-1 px-1  dark:bg-gray-800 text-white inline-flex items-center gap-1">
+                    <CiLogin />
                     LOGIN
                   </button>
                 </Link>
               </>
             ) : (
               <>
-                <button className="w-20 mx-auto rounded-lg border-solid border-2 hover:border-blue-600 hover:bg-white hover:text-blue-600 py-1 px-1 bg-blue-800 dark:bg-gray-800 text-white">
+                <button
+                  onClick={providerLogout}
+                  className="w-full mx-auto border-solid border  rounded p-1 text-center text-md py-1 px- dark:bg-gray-800 text-white hover:bg-white hover:text-[#4765ebc3] inline-flex items-center gap-1"
+                >
+                  <SlLogout />
                   LOGOUT
                 </button>
               </>
