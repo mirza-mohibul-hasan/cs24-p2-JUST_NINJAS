@@ -1,1 +1,29 @@
 {"level":"error","message":"Error logging in user:","timestamp":"2024-05-07T17:54:40.080Z"}
+{"level":"error","message":"ThirdpartyCompany validation failed: companyName: Path `companyName` is required.","timestamp":"2024-05-10T09:35:29.046Z"}
+{"level":"error","message":"ThirdpartyCompany validation failed: companyName: Path `companyName` is required.","timestamp":"2024-05-10T09:38:25.054Z"}
+{"level":"error","message":"`Model.find()` cannot run without a model as `this`. Make sure you are not calling `new Model.find()`","timestamp":"2024-05-10T09:57:46.686Z"}
+{"level":"error","message":"ThirdpartyCompany validation failed: registrationId: Path `registrationId` is required.","timestamp":"2024-05-10T13:18:36.504Z"}
+{"level":"error","message":"ThirdpartyCompany validation failed: registrationId: Path `registrationId` is required.","timestamp":"2024-05-10T13:18:45.152Z"}
+{"level":"error","message":"Error creating contractor manager:","timestamp":"2024-05-10T16:01:49.463Z"}
+{"level":"error","message":"Error creating contractor manager:","timestamp":"2024-05-10T16:17:33.075Z"}
+{"level":"error","message":"WORKFORCEWORKINGTRACK is not defined","timestamp":"2024-05-10T18:40:08.851Z"}
+{"level":"error","message":"Converting circular structure to JSON\n    --> starting at object with constructor 'MongoClient'\n    |     property 's' -> object with constructor 'Object'\n    |     property 'sessionPool' -> object with constructor 'ServerSessionPool'\n    --- property 'client' closes the circle","timestamp":"2024-05-10T21:45:05.369Z"}
+{"level":"error","message":"Converting circular structure to JSON\n    --> starting at object with constructor 'MongoClient'\n    |     property 's' -> object with constructor 'Object'\n    |     property 'sessionPool' -> object with constructor 'ServerSessionPool'\n    --- property 'client' closes the circle","timestamp":"2024-05-10T21:45:30.608Z"}
+{"level":"error","message":"Converting circular structure to JSON\n    --> starting at object with constructor 'MongoClient'\n    |     property 's' -> object with constructor 'Object'\n    |     property 'sessionPool' -> object with constructor 'ServerSessionPool'\n    --- property 'client' closes the circle","timestamp":"2024-05-10T21:46:49.772Z"}
+{"level":"error","message":"stsInfo is not defined","timestamp":"2024-05-10T21:47:53.809Z"}
+{"level":"error","message":"Invalid status code: {\n  _id: new ObjectId('663ddb6a610eb49c3c85797d'),\n  stsId: '722374029158846555690361057177672751715329898095',\n  capacity: 72,\n  latitude: 23.740291588465556,\n  longitude: 90.36105717767275,\n  ward_num: 1,\n  addedBy: 'mirzamohibul618@gmail.com',\n  regAt: 2024-05-10T08:31:38.108Z,\n  __v: 0\n}","timestamp":"2024-05-10T21:53:23.954Z"}
+{"level":"error","message":"stsId is not defined","timestamp":"2024-05-10T22:10:34.117Z"}
+{"level":"error","message":"stsId is not defined","timestamp":"2024-05-10T22:11:00.199Z"}
+{"level":"error","message":"result is not defined","timestamp":"2024-05-11T00:31:23.616Z"}
+{"level":"error","message":"result is not defined","timestamp":"2024-05-11T00:32:08.136Z"}
+{"level":"error","message":"ISODate is not defined","timestamp":"2024-05-11T00:39:18.337Z"}
+{"level":"error","message":"currentDate.slice is not a function","timestamp":"2024-05-11T00:51:49.874Z"}
+{"level":"error","message":"Cast to date failed for value \"Invalid Date\" (type Date) at path \"timeDate\" for model \"STSWasteCollection\"","timestamp":"2024-05-11T00:52:07.731Z"}
+{"level":"error","message":"result is not defined","timestamp":"2024-05-11T00:53:29.296Z"}
+{"level":"error","message":"currentDateStr is not defined","timestamp":"2024-05-11T01:00:13.054Z"}
+{"level":"error","message":"data is not defined","timestamp":"2024-05-11T01:06:37.200Z"}
+{"level":"error","message":"Parameter \"filter\" to findOne() must be an object, got \"dncc-11121715347479922\" (type string)","timestamp":"2024-05-11T01:09:52.336Z"}
+{"level":"error","message":"Invalid status code: 1000.5","timestamp":"2024-05-11T01:11:53.131Z"}
+{"level":"error","message":"STSBill validation failed: contractorFine: Path `contractorFine` is required.","timestamp":"2024-05-11T01:34:14.175Z"}
+{"level":"error","message":"STSBill validation failed: contractorFine: Path `contractorFine` is required.","timestamp":"2024-05-11T01:34:52.817Z"}
+{"level":"error","message":"contactorFine is not defined","timestamp":"2024-05-11T01:35:49.405Z"}

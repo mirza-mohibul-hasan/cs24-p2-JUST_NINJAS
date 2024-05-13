@@ -27,8 +27,14 @@ const Login = () => {
     setPasswordShown(passwordShown ? false : true);
   };
   return (
-    <div className="flex justify-center items-center">
-      <div className="p-5 m-5 md:w-1/5 rounded-xl shadow-2xl border border-[#2145e6]">
+    <div className="flex justify-center items-center bg-gray-100">
+      <div
+        className="p-5 m-5 lg:w-1/5 rounded-xl shadow-md bg-white"
+        style={{
+          boxShadow:
+            "0 4px 6px -1px rgba(33, 69, 230, 0.1), 0 2px 4px -1px rgba(33, 69, 230, 0.06)",
+        }}
+      >
         <h2 className="text-2xl font-bold text-center text-gray-700 mb-3 my-2">
           LOGIN HERE
         </h2>
@@ -65,12 +71,12 @@ const Login = () => {
 
           <div
             className="flex justify-center"
-            style={{ transform: "scale(0.85)", transformOrigin: "0 0" }}
+            style={{ maxWidth: "100%", overflowX: "hidden" }}
           >
             <ReCAPTCHA
               sitekey={"6LdT1KYpAAAAAPxwh2xoSLCR7VK1QDiODBgeux-w"}
               onChange={handleCaptcha}
-              style={{ width: "100%" }}
+              style={{ width: "100%", maxWidth: "300px" }}
             />
           </div>
 
@@ -78,7 +84,7 @@ const Login = () => {
             disabled={!isCaptchaSuccessful}
             type="submit"
             value="Login"
-            className="bg-[#2145e6db] text-white font-semibold rounded"
+            className="text-[#4765ebc3] border rounded p-1 font-semibold hover:bg-[#4765ebc3] hover:text-white border-[#4765ebc3] uppercase w-full"
           />
         </form>
         <h4 className="my-3 text-sm text-gray-500 text-center">

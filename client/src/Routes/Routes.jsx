@@ -21,7 +21,7 @@ import ManageSTS from "../pages/Dashboard/SytemAdmin/ManageSTS/ManageSTS";
 import SingleSTSManagement from "../pages/Dashboard/SytemAdmin/ManageSTS/SingleSTSManagement";
 import ManageLandfill from "../pages/Dashboard/SytemAdmin/ManageLandfill/ManageLandfill";
 import SingleLandfillManagement from "../pages/Dashboard/SytemAdmin/ManageLandfill/SingleLandfillManagement";
-import STSVehicleEntry from "../pages/Dashboard/STSManager/STSVehicleEntry";
+import STSVehicleExit from "../pages/Dashboard/STSManager/STSVehicleExit";
 import MySTS from "../pages/Dashboard/STSManager/MySTS";
 import MyLandfill from "../pages/Dashboard/LandfillManager/MyLandfill";
 import LandfillVehicleEntry from "../pages/Dashboard/LandfillManager/LandfillVehicleEntry";
@@ -35,6 +35,12 @@ import STSManagerRoute from "./STSManagerRoute";
 import LandfillManagerRoute from "./LandfillManagerRoute";
 import PrivateRoute from "./PrivateRoute";
 import AllBilling from "../pages/Dashboard/SytemAdmin/Billng/AllBilling";
+import RegisterThirdpartyCompany from "../pages/Dashboard/SytemAdmin/ManageThardParty/RegisterThirdpartyCompany";
+import CreateContractorManager from "../pages/Dashboard/SytemAdmin/ManageThardParty/CreateContractorManager";
+import RegisterWorkforce from "../pages/Dashboard/ContractorManger/RegisterWorkforce";
+import WorkforceTracker from "../pages/Dashboard/Workforce/WorkforceTracker";
+import STSVehicleEntry from "../pages/Dashboard/STSManager/STSVehicleEntry";
+import CalculateBills from "../pages/Dashboard/STSManager/CalculateBills";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -147,6 +153,7 @@ const router = createBrowserRouter([
           </AdminRoute>
         ),
       },
+      /* Final Event */
       // Vehicle Related
       {
         path: "addvehicle",
@@ -209,12 +216,39 @@ const router = createBrowserRouter([
         ),
       },
 
+      /* ThirdParty Related Admin Works */
+      // Create 3rd Party Contractor
+      {
+        path: "register-third-party",
+        element: <RegisterThirdpartyCompany></RegisterThirdpartyCompany>,
+      },
+      {
+        path: "create-contractor-manager",
+        element: <CreateContractorManager></CreateContractorManager>,
+      },
+
       // STS Manager Route
+      {
+        path: "calculate-bills",
+        element: (
+          <STSManagerRoute>
+            <CalculateBills></CalculateBills>
+          </STSManagerRoute>
+        ),
+      },
       {
         path: "mysts",
         element: (
           <STSManagerRoute>
             <MySTS></MySTS>
+          </STSManagerRoute>
+        ),
+      },
+      {
+        path: "sts-vehicle-exit",
+        element: (
+          <STSManagerRoute>
+            <STSVehicleExit></STSVehicleExit>
           </STSManagerRoute>
         ),
       },
@@ -266,6 +300,17 @@ const router = createBrowserRouter([
             <BillingReport></BillingReport>
           </LandfillManagerRoute>
         ),
+      },
+
+      /* Contractor Manager Routes */
+      {
+        path: "register-workforce",
+        element: <RegisterWorkforce></RegisterWorkforce>,
+      },
+      /* Workforce */
+      {
+        path: "track-workforce",
+        element: <WorkforceTracker></WorkforceTracker>,
       },
     ],
   },

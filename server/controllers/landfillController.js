@@ -120,10 +120,11 @@ const assignLandfillManager = async (req, res) => {
       result,
     });
   } else {
-    const result = await LandfillManager.insertOne({
+    const newLandfill = new LandfillManager({
       landfillId: landfillId,
       managers: [managerId],
     });
+    const result = await newLandfill.save();
     res.send({
       success: true,
       message: "Manager added successfully.",

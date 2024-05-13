@@ -139,7 +139,7 @@ const FleetOfTruck = () => {
       <p>Ward Number: {stsInfo?.ward_num}</p>
       <p>Lattitude:{stsInfo?.latitude}</p>
       <p>Longitude: {stsInfo?.longitude}</p>
-      <div className=" min-h-screen">
+      <div className=" ">
         <div className="hero-content w-full">
           <div className="card flex-shrink-0 w-full max-w-lg shadow-2xl bg-[#dadff3]">
             <div className="card-body">

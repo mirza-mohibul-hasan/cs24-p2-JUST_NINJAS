@@ -30,8 +30,4 @@ const stsVehicleEntrySchema = new mongoose.Schema({
   },
 });
 
-const STSVehicleEntry = mongoose.model(
-  "STSVehicleEntry",
-  stsVehicleEntrySchema
-);
-module.exports = STSVehicleEntry;
+module.exports = mongoose.model("STSVehicleEntry", stsVehicleEntrySchema);

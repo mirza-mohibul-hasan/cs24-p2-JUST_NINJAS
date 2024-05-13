@@ -37,7 +37,7 @@ const OTPVerification = () => {
   };
   return (
     <div className="flex justify-center items-center">
-      <div className="p-5 m-5 md:w-1/5 rounded-xl shadow-2xl border border-[#2145e6]">
+      <div className="p-5 m-5 lg:w-1/5 rounded-xl shadow-2xl border">
         <h2 className="text-2xl font-bold text-center text-gray-700 mb-3 my-2">
           Confim Reset Password
         </h2>
@@ -70,19 +70,19 @@ const OTPVerification = () => {
           </div>
           <div
             className="flex justify-center"
-            style={{ transform: "scale(0.85)", transformOrigin: "0 0" }}
+            style={{ maxWidth: "100%", overflowX: "hidden" }}
           >
             <ReCAPTCHA
               sitekey={"6LdT1KYpAAAAAPxwh2xoSLCR7VK1QDiODBgeux-w"}
               onChange={handleCaptcha}
-              style={{ width: "100%" }}
+              style={{ width: "100%", maxWidth: "300px" }}
             />
           </div>
           <input
             disabled={!isCaptchaSuccessful}
             type="submit"
             value="Submit"
-            className="bg-[#2145e6db] text-white font-semibold rounded p-1"
+            className="text-[#4765ebc3] border rounded p-1 font-semibold hover:bg-[#4765ebc3] hover:text-white border-[#4765ebc3] uppercase w-full"
           />
         </form>
       </div>
